@@ -1,4 +1,5 @@
 <?php
+
 class DB {
 	//database connection
 	protected static $connection;
@@ -34,7 +35,6 @@ class DB {
 	public function query($query){
         // Connect to the database
         $connection = $this -> connect();
-
         // Query the database
         $result = $connection -> query($query);
 
