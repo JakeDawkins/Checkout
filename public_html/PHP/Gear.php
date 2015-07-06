@@ -10,14 +10,14 @@ require_once('db.php');
 
 		if (is_numeric($type)) {
 			$sql = "INSERT INTO gear(name,gear_type_id) VALUES('$name','$type')";
-			printf("__%s__",$sql);
+			// printf("__%s__",$sql);
 		} else {
 			$sql = "SELECT gear_type_id FROM gear_types WHERE type='$type'";
-			printf("__%s__",$sql);
+			// printf("__%s__",$sql);
 			$results = $database->select($sql);
 			$gear_type_id = $results[0]['gear_type_id'];
 			$sql = "INSERT INTO gear(name,gear_type_id) VALUES('$name','$gear_type_id')";
-			printf("__%s__",$sql);
+			// printf("__%s__",$sql);
 		}
 		$database->query($sql);
 	}
@@ -101,8 +101,8 @@ require_once('db.php');
 		$available_gear = array();
 
 		foreach($results as $row) {
-			printf("__GEAR_ID___:%d",$row['gear_id']);
-			echo '<br>';
+			//printf("__GEAR_ID___:%d",$row['gear_id']);
+			//echo '<br>';
     		if(isAvailable($row['gear_id'],$co_start, $co_end)){
         		//add object to return array
         		$available_gear[] = $row;

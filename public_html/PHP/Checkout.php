@@ -76,7 +76,6 @@ class Checkout {
 	public function removeFromGearList($gear_id){
 		//check to see if gear item in array
 		$pos = array_search($gear_id, $this->gearList);
-		echo 'gear item at: ' . $pos . '<br>';
 
 		// Remove from array
 		unset($this->gearList[$pos]);
@@ -114,22 +113,22 @@ class Checkout {
 		//if the co_id is unset, this is a new checkout
 		if(isset($this->co_id)){ //old checkout
 			$sql = "UPDATE checkouts SET title='$this->title', person_id='$this->person_id', co_start='$this->co_start', co_end='$this->co_end', description='$this->description' WHERE co_id='$this->co_id'";
-			printf("___%s<br>",$sql);
+			// printf("___%s<br>",$sql);
 			$database->query($sql);
 
 			//remove all old co_gear relations from table
 			$sql = "DELETE FROM co_gear WHERE co_id='$this->co_id'";
-			printf("___%s<br>",$sql);
+			// printf("___%s<br>",$sql);
 			$database->query($sql);
 		} else { //new checkout
 			//create the new checkout
 			$sql = "INSERT INTO checkouts(title,person_id,co_start,co_end,description) VALUES('$this->title','$this->person_id','$this->co_start','$this->co_end','$this->description')";
-			printf("___%s<br>",$sql);
+			// printf("___%s<br>",$sql);
 			$database->query($sql);
 
 			//retrieve co_id from newly inserted checkout
 			$sql = "SELECT co_id FROM checkouts WHERE person_id='$this->person_id' AND co_start='$this->co_start' AND co_end='$this->co_end'";
-			printf("___%s<br>",$sql);
+			// printf("___%s<br>",$sql);
 			$results = $database->select($sql);
 			$this->co_id = $results[0]['co_id'];
 		}
@@ -139,11 +138,11 @@ class Checkout {
 			//check to see if the item is available
 			if (isAvailable($gearItem,$this->co_start,$this->co_end)){
 				$sql = "INSERT INTO co_gear(gear_id,co_id) VALUES('$gearItem','$this->co_id')";	
-				printf("___%s<br>",$sql);
+				// printf("___%s<br>",$sql);
 				$database->query($sql);
 			} else { //requested item not available
 				//do some error logging here...
-				printf("_!_item not available: %s<br>",$gearItem);
+				// printf("_!_item not available: %s<br>",$gearItem);
 			}
 		}//foreach
 	}//finalizeCheckout
