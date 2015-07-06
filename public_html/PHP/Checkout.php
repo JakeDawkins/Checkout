@@ -12,55 +12,79 @@ class Checkout {
 	private $gearList = array();
 
 	//------------------------ getters ------------------------
+
 	public function getID() {
-		return $co_id;
+		return $this->co_id;
 	}
+
 	public function getTitle() {
-		return $title;
+		return $this->title;
 	}
+	
 	public function getPerson() {
-		return $person_id;
+		return $this->person_id;
 	}
+	
 	public function getStart() {
-		return $co_start;
+		return $this->co_start;
 	}
+	
 	public function getEnd() {
-		return $co_end;
+		return $this->co_end;
 	}
+	
 	public function getDescription() {
-		return $description;
+		return $this->description;
 	}
+	
 	public function getGearList() {
-		return $gearList;
+		return $this->gearList;
 	}
 
 	//------------------------ Setters ------------------------
+
 	public function setID($co_id) {
 		$this->co_id = $co_id;
 	}
+	
 	public function setTitle($title) {
 		$this->title = $title;
 	}
+	
 	public function setPerson($person_id) {
 		$this->person_id = $person_id;
 	}
+	
 	public function setStart($co_start) {
 		$this->co_start = $co_start;
 	}
+	
 	public function setEnd($co_end) {
 		$this->co_end = $co_end;
 	}
+	
 	public function setDescription($description) {
 		$this->description = $description;
 	}
-	public function addItemToGearList($gear_id) {
-		//if (!in_array($gear_id, $this->gearList)){
+	
+	public function addToGearList($gear_id) {
+		if (!in_array($gear_id, $this->gearList)){
 			$this->gearList[] = $gear_id;
-		//}
+		}
+	}
+	
+	public function removeFromGearList($gear_id){
+		//check to see if gear item in array
+		$pos = array_search($gear_id, $this->gearList);
+		echo 'gear item at: ' . $pos . '<br>';
+
+		// Remove from array
+		unset($this->gearList[$pos]);
 	}
 
-
 	//------------------------ DB ------------------------
+
+	//get the checkout's related information from the db
 	public function retrieveCheckout($co_id){
 		$database = new DB();
 		$sql = "SELECT * FROM checkouts WHERE co_id='$co_id'";
@@ -74,7 +98,7 @@ class Checkout {
 		$this->co_end = $results[0]['co_end'];
 		$this->description = $results[0]['description'];
 
-		//TODO - Query DB for the checkout-gear combos
+		//query DB for the checkout-gear combos
 		$sql = "SELECT gear_id FROM co_gear WHERE co_id='$co_id'";
 		$results = $database->select($sql);
 
@@ -86,50 +110,49 @@ class Checkout {
 
 	public function finalizeCheckout(){
 		$database = new DB();
-
+		
 		//if the co_id is unset, this is a new checkout
-		if(isset($this->co_id)){
-			printf("old checkout<br>");
-			// $sql = "UPDATE checkouts SET title='$title', person_id='$person_id', co_start='$co_start', co_end='$co_end', description='$description' WHERE id=$co_id";
-			// //query
-			// printf("___%s",$sql);
+		if(isset($this->co_id)){ //old checkout
+			$sql = "UPDATE checkouts SET title='$this->title', person_id='$this->person_id', co_start='$this->co_start', co_end='$this->co_end', description='$this->description' WHERE co_id='$this->co_id'";
+			printf("___%s<br>",$sql);
+			$database->query($sql);
 
-			// $sql = "SELECT * FROM co_gear WHERE co_id='$co_id'";
-			// printf("___%s",$sql);
-			// //query
-			// //find a way to update the table
-
+			//remove all old co_gear relations from table
+			$sql = "DELETE FROM co_gear WHERE co_id='$this->co_id'";
+			printf("___%s<br>",$sql);
+			$database->query($sql);
 		} else { //new checkout
 			//create the new checkout
-			printf("new checkout<br>");
 			$sql = "INSERT INTO checkouts(title,person_id,co_start,co_end,description) VALUES('$this->title','$this->person_id','$this->co_start','$this->co_end','$this->description')";
 			printf("___%s<br>",$sql);
-			//$database->query($sql);
+			$database->query($sql);
 
 			//retrieve co_id from newly inserted checkout
 			$sql = "SELECT co_id FROM checkouts WHERE person_id='$this->person_id' AND co_start='$this->co_start' AND co_end='$this->co_end'";
 			printf("___%s<br>",$sql);
 			$results = $database->select($sql);
 			$this->co_id = $results[0]['co_id'];
-			printf("___id is: %d",$this->co_id);
+		}
 
-			printf("___gear list count: %d<br>",count($this->gearList));
-
-			//add the checkout gear relations
-			foreach($this->gearList as $gearItem){
-				printf("iterate...<br>");
-				//check to see if the item is available
-				if (isAvailable($gearItem,$this->co_start,$this->co_end)){
-					$sql = "INSERT INTO co_gear(gear_id,co_id) VALUES('$gearItem','$this->co_id')";	
-					printf("___%s<br>",$sql);
-					$database->query($sql);
-				} else {
-					//do some error logging here...
-					printf("_!_item not available: %s<br>",$gearItem);
-				}
-			}//foreach
-		}//else	
+		//add the checkout gear relations
+		foreach($this->gearList as $gearItem){
+			//check to see if the item is available
+			if (isAvailable($gearItem,$this->co_start,$this->co_end)){
+				$sql = "INSERT INTO co_gear(gear_id,co_id) VALUES('$gearItem','$this->co_id')";	
+				printf("___%s<br>",$sql);
+				$database->query($sql);
+			} else { //requested item not available
+				//do some error logging here...
+				printf("_!_item not available: %s<br>",$gearItem);
+			}
+		}//foreach
 	}//finalizeCheckout
+
+	public function removeCheckout($co_id){
+		$database = new DB();
+		$sql = "DELETE FROM checkouts WHERE co_id='$co_id'"; 
+		$database->query($sql);
+	}
 }
 
 ?>

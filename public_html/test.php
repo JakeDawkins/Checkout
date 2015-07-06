@@ -61,20 +61,33 @@
 		//$co->retrieveCheckout(1);
 		*/
 	 	//------------------------ new checkout ------------------------
+	 	/*
 	 	echo '<br /><h2>New Checkout</h2><hr /><br />';
 	 	$newCO = new Checkout();
+	 	$newCO2 = new Checkout();
 
 		$newCO->setTitle("jake doing stuff");
 		$newCO->setPerson(1);
 		$newCO->setStart("2015-10-15 01:00:00");
 		$newCO->setEnd("2015-10-15 03:00:00");
 		$newCO->setDescription("just wanna check out some fun stuff.");
-		$newCO->addItemToGearList(1);
-		$newCO->addItemToGearList(2);
-		$newCO->addItemToGearList(4);
-		$newCO->finalizeCheckout();
-	 
+		$newCO->addToGearList(1);
+		$newCO->addToGearList(2);
+		$newCO->addToGearList(4);
+		$newCO->finalizeCheckout(); //add the new checkout 
 
+	 	$newCO2->retrieveCheckout($newCO->getID());
+
+		$newCO2->addToGearList(3);
+		$newCO2->addToGearList(4);
+		$newCO2->addToGearList(1);
+		$newCO2->removeFromGearList(2);
+		$newCO2->setTitle("more updates");
+		$newCO2->finalizeCheckout();
+		*/
+
+
+		
 		?>
 </body>
 </html>
