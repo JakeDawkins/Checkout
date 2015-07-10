@@ -83,6 +83,11 @@ class Checkout {
 
 	//------------------------ DB ------------------------
 
+	//returns an array of all Checkout Objects
+	public static function getCheckoutsInMonth($month){
+
+	}
+
 	//get the checkout's related information from the db
 	public function retrieveCheckout($co_id){
 		$database = new DB();

@@ -46,9 +46,13 @@ require_once('db.php');
 		$database->query($sql);
 	}
 
-
-
 //------------------------ search functions ------------------------
+	function getGearName($gear_id){
+		$sql = "SELECT name FROM gear WHERE gear_id='$gear_id'";
+		$results = $database->select($sql);
+		return $results[0]['name'];
+	}
+
 	//returns array of gear (no abailabilities)
 	function getGearList() {
 		return getGearListWithType(NULL);

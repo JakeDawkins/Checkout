@@ -75,7 +75,9 @@
 		$newCO->addToGearList(2);
 		$newCO->addToGearList(4);
 		$newCO->finalizeCheckout(); //add the new checkout 
-
+		*/
+		//------------------------ update existing checkout ------------------------
+	 	/*
 	 	$newCO2->retrieveCheckout($newCO->getID());
 
 		$newCO2->addToGearList(3);
@@ -86,8 +88,6 @@
 		$newCO2->finalizeCheckout();
 		*/
 
-
-		
 		?>
 </body>
 </html>
