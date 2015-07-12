@@ -54,6 +54,7 @@ require_once('db.php');
 
 //------------------------ search functions ------------------------
 	function getGearName($gear_id){
+		$database = new DB();
 		$sql = "SELECT name FROM gear WHERE gear_id='$gear_id'";
 		$results = $database->select($sql);
 		return $results[0]['name'];

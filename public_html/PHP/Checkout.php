@@ -41,6 +41,10 @@ class Checkout {
 		return $this->gearList;
 	}
 
+	public function printObject() {
+		return "<hr>ID:$this->co_id<br>TITLE:$this->title<br>PERSON:$this->person_id<br>START:$this->co_start<br>END:$this->co_end<br>DESC:$this->description<hr>";
+	}
+
 	//------------------------ Setters ------------------------
 
 	public function setID($co_id) {
@@ -84,8 +88,23 @@ class Checkout {
 	//------------------------ DB ------------------------
 
 	//returns an array of all Checkout Objects
-	public static function getCheckoutsInMonth($month){
+	public static function getCheckoutsInRange($start, $end){
+		$database = new DB();
+		$checkouts = array();
 
+		$sql = "SELECT co_id, co_start FROM checkouts";
+		$results = $database->select($sql);
+
+		foreach ($results as $result) {
+			if($result['co_start'] > $start && $result['co_start'] < $end){
+				$newCO = new Checkout();
+				$newCO->retrieveCheckout($result['co_id']);
+				$checkouts[] = $newCO;
+				//printf("%s",$newCO->printObject()); //check construction
+			}
+		}//foreach
+		
+		return $checkouts;
 	}
 
 	//get the checkout's related information from the db

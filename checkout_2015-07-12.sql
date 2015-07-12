@@ -7,7 +7,7 @@
 #
 # Host: localhost (MySQL 5.6.24)
 # Database: checkout
-# Generation Time: 2015-06-28 14:01:41 +0000
+# Generation Time: 2015-07-12 14:13:18 +0000
 # ************************************************************
 
 
@@ -42,7 +42,9 @@ LOCK TABLES `checkouts` WRITE;
 
 INSERT INTO `checkouts` (`co_id`, `title`, `person_id`, `co_start`, `co_end`, `description`)
 VALUES
-	(1,'test',1,'2015-06-24 23:32:51','2015-06-30 23:32:51','this is a test');
+	(1,'test',1,'2015-06-24 23:32:51','2015-06-30 23:32:51','this is a test'),
+	(17,'more updates',1,'2015-10-15 01:00:00','2015-10-15 03:00:00','just wanna check out some fun stuff.'),
+	(18,'my new checkout!',1,'2012-12-12 01:00:00','2012-12-13 01:00:00','This is a test of the full system');
 
 /*!40000 ALTER TABLE `checkouts` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -70,7 +72,12 @@ LOCK TABLES `co_gear` WRITE;
 INSERT INTO `co_gear` (`co_gear_id`, `gear_id`, `co_id`)
 VALUES
 	(1,1,1),
-	(2,2,1);
+	(2,2,1),
+	(57,1,17),
+	(58,4,17),
+	(59,3,17),
+	(60,1,18),
+	(61,2,18);
 
 /*!40000 ALTER TABLE `co_gear` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -87,7 +94,7 @@ CREATE TABLE `gear` (
   `name` varchar(50) NOT NULL DEFAULT '',
   PRIMARY KEY (`gear_id`),
   KEY `gear_type` (`gear_type_id`),
-  CONSTRAINT `gear_type` FOREIGN KEY (`gear_type_id`) REFERENCES `gear` (`gear_id`) ON DELETE CASCADE
+  CONSTRAINT `gear_types` FOREIGN KEY (`gear_type_id`) REFERENCES `gear_types` (`gear_type_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `gear` WRITE;
@@ -97,7 +104,11 @@ INSERT INTO `gear` (`gear_id`, `gear_type_id`, `name`)
 VALUES
 	(1,1,'cam1'),
 	(2,1,'cam2'),
-	(3,1,'cam3');
+	(3,1,'cam3'),
+	(4,1,'cam4'),
+	(5,1,'camera4-id'),
+	(6,1,'test-name'),
+	(7,2,'my item 1');
 
 /*!40000 ALTER TABLE `gear` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -119,7 +130,9 @@ LOCK TABLES `gear_types` WRITE;
 
 INSERT INTO `gear_types` (`gear_type_id`, `type`)
 VALUES
-	(1,'Camera');
+	(1,'Camera'),
+	(2,'Lens'),
+	(3,'Tripod');
 
 /*!40000 ALTER TABLE `gear_types` ENABLE KEYS */;
 UNLOCK TABLES;
