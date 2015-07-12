@@ -22,11 +22,17 @@ require_once('db.php');
 		$database->query($sql);
 	}
 
-	//inserts a new gear category onto the DB.
+	//inserts a new gear category onto the DB. Returns new ID
 	function newGearType($type) {
 		$database = new DB();
 		$sql = "INSERT INTO gear_types(type) VALUES('$type')";
 		$database->query($sql);
+
+		//returns the newly inserted type's ID.
+		$sql = "SELECT gear_type_id FROM gear_types WHERE type='$type'";
+		$results = $database->select($sql);
+		
+		return $results[0]['gear_type_id'];
 	}
 
 //------------------------ removers ------------------------

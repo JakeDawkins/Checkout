@@ -1,7 +1,7 @@
 <?php
-	require_once('PHP/Gear.php');
+	//require_once('PHP/Gear.php');
 	require_once('PHP/Checkout.php');
-	require_once('PHP/Perosn.php');
+	require_once('PHP/Person.php');
 
 	//get list of checkouts
 	$checkouts = Checkout::getCheckoutsInMonth();
