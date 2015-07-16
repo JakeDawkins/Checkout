@@ -1,19 +1,21 @@
 <?php
+require_once("../../config.php");
+
 
 class DB {
 	//database connection
 	protected static $connection;
 
-	
-	/*	
+
+	/*
 	*	Connect to the DB.
 	*
 	*	@return false on failure / mysqli object on success
 	*/
 	public function connect(){
 		if(!isset(self::$connection)){
-			$config = parse_ini_file('config.ini');
-			self::$connection = new mysqli('localhost',$config['username'],$config['password'],$config['dbname']);
+			//$config = parse_ini_file('config.ini');
+			self::$connection = new mysqli('localhost',$config['db']['gear']['username'],$config['db']['gear']['password'],$config['db']['gear']['dbname']);
 		}
 
 		//handle any errors
@@ -38,14 +40,14 @@ class DB {
         // Query the database
         $result = $connection -> query($query);
 
-        return $result;		
+        return $result;
 	}
 
 	/*
 	*	Fetch rows from the DB (SELECT)
 	*
 	*	@param $query - query string
-	*	@return bool false on failure / array Database rows on success 
+	*	@return bool false on failure / array Database rows on success
 	*/
 	public function select($query){
         $rows = array();

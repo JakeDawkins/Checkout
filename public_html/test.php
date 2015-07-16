@@ -1,6 +1,6 @@
 <?php
-	require_once('PHP/Gear.php');
-	require_once('PHP/Checkout.php');
+	require_once('model/Gear.php');
+	require_once('model/Checkout.php');
 ?>
 
 <!DOCTYPE html>
@@ -11,17 +11,17 @@
 	</title>
 </head>
 <body>
-	<?php 
+	<?php
 		//------------------------ basic getters ------------------------
 		/*
 		$results = getGearListWithType("Camera");
 		$count = count($results);
 		echo "<h1>count: $count</h1>";
 
-		foreach ($results as $row){ 
+		foreach ($results as $row){
 			printf("%s\t%s\t%s",$row['gear_id'],$row['gear_type_id'],$row['name']);
 			echo '<br />';
-	 	} 
+	 	}
 		*/
 		//------------------------ single availability ------------------------
 	 	/*
@@ -37,10 +37,10 @@
 	 	echo '<br /><h2>available gear</h2><hr /><br />';
 
 	 	$results = getAvailableGear("2015-06-30 12:00:00","2015-07-01 12:00:00");
-	 	foreach ($results as $row){ 
+	 	foreach ($results as $row){
 			printf("%s\t%s\t%s",$row['gear_id'],$row['gear_type_id'],$row['name']);
 			echo '<br />';
-	 	} 
+	 	}
 		*/
 	 	//------------------------ insert ------------------------
 	 	/*
@@ -52,10 +52,10 @@
 	 	//newGearType("Lens");
 
 	 	$results = getGearTypes();
-		foreach ($results as $row){ 
+		foreach ($results as $row){
 			printf("%s\t%s",$row['gear_type_id'],$row['type']);
 			echo '<br />';
-	 	} 	 	
+	 	}
 
 		//$co = new Checkout();
 		//$co->retrieveCheckout(1);
@@ -74,7 +74,7 @@
 		$newCO->addToGearList(1);
 		$newCO->addToGearList(2);
 		$newCO->addToGearList(4);
-		$newCO->finalizeCheckout(); //add the new checkout 
+		$newCO->finalizeCheckout(); //add the new checkout
 		*/
 		//------------------------ update existing checkout ------------------------
 	 	/*

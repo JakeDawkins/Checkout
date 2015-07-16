@@ -1,7 +1,7 @@
 <?php
-	//require_once('PHP/Gear.php');
-	require_once('PHP/Checkout.php');
-	require_once('PHP/Form.php');
+	//require_once('model/Gear.php');
+	require_once('model/Checkout.php');
+	require_once('model/Form.php');
 
 	$types = getGearTypes();
 
@@ -41,7 +41,7 @@
 	if(!empty($co_start) && !empty($co_end)) $displayGear = true;
 
 	//------------------------ Validation ------------------------
-	//make sure dates are legit and in right order. 
+	//make sure dates are legit and in right order.
 
 	//only check when submitted
 	if ($_SERVER["REQUEST_METHOD"] == "POST") { //submitted
@@ -53,9 +53,9 @@
 			}
 		} else { //invalid date(s)
 			$error['date'] = "Date Error: One or both dates are invalid";
-			$displayGear = false;	
-		}  
-	} //if submitted 
+			$displayGear = false;
+		}
+	} //if submitted
 
 
 ?>
@@ -79,7 +79,7 @@
 				echo '<p class="error">';
 				if (isset($error['date'])) printf("%s<br />",$error['date']);
 				echo '</p>';
-			}	
+			}
 		?>
 
 		<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
@@ -100,7 +100,7 @@
 			<input type="text" name="co_end" placeholder="yyyy-mm-dd hh:mm:ss" /><br />
 
 			<input class="" type="submit" name="submit" value="Next">
-		</form>	
+		</form>
 
 	<?php else: ?>
 
@@ -143,7 +143,7 @@
 			?>
 
 			<input type="submit" name="submit" value="Finish">
-		</form>	
+		</form>
 
 	<?php endif; ?>
 
@@ -151,53 +151,53 @@
 </html>
 
 
-<!-- 
+<!--
 
 RESULTS FROM TYPES
-[0] => Array 
-	[gear_type_id] => 1 
-	[type] => Camera 
-[1] => Array 
-	[gear_type_id] => 2 
+[0] => Array
+	[gear_type_id] => 1
+	[type] => Camera
+[1] => Array
+	[gear_type_id] => 2
 	[type] => Lens
 
 
 RESULTS FROM AVAILABLE GEAR
-[0] => Array ( 
-	[gear_id] => 1 
-	[gear_type_id] => 1 
-	[name] => cam1 ) 
-[1] => Array ( 
-	[gear_id] => 2 
-	[gear_type_id] => 1 
-	[name] => cam2 ) 
-[2] => Array ( 
-	[gear_id] => 3 
-	[gear_type_id] => 1 
-	[name] => cam3 ) 
-[3] => Array ( 
-	[gear_id] => 4 
-	[gear_type_id] => 1 
-	[name] => cam4 ) 
-[4] => Array ( 
-	[gear_id] => 5 
-	[gear_type_id] => 1 
-	[name] => camera4-id ) 
-[5] => Array ( 
-	[gear_id] => 6 
-	[gear_type_id] => 1 
-	[name] => test-name ) 
+[0] => Array (
+	[gear_id] => 1
+	[gear_type_id] => 1
+	[name] => cam1 )
+[1] => Array (
+	[gear_id] => 2
+	[gear_type_id] => 1
+	[name] => cam2 )
+[2] => Array (
+	[gear_id] => 3
+	[gear_type_id] => 1
+	[name] => cam3 )
+[3] => Array (
+	[gear_id] => 4
+	[gear_type_id] => 1
+	[name] => cam4 )
+[4] => Array (
+	[gear_id] => 5
+	[gear_type_id] => 1
+	[name] => camera4-id )
+[5] => Array (
+	[gear_id] => 6
+	[gear_type_id] => 1
+	[name] => test-name )
 
 FORM SUBMIT
-Array ( 
-	[title] => title 
-	[description] => desc 
-	[co_start] => 2015-12-12 12:00:00 
-	[co_end] => 2015-12-12 12:00:01 
-	[gear] => Array ( 
-		[0] => 1 
-		[1] => 2 
-		[2] => 6 ) 
+Array (
+	[title] => title
+	[description] => desc
+	[co_start] => 2015-12-12 12:00:00
+	[co_end] => 2015-12-12 12:00:01
+	[gear] => Array (
+		[0] => 1
+		[1] => 2
+		[2] => 6 )
 	[next] => Next )
 
 

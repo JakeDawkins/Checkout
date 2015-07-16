@@ -1,7 +1,7 @@
 <?php
-	require_once('PHP/Checkout.php');
-	require_once('PHP/Form.php');
-	require_once('PHP/Gear.php');
+	require_once('model/Checkout.php');
+	require_once('model/Form.php');
+	require_once('model/Gear.php');
 
 	$gearList = getGearList();
 ?>
@@ -18,9 +18,9 @@
 	<a href="newgear">New Item</a><br />
 	<a href="newgeartype">New Gear Type</a><br />
 
-	<hr /> 
+	<hr />
 
-	<!-- RESULTS --> 
+	<!-- RESULTS -->
 	<table>
 		<tr>
 			<td>gear_id</td>
@@ -33,7 +33,7 @@
 				printf("<td>%s</td>",$gear['gear_id']);
 				printf("<td>%s</td>",$gear['name']);
 				printf("<td>%s</td>",gearTypeWithID($gear['gear_type_id']));
-				printf("</tr>");	
+				printf("</tr>");
 			}
 		?>
 	</table>

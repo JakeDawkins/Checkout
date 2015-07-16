@@ -1,6 +1,6 @@
 <?php
-	require_once('PHP/Gear.php');
-	require_once('PHP/Form.php');
+	require_once('model/Gear.php');
+	require_once('model/Form.php');
 
 	$types = getGearTypes();
 
@@ -25,7 +25,7 @@
 	//only check when submitted
 	if ($_SERVER["REQUEST_METHOD"] == "POST") { //submitted
 
-	} //if submitted 
+	} //if submitted
 
 
 ?>
@@ -45,7 +45,7 @@
 		// 	echo '<p class="error">';
 		// 	if (isset($error['date'])) printf("%s<br />",$error['date']);
 		// 	echo '</p>';
-		// }	
+		// }
 	?>
 
 	<?php if (!$submitted): ?>
@@ -59,10 +59,10 @@
 		</form>
 
 	<?php else:
-	
+
 		printf("<h1>New Gear Type, %s, Created!</h1>",$type);
-		printf("<a href=\"inventory\">Back to Inventory</a>"); 
-	
+		printf("<a href=\"inventory\">Back to Inventory</a>");
+
 	endif; ?>
 
 </body>

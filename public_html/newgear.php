@@ -1,8 +1,8 @@
 <?php
-	//require_once('PHP/Gear.php');
-	//require_once('PHP/Checkout.php');
-	require_once('PHP/Gear.php');
-	require_once('PHP/Form.php');
+	//require_once('model/Gear.php');
+	//require_once('model/Checkout.php');
+	require_once('model/Gear.php');
+	require_once('model/Form.php');
 
 	$types = getGearTypes();
 
@@ -28,7 +28,7 @@
 	//only check when submitted
 	if ($_SERVER["REQUEST_METHOD"] == "POST") { //submitted
 
-	} //if submitted 
+	} //if submitted
 
 
 ?>
@@ -50,7 +50,7 @@
 		// 	echo '<p class="error">';
 		// 	if (isset($error['date'])) printf("%s<br />",$error['date']);
 		// 	echo '</p>';
-		// }	
+		// }
 	?>
 
 	<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
@@ -67,8 +67,8 @@
 		</select><br />
 
 		<label for="newCategory">Or create a new category:</label>
-		<input name="newCategory" type="text" /> 
-		
+		<input name="newCategory" type="text" />
+
 		<input type="submit" name="submit" value="Submit" />
 	</form>
 

@@ -1,8 +1,8 @@
 <?php
 	//require_once('PHP/Gear.php');
-	require_once('PHP/Checkout.php');
-	require_once('PHP/Form.php');
-	require_once('PHP/Gear.php');
+	require_once('model/Checkout.php');
+	require_once('model/Form.php');
+	require_once('model/Gear.php');
 
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		$month = test_input($_POST['month']);
@@ -32,7 +32,7 @@
 	<h1>Checkouts</h1>
 
 	<!-- SEARCH TOOLS -->
-	<hr /> 
+	<hr />
 	<h4>Search Checkouts By Date</h4>
 	<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
 		<select name="year">
@@ -57,7 +57,7 @@
 	</form>
 	<hr />
 
-	<!-- RESULTS --> 
+	<!-- RESULTS -->
 	<table style="">
 		<tr>
 			<td>co_id</td>
@@ -81,7 +81,7 @@
 				foreach($checkout->getGearList() as $gear){
 					printf("%s<br>",getGearName($gear));
 				}
-				printf("</td></tr>");	
+				printf("</td></tr>");
 			}
 		?>
 	</table>
