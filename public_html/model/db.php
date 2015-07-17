@@ -1,5 +1,5 @@
 <?php
-require_once(dirname(__FILE__) . "/../../config.php");
+//require(dirname(__FILE__) . "/../../config.php");
 
 class DB {
 	//database connection
@@ -14,6 +14,8 @@ class DB {
 	public function connect(){
 		if(!isset(self::$connection)){
 			//$config = parse_ini_file('config.ini');
+			//self::$connection = new mysqli('localhost',$config['username'],$config['password'],$config['dbname']);
+			require(dirname(__FILE__) . "/../../config.php");
 			self::$connection = new mysqli('localhost',$config['db']['gear']['username'],$config['db']['gear']['password'],$config['db']['gear']['dbname']);
 		}
 

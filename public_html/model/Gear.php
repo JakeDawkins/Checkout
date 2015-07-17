@@ -2,7 +2,7 @@
 require_once('db.php');
 
 //------------------------ adders ------------------------
-	
+
 	//inserts a new gear item into db with specified type.
 	//if no type specified, inserts null.
 	function newGearItem($name,$type) {
@@ -31,7 +31,7 @@ require_once('db.php');
 		//returns the newly inserted type's ID.
 		$sql = "SELECT gear_type_id FROM gear_types WHERE type='$type'";
 		$results = $database->select($sql);
-		
+
 		return $results[0]['gear_type_id'];
 	}
 
@@ -65,13 +65,13 @@ require_once('db.php');
 		return getGearListWithType(NULL);
 	}
 
-	//uses type name or ID. 
+	//uses type name or ID.
 	// if needed, Searches for ID then filters by found ID.
 	function getGearListWithType($type) {
 		$database = new DB();
 
 		if (is_null($type)){
-			$sql = 	"SELECT * FROM gear";	
+			$sql = 	"SELECT * FROM gear";
 		} elseif (!is_numeric($type)) { //type name passed in
 			//get id of type
 			$sql = "SELECT gear_type_id FROM gear_types WHERE type='$type'";
@@ -95,7 +95,7 @@ require_once('db.php');
 		$database = new DB();
 
 		if (is_null($type)){
-			$sql = 	"SELECT * FROM gear";	
+			$sql = 	"SELECT * FROM gear";
 		} elseif (!is_numeric($type)) { //type name passed in
 			//get id of type
 			$sql = "SELECT gear_type_id FROM gear_types WHERE type='$type'";
@@ -117,7 +117,7 @@ require_once('db.php');
     		if(isAvailable($row['gear_id'],$co_start, $co_end)){
         		//add object to return array
         		$available_gear[] = $row;
-    		} 
+    		}
 		}
 
 		return $available_gear;
@@ -133,12 +133,12 @@ require_once('db.php');
 		$results = $database->select($sql);
 		//no restuls... item available
 		if(count($results) == 0){
-			return true;	
-		} 
+			return true;
+		}
 
 		//results contain all checkouts in the given time range.
 		//check each checkout to see if it has the desired gear item in it
-		foreach ($results as $row){ 
+		foreach ($results as $row){
 			//$id = $row['co_id'];
 			//printf("__ID: %s__",$id);
 			if ($row['gear_id'] == $gear_id) return false;
