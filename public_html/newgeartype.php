@@ -1,6 +1,6 @@
 <?php
-	require_once('model/Gear.php');
-	require_once('model/Form.php');
+	require_once('models/Gear.php');
+	require_once('models/Form.php');
 
 	$types = getGearTypes();
 

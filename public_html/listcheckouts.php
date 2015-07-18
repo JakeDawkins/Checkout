@@ -1,8 +1,8 @@
 <?php
 	//require_once('PHP/Gear.php');
-	require_once('model/Checkout.php');
-	require_once('model/Form.php');
-	require_once('model/Gear.php');
+	require_once('models/Checkout.php');
+	require_once('models/Form.php');
+	require_once('models/Gear.php');
 
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		$month = test_input($_POST['month']);

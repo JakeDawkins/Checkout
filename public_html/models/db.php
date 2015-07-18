@@ -1,4 +1,5 @@
 <?php
+//old path to config files.
 //require(dirname(__FILE__) . "/../../config.php");
 
 class DB {
@@ -15,8 +16,8 @@ class DB {
 		if(!isset(self::$connection)){
 			//$config = parse_ini_file('config.ini');
 			//self::$connection = new mysqli('localhost',$config['username'],$config['password'],$config['dbname']);
-			require(dirname(__FILE__) . "/../../config.php");
-			self::$connection = new mysqli('localhost',$config['db']['gear']['username'],$config['db']['gear']['password'],$config['db']['gear']['dbname']);
+			require("db-settings.php");
+			self::$connection = new mysqli($db_host,$db_user,$db_pass,$db_name);
 		}
 
 		//handle any errors

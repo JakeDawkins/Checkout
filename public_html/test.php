@@ -1,6 +1,6 @@
 <?php
-	require_once('model/Gear.php');
-	require_once('model/Checkout.php');
+	require_once('models/Gear.php');
+	require_once('models/Checkout.php');
 ?>
 
 <!DOCTYPE html>
