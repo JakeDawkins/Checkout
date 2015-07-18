@@ -2,6 +2,8 @@
 	require_once('models/Checkout.php');
 	require_once('models/Form.php');
 	require_once('models/Gear.php');
+	require_once("models/config.php"); //needed for funcs
+	require_once('models/funcs.php'); //to fetch details about person
 
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		$month = test_input($_POST['month']);
@@ -29,6 +31,8 @@
 </head>
 <body>
 	<h1>Checkouts</h1>
+	<?php include('templates/nav.php'); ?>
+	<a href="newcheckout.php">New Checkout</a>
 
 	<!-- SEARCH TOOLS -->
 	<hr />
@@ -59,7 +63,7 @@
 	<!-- RESULTS -->
 	<table style="">
 		<tr>
-			<td>co_id</td>
+			<!-- <td>co_id</td> -->
 			<td>Title</td>
 			<td>Description</td>
 			<td>Person</td>
@@ -69,11 +73,14 @@
 		</tr>
 		<?php
 			foreach($checkouts as $checkout){
+				$person = $checkout->getPerson();
+				$personDetails = fetchUserDetails(NULL,NULL,$person);
+
 				printf("<tr>");
-				printf("<td>%s</td>",$checkout->getID());
+				//printf("<td>%s</td>",$checkout->getID());
 				printf("<td>%s</td>",$checkout->getTitle());
 				printf("<td>%s</td>",$checkout->getDescription());
-				printf("<td>%s</td>",$checkout->getPerson());
+				printf("<td>%s</td>",$personDetails['display_name']);
 				printf("<td>%s</td>",$checkout->getStart());
 				printf("<td>%s</td>",$checkout->getEnd());
 				printf("<td>");

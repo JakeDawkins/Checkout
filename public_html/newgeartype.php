@@ -50,6 +50,7 @@
 
 	<?php if (!$submitted): ?>
 		<h1>Add a New Gear Item</h1>
+		<?php include('templates/nav.php'); ?>
 
 		<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
 			<label for="type">New Type Name:</label>
@@ -59,7 +60,7 @@
 		</form>
 
 	<?php else:
-
+		include('templates/nav.php');
 		printf("<h1>New Gear Type, %s, Created!</h1>",$type);
 		printf("<a href=\"inventory\">Back to Inventory</a>");
 

@@ -13,5 +13,6 @@
 </head>
 <body>
     <h1>Welcome to Checkout!</h1>
+    <?php include('templates/nav.php'); ?>
 </body>
 </html>

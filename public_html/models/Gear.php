@@ -155,4 +155,13 @@ require_once('db.php');
 		return $database->select($sql);
 	}
 
+	//returns string of gear type
+	function gearTypeWithID($type_id) {
+		$database = new DB();
+		$sql = "SELECT * FROM gear_types WHERE gear_type_id='$type_id'";
+		$results = $database->select($sql);
+		return $results[0]['type'];
+	}
+
+
 ?>

@@ -15,8 +15,9 @@
 </head>
 <body>
 	<h1>Inventory</h1>
-	<a href="newgear">New Item</a><br />
-	<a href="newgeartype">New Gear Type</a><br />
+	<?php include('templates/nav.php'); ?>
+	<a href="newgear.php">New Item</a> / 
+	<a href="newgeartype.php">New Gear Type</a>
 
 	<hr />
 
@@ -29,10 +30,11 @@
 		</tr>
 		<?php
 			foreach($gearList as $gear){
+				$type = gearTypeWithID($gear['gear_type_id']);
 				printf("<tr>");
 				printf("<td>%s</td>",$gear['gear_id']);
 				printf("<td>%s</td>",$gear['name']);
-				printf("<td>%s</td>",gearTypeWithID($gear['gear_type_id']));
+				printf("<td>%s</td>",$type);
 				printf("</tr>");
 			}
 		?>

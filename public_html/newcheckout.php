@@ -69,8 +69,7 @@
 </head>
 <body>
 	<h1>New Checkout</h1>
-
-	<?php print_r($_POST); ?>
+	<?php include('templates/nav.php'); ?>
 
 	<?php if($displayGear == false): ?>
 

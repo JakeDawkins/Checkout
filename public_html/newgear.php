@@ -42,6 +42,7 @@
 </head>
 <body>
 	<h1>Add a New Gear Item</h1>
+	<?php include('templates/nav.php'); ?>
 
 	<?php //print_r($_POST); ?>
 
