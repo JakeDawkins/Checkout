@@ -1,5 +1,4 @@
 <?php
-	//require_once('PHP/Gear.php');
 	require_once('models/Checkout.php');
 	require_once('models/Form.php');
 	require_once('models/Gear.php');
