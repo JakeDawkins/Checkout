@@ -15,7 +15,11 @@
 
 		//calculate date from m/y
 		$date = "$year-$month-01";
-	} else $date = date('Y-m-01'); //pick first of month
+	} else {
+		$date = date('Y-m-01'); //pick first of month
+		$month = date('m');
+	}
+
 
 	$start = $date;
 	$end = strtotime(date("Y-m-d", strtotime($date)) . "+1 month");
