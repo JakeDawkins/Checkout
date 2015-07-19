@@ -1,4 +1,8 @@
 <?php
+	//USER CAKE
+	require_once("models/config.php");
+	if (!securePage($_SERVER['PHP_SELF'])){die();}
+
 	//require_once('model/Gear.php');
 	require_once('models/Checkout.php');
 	require_once('models/Form.php');
@@ -24,7 +28,7 @@
 		$co = new Checkout();
 
 		$co->setTitle($title);
-		$co->setPerson("1"); //assign to jake for now
+		$co->setPerson($loggedInUser->user_id);
 		$co->setStart($co_start);
 		$co->setEnd($co_end);
 		$co->setDescription($description);

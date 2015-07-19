@@ -60,6 +60,13 @@ require_once('db.php');
 		return $results[0]['name'];
 	}
 
+	function getGearType($gear_id){
+		$database = new DB();
+		$sql = "SELECT gear_type_id FROM gear WHERE gear_id='$gear_id'";
+		$results = $database->select($sql);
+		return $results[0]['gear_type_id'];
+	}
+
 	//returns array of gear (no abailabilities)
 	function getGearList() {
 		return getGearListWithType(NULL);
@@ -155,7 +162,7 @@ require_once('db.php');
 		return $database->select($sql);
 	}
 
-	//returns string of gear type
+	//returns name string of gear type
 	function gearTypeWithID($type_id) {
 		$database = new DB();
 		$sql = "SELECT * FROM gear_types WHERE gear_type_id='$type_id'";
@@ -163,5 +170,13 @@ require_once('db.php');
 		return $results[0]['type'];
 	}
 
+	//fetches the checkout ID of the most recent Checkout associated
+	//with a gear item.
+	function fetchLastCheckout($gear_id) {
+		$database = new DB();
+		$sql = "SELECT * FROM co_gear INNER JOIN checkouts ON co_gear.co_id = checkouts.co_id WHERE gear_id = '$gear_id' AND co_start < NOW() ORDER BY co_end DESC LIMIT 1";
+		$results = $database->select($sql);
+		return $results[0]['co_id'];
+	}
 
 ?>

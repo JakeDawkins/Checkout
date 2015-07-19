@@ -1,7 +1,8 @@
 <?php
 	//require_once('model/db.php');
 	require_once('models/Gear.php');
-
+	require_once('models/Checkout.php');
+	require_once('models/Person.php');
 ?>
 
 <!DOCTYPE html>

@@ -1,8 +1,12 @@
 <?php
+	//USER CAKE
+	require_once("models/config.php");
+	if (!securePage($_SERVER['PHP_SELF'])){die();}
+
 	require_once('models/Checkout.php');
 	require_once('models/Form.php');
 	require_once('models/Gear.php');
-	require_once("models/config.php"); //needed for funcs
+	//require_once("models/config.php"); //needed for funcs
 	require_once('models/funcs.php'); //to fetch details about person
 
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -32,7 +36,7 @@
 <body>
 	<h1>Checkouts</h1>
 	<?php include('templates/nav.php'); ?>
-	<a href="newcheckout.php">New Checkout</a>
+	<a href="new-checkout.php">New Checkout</a>
 
 	<!-- SEARCH TOOLS -->
 	<hr />

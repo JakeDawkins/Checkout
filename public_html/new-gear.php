@@ -1,4 +1,8 @@
 <?php
+	//USER CAKE
+	require_once("models/config.php");
+	if (!securePage($_SERVER['PHP_SELF'])){die();}
+
 	//require_once('model/Gear.php');
 	//require_once('model/Checkout.php');
 	require_once('models/Gear.php');
