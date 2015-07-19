@@ -86,7 +86,7 @@
 
 				printf("<tr>");
 				//printf("<td>%s</td>",$checkout->getID());
-				printf("<td>%s</td>",$checkout->getTitle());
+				printf("<td><a href='checkout.php?co_id=%s'>%s</a></td>",$checkout->getID(),$checkout->getTitle());
 				printf("<td>%s</td>",$checkout->getDescription());
 				printf("<td>%s</td>",$personDetails['display_name']);
 				printf("<td>%s</td>",$checkout->getStart());
