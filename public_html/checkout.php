@@ -8,6 +8,7 @@
 	require_once('models/Gear.php');
 	//require_once("models/config.php"); //needed for funcs
 	require_once('models/funcs.php'); //to fetch details about person
+	require_once('models/Person.php');
 
 
 	if ($_SERVER["REQUEST_METHOD"] == "GET") {
@@ -27,12 +28,14 @@
 <body>
 	<h1>Checkout Details</h1>
 
+	<?php printf("<h3>%s</h3>",$checkout->getTitle()); ?>
 	<p>
 	<?php
 		printf("ID: %s<br />",$checkout->getID());
-		printf("Title: <strong>%s</strong><br />",$checkout->getTitle());
 		printf("Description: %s<br />",$checkout->getDescription());
-		printf("Person: %s<br />",$checkout->getPerson());
+
+		$personName = getPersonName($checkout->getPerson());
+		printf("Person: %s<br />",$personName);
 		printf("Start Time: %s<br />",$checkout->getStart());
 		printf("End Time: %s<br />",$checkout->getEnd());
 	?>
