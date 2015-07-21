@@ -10,14 +10,23 @@
 	require_once('models/funcs.php'); //to fetch details about person
 	require_once('models/Person.php');
 
+	$deleted = false;
 
 	if ($_SERVER["REQUEST_METHOD"] == "GET") {
 		$co_id = test_input($_GET['co_id']);
+
+		if($_GET['delete']){
+			Checkout::removeCheckout($co_id);
+			$deleted = true;
+		}
+		//check to see if we need to delete the checkout
+
 	}
 
 	$checkout = new Checkout();
 	$checkout->retrieveCheckout($co_id);
 	$gearList = $checkout->getGearList();
+
 ?>
 
 <!DOCTYPE html>
@@ -27,6 +36,13 @@
 </head>
 <body>
 	<h1>Checkout Details</h1>
+
+	<?php 
+		if($deleted){
+			echo "<h3>Checkout Deleted</h3>";
+			echo "<a href='checkouts.php'>Back to Checkouts</a><br />";
+		} 
+	?>
 
 	<?php printf("<h3>%s</h3>",$checkout->getTitle()); ?>
 	<p>
@@ -49,8 +65,11 @@
 			printf("%s - %s<br />",$name,$type);
 		}
 	?>
-
 	</p>
+
+	<a href='<?php printf("checkout.php?co_id=%s&delete=true",$co_id); ?>'>Delete</a>
+	<a href='<?php printf("edit-checkout.php?co_id=%s",$co_id); ?>'>Edit</a>
+
 
 </body>
 </html>

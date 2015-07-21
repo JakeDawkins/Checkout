@@ -171,7 +171,7 @@ class Checkout {
 		}//foreach
 	}//finalizeCheckout
 
-	public function removeCheckout($co_id){
+	public static function removeCheckout($co_id){
 		$database = new DB();
 		$sql = "DELETE FROM checkouts WHERE co_id='$co_id'"; 
 		$database->query($sql);
