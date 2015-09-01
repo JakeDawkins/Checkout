@@ -13,6 +13,14 @@
 	$co_start = $co_end = $title = $description = "";
 	$displayGear = false;
 
+	//see what checkout to edit and retrieve data
+	if ($_SERVER["REQUEST_METHOD"] == "GET"){
+		$co_id = test_input($_GET['co_id']);
+		$edit_co = new Checkout();
+		$edit_co->retrieveCheckout($co_id);
+		$edit_co->printObject();
+	}
+
 	//form pt. 1 submitted
 	//process each variable
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -68,11 +76,11 @@
 <html>
 <head>
 	<title>
-		New Checkout
+		Edit Checkout
 	</title>
 </head>
 <body>
-	<h1>New Checkout</h1>
+	<h1>Edit Checkout</h1>
 	<?php include('templates/nav.php'); ?>
 
 	<?php if($displayGear == false): ?>

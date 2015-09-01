@@ -3,26 +3,31 @@ require_once('db.php');
 
 //------------------------ adders ------------------------
 
-	//inserts a new gear item into db with specified type.
-	//if no type specified, inserts null.
-	function newGearItem($name,$type) {
+	//inserts a new gear item into db
+	//	type: gear_type_id in gear_types table
+	//	qty: max qty in stock
+	//function newGearItem($name,$type,$qty) {
+	function newGearItem($name,$type) { //OLD DECLARATION
 		$database = new DB();
 
 		if (is_numeric($type)) {
-			$sql = "INSERT INTO gear(name,gear_type_id) VALUES('$name','$type')";
+			//$sql = "INSERT INTO gear(name,gear_type_id,qty) VALUES('$name','$type','$qty')";
+			$sql = "INSERT INTO gear(name,gear_type_id) VALUES('$name','$type')"; //OLD
 			// printf("__%s__",$sql);
 		} else {
 			$sql = "SELECT gear_type_id FROM gear_types WHERE type='$type'";
 			// printf("__%s__",$sql);
 			$results = $database->select($sql);
 			$gear_type_id = $results[0]['gear_type_id'];
+			//$sql = "INSERT INTO gear(name,gear_type_id,qty) VALUES('$name','$gear_type_id','$qty')";
 			$sql = "INSERT INTO gear(name,gear_type_id) VALUES('$name','$gear_type_id')";
 			// printf("__%s__",$sql);
 		}
 		$database->query($sql);
 	}
 
-	//inserts a new gear category onto the DB. Returns new ID
+	//inserts a new gear category onto the DB. 
+	//	RETURNS: new ID
 	function newGearType($type) {
 		$database = new DB();
 		$sql = "INSERT INTO gear_types(type) VALUES('$type')";
@@ -67,7 +72,14 @@ require_once('db.php');
 		return $results[0]['gear_type_id'];
 	}
 
-	//returns array of gear (no abailabilities)
+	function getGearQty($gear_id){
+		$database = new DB();
+		$sql = "SELECT qty FROM gear WHERE gear_id='$gear_id'";
+		$results = $database->select($sql);
+		return $results[0]['qty'];
+	}
+
+	//returns array of gear (no availabilities)
 	function getGearList() {
 		return getGearListWithType(NULL);
 	}
@@ -129,6 +141,20 @@ require_once('db.php');
 
 		return $available_gear;
 	}
+
+	//lists the available quantity of any item. 
+	function availableQty($gear_id, $co_start, $co_end){
+		$database = new DB();
+
+		//list rentals in time range
+		$sql = "SELECT * FROM checkouts INNER JOIN co_gear ON checkouts.co_id = co_gear.co_id WHERE co_start < '$co_end' AND co_end > '$co_start'";
+
+		$results = $database->select($sql);
+
+		//TODO
+
+	}
+
 
 	//returns only the availability of a single gear item
 	function isAvailable($gear_id, $co_start, $co_end){
