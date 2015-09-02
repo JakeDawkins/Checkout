@@ -18,6 +18,7 @@
 	} else {
 		$date = date('Y-m-01'); //pick first of month
 		$month = date('m');
+		$year = date('y');
 	}
 
 
@@ -47,22 +48,22 @@
 	<h4>Search Checkouts By Date</h4>
 	<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
 		<select name="year">
-			<option value="2015" <?php if ($year == 2015) echo 'selected="selected"';?>>2015</option>
-			<option value="2016" <?php if ($year == 2016) echo 'selected="selected"';?>>2016</option>
+			<option value="2015" <?php if ($year == 15) echo 'selected="selected"';?>>2015</option>
+			<option value="2016" <?php if ($year == 16) echo 'selected="selected"';?>>2016</option>
 		</select>
 		<select name="month">
-			<option value="01"<?php if ($month == 01) echo 'selected="selected"';?>>January</option>
-			<option value="02"<?php if ($month == 02) echo 'selected="selected"';?>>February</option>
-			<option value="03"<?php if ($month == 03) echo 'selected="selected"';?>>March</option>
-			<option value="04"<?php if ($month == 04) echo 'selected="selected"';?>>April</option>
-			<option value="05"<?php if ($month == 05) echo 'selected="selected"';?>>May</option>
-			<option value="06"<?php if ($month == 06) echo 'selected="selected"';?>>June</option>
-			<option value="07"<?php if ($month == 07) echo 'selected="selected"';?>>July</option>
-			<option value="08"<?php if ($month == 08) echo 'selected="selected"';?>>August</option>
-			<option value="09"<?php if ($month == 09) echo 'selected="selected"';?>>September</option>
-			<option value="10"<?php if ($month == 10) echo 'selected="selected"';?>>October</option>
-			<option value="11"<?php if ($month == 11) echo 'selected="selected"';?>>November</option>
-			<option value="12"<?php if ($month == 12) echo 'selected="selected"';?>>December</option>
+			<option value="01" <?php if ($month == 1) echo 'selected="selected"';?>>January</option>
+			<option value="02" <?php if ($month == 2) echo 'selected="selected"';?>>February</option>
+			<option value="03" <?php if ($month == 3) echo 'selected="selected"';?>>March</option>
+			<option value="04" <?php if ($month == 4) echo 'selected="selected"';?>>April</option>
+			<option value="05" <?php if ($month == 5) echo 'selected="selected"';?>>May</option>
+			<option value="06" <?php if ($month == 6) echo 'selected="selected"';?>>June</option>
+			<option value="07" <?php if ($month == 7) echo 'selected="selected"';?>>July</option>
+			<option value="08" <?php if ($month == 8) echo 'selected="selected"';?>>August</option>
+			<option value="09" <?php if ($month == 9) echo 'selected="selected"';?>>September</option>
+			<option value="10" <?php if ($month == 10) echo 'selected="selected"';?>>October</option>
+			<option value="11" <?php if ($month == 11) echo 'selected="selected"';?>>November</option>
+			<option value="12" <?php if ($month == 12) echo 'selected="selected"';?>>December</option>
 		</select>
 		<input type="submit" name="submit" value="Submit" />
 	</form>

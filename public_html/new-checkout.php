@@ -39,6 +39,8 @@
 		}
 
 		$co->finalizeCheckout();
+		$co_id = $co->getID();
+		header("Location: checkout.php?co_id=$co_id");
 	}
 
 	//need both start and end in order to list available gear
