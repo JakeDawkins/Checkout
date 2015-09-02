@@ -1,0 +1,64 @@
+html {
+	position: relative;
+	min-height: 100%;
+}
+
+body {
+	/* used for .navbar-fixed-top. remove if not used. */
+	padding-top: 50px; /* was 70
+	
+	/* Margin bottom by footer height */
+  	margin-bottom: 60px;
+}
+
+/* -------- COLORS -------- */
+.gray {
+	background-color: gray;
+	color: white;
+}
+
+.blue {
+	background-color: blue;
+	color: white;
+}
+
+.green {
+	background-color: green;
+}
+
+.red {
+	background-color: red;
+	color: white;
+}
+
+/* -------- SIZES -------- */
+.one-quarter { width: 25%; }
+
+.one-third { width: 33.333%; }
+
+.one-half { width: 50%; }
+
+.two-thirds { width: 66.667%; }
+
+.three-quarters { width: 75%; }
+
+.whole { width: 100%; }
+
+/* -------- Navbar styling -------- */
+.navbar a { /* TEMP */
+	color: black;
+}
+
+.push-bottom { /* TEMP */
+	margin-bottom: 10px;
+}
+
+/* -------- Sticky Footer Styles -------- */
+.footer {
+	position: absolute;
+	bottom: 0;
+  	width: 100%;
+  	/* Set the fixed height of the footer here */
+  	height: 60px;
+  	background-color: #f5f5f5;
+}
