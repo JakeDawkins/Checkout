@@ -9,18 +9,14 @@
 	require_once('models/Gear.php');
 	require_once('models/Person.php');
 
-	//$gearList = getGearList();
 	$types = getGearTypes();
 
-	if ($_SERVER["REQUEST_METHOD"] == "POST") {
-		//process deletes
-		if(count($_POST['deleteGear']) != 0){ //need to have selected items
-			foreach($_POST['deleteGear'] as $gearItem){
-				deleteGearItem($gearItem);
-			}
+	if ($_SERVER["REQUEST_METHOD"] == "GET") {
+		if(isset($_GET['deleteGearItem'])){
+			$gearItem = test_input($_GET['deleteGearItem']);	
+			deleteGearItem($gearItem);
 		}
 	}
-
 
 ?>
 
@@ -56,8 +52,7 @@
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
 					<a class="btn btn-primary" href="new-gear.php">New Item&nbsp;&nbsp;<span class="glyphicon glyphicon-plus"></span></a>
 					<a class="btn btn-primary" href="edit-gear-types.php">Edit Gear Types&nbsp;&nbsp;<span class="glyphicon glyphicon-pencil"></span></a>
-					<button type="submit" name="submit" class="push-bottom pull-right full btn btn-danger">Delete Selected Items</button> 
-					
+
 					<?php
 						foreach($types as $type){
 							printf("<h3>%s</h3>",$type['type']);
@@ -96,7 +91,7 @@
 									} else { //no last checkout
 										printf("<td>n/a</td>");
 									}
-									printf("<td class=\"text-center\"><input type=\"checkbox\" name=\"deleteGear[]\" value=\"%s\"></td>",$gear['gear_id']);	
+									printf("<td class=\"text-center\"><a href=\"inventory.php?deleteGearItem=%s\"><span class=\"glyphicon glyphicon-remove\"></span></a></td>",$gear['gear_id']);	
 									printf("</tr>");
 								}
 							?>

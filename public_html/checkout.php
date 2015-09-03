@@ -6,7 +6,6 @@
 	require_once('models/Checkout.php');
 	require_once('models/Form.php');
 	require_once('models/Gear.php');
-	//require_once("models/config.php"); //needed for funcs
 	require_once('models/funcs.php'); //to fetch details about person
 	require_once('models/Person.php');
 
@@ -19,8 +18,6 @@
 			Checkout::removeCheckout($co_id);
 			$deleted = true;
 		}
-		//check to see if we need to delete the checkout
-
 	}
 
 	$checkout = new Checkout();
@@ -30,47 +27,77 @@
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+	<!-- INCLUDE BS HEADER INFO -->
+	<?php include('templates/bs-head.php'); ?>
+
 	<title>Checkout</title>
 </head>
 <body>
-	<h1>Checkout Details</h1>
+	<!-- IMPORT NAVIGATION -->
+	<?php include('templates/bs-nav.php'); ?>
 
-	<?php 
-		if($deleted){
-			echo "<h3>Checkout Deleted</h3>";
-			echo "<a href='checkouts.php'>Back to Checkouts</a><br />";
-		}
-		else {
-			echo '<a href="checkouts.php">Back to Checkouts</a>';
-			printf("<h3>%s</h3>",$checkout->getTitle()); ?>
-			<p>
-			<?php
-				printf("ID: %s<br />",$checkout->getID());
-				printf("Description: %s<br />",$checkout->getDescription());
+    <!-- HEADER -->
+    <div class="container-fluid gray">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h1>Checkout Details</h1>
+                <!-- <p class="lead">A system for scheduling gear among a team</p> -->
+            </div>
+        </div><!-- /.row -->
+    </div><!-- /.container -->
 
-				$personName = getPersonName($checkout->getPerson());
-				printf("Person: %s<br />",$personName);
-				printf("Start Time: %s<br />",$checkout->getStart());
-				printf("End Time: %s<br />",$checkout->getEnd());
-			?>
+    <br />
 
-			<h3>Associated Gear</h3>
-			<?php
-				foreach($gearList as $gear){
-					$name = getGearName($gear);
-					$type = getGearType($gear);
-					$type = gearTypeWithID($type);
-					printf("%s - %s<br />",$name,$type);
-				}
-			?>
-			</p>
+    <div class="container">
+	    <div class="row">
+    	    <div class="col-lg-12">
+				<?php 
+					if($deleted){
+						echo "<h3>Checkout Deleted</h3>";
+						echo "<a href='checkouts.php'><span class=\"glyphicon glyphicon-chevron-left\"></span>&nbsp;&nbsp;Back to Checkouts</a><br />";
+					}
+					else {
+						echo "<a href=\"checkouts.php\"><span class=\"glyphicon glyphicon-chevron-left\"></span>&nbsp;&nbsp;Back to Checkouts</a>";
+						printf("<h3>%s</h3>",$checkout->getTitle()); ?>
+						<p>
+						<?php
+							printf("ID: %s<br />",$checkout->getID());
+							printf("Description: %s<br />",$checkout->getDescription());
 
-			<a href='<?php printf("checkout.php?co_id=%s&delete=true",$co_id); ?>'>Delete</a>
-		<?php } //end else ?>
-	<!-- <a href='<?php printf("edit-checkout.php?co_id=%s",$co_id); ?>'>Edit</a> -->
+							$personName = getPersonName($checkout->getPerson());
+							printf("Person: %s<br />",$personName);
+							printf("Start Time: %s<br />",$checkout->getStart());
+							printf("End Time: %s<br />",$checkout->getEnd());
+						?>
 
+						<h3>Associated Gear</h3>
+						<?php
+							foreach($gearList as $gear){
+								$name = getGearName($gear);
+								$type = getGearType($gear);
+								$type = gearTypeWithID($type);
+								printf("%s - %s<br />",$name,$type);
+							}
+						?>
+						</p>
+
+						<a class ="btn btn-danger" href='<?php printf("checkout.php?co_id=%s&delete=true",$co_id); ?>'>Delete</a>
+				<?php } //end else ?>
+    	    </div>
+	    </div>
+    </div>
+
+    <!-- INCLUDE BS STICKY FOOTER -->
+    <?php include('templates/bs-footer.php'); ?>
+
+    <!-- jQuery Version 1.11.1 -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
 
 </body>
 </html>
