@@ -14,8 +14,10 @@
 
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		//process deletes
-		foreach($_POST['deleteGear'] as $gearItem){
-			deleteGearItem($gearItem);
+		if(count($_POST['deleteGear']) != 0){ //need to have selected items
+			foreach($_POST['deleteGear'] as $gearItem){
+				deleteGearItem($gearItem);
+			}
 		}
 	}
 
@@ -23,60 +25,96 @@
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>
-		Inventory
-	</title>
+	<!-- INCLUDE BS HEADER INFO -->
+	<?php include('templates/bs-head.php'); ?>
+
+	<title>Inventory</title>
 </head>
 <body>
-	<h1>Inventory</h1>
-	<?php include('templates/nav.php'); ?>
-	<a href="new-gear.php">New Item</a> / 
-	<a href="edit-gear-types.php">Edit Gear Types</a>
+	<!-- IMPORT NAVIGATION -->
+	<?php include('templates/bs-nav.php'); ?>
 
-	<hr />
+    <!-- HEADER -->
+    <div class="container-fluid gray">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h1>Inventory</h1>
+                <!-- <p class="lead">A system for scheduling gear among a team</p> -->
+            </div>
+        </div><!-- /.row -->
+    </div><!-- /.container -->
 
-	<!--  -->
-	<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-		<?php
-			foreach($types as $type){
-				printf("<h3>%s</h3>",$type['type']);
-				$gearList = getGearListWithType($type['type']);
-				if(count($gearList)==0) {
-					//printf("<p>No gear of this type</p>");
-				} else {
-		?>
-			<table>
-				<tr>
-					<td>ID</td>
-					<td>Name</td>
-					<td>Last Checkout</td>
-					<td>Delete</td>
-				</tr>
-				<?php
-					foreach($gearList as $gear){
-						printf("<tr>");
-						printf("<td>%s</td>",$gear['gear_id']);
-						printf("<td>%s</td>",$gear['name']);
+    <br /><br />
 
-						$co_id = fetchLastCheckout($gear['gear_id']);
-						if(!empty($co_id)){
-							$co = new Checkout();
-		    				$co->retrieveCheckout($co_id);	
-		    				printf("<td><a href='checkout.php/?co_id=%s'>%s</a></td>",$co_id,getPersonName($co->getPerson()));
-						} else { //no last checkout
-							printf("<td>n/a</td>");
-						}
-						printf("<td><input type=\"checkbox\" name=\"deleteGear[]\" value=\"%s\"></td>",$gear['gear_id']);	
-						printf("</tr>");
-					}
-				?>
-			</table>
-		<?php } } //foreach ?>
-		<input type="submit" name="submit" value="Delete" />
-	</form>
+	<!-- INVENTORY TABLE CONCEPT --> 
 
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+					<a class="btn btn-primary" href="new-gear.php">New Item&nbsp;&nbsp;<span class="glyphicon glyphicon-plus"></span></a>
+					<a class="btn btn-primary" href="edit-gear-types.php">Edit Gear Types&nbsp;&nbsp;<span class="glyphicon glyphicon-pencil"></span></a>
+					<button type="submit" name="submit" class="push-bottom pull-right full btn btn-danger">Delete Selected Items</button> 
+					
+					<?php
+						foreach($types as $type){
+							printf("<h3>%s</h3>",$type['type']);
+							$gearList = getGearListWithType($type['type']);
+							if(count($gearList)==0) {
+								//printf("<p>No gear of this type</p>");
+							} else {
+					?>
+                    <table class="table table-hover"> 
+                        <colgroup>
+                            <col class="one-quarter">
+                            <col class="one-quarter">
+                            <col class="one-quarter">
+                            <col class="one-quarter">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th class="hidden-xs hidden-sm">ID</th>
+                                <th>Name</th>
+                                <th>Last Checkout</th>
+                                <th class="text-center">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+								foreach($gearList as $gear){
+									printf("<tr>");
+									printf("<td class=\"hidden-xs hidden-sm\">%s</td>",$gear['gear_id']);
+									printf("<td>%s</td>",$gear['name']);
 
+									$co_id = fetchLastCheckout($gear['gear_id']);
+									if(!empty($co_id)){
+										$co = new Checkout();
+					    				$co->retrieveCheckout($co_id);	
+					    				printf("<td><a href='checkout.php/?co_id=%s'>%s</a></td>",$co_id,getPersonName($co->getPerson()));
+									} else { //no last checkout
+										printf("<td>n/a</td>");
+									}
+									printf("<td class=\"text-center\"><input type=\"checkbox\" name=\"deleteGear[]\" value=\"%s\"></td>",$gear['gear_id']);	
+									printf("</tr>");
+								}
+							?>
+                        </tbody>
+                    </table>
+                    <?php } } //foreach ?>
+                </form>
+            </div>
+        </div>
+    </div> <!-- /container -->
+
+    <!-- INCLUDE BS STICKY FOOTER -->
+    <?php include('templates/bs-footer.php'); ?>
+
+    <!-- jQuery Version 1.11.1 -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
 </body>
 </html>

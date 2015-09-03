@@ -53,8 +53,6 @@
         </div><!-- /.row -->
     </div><!-- /.container -->
 
-	<!-- <h1>Checkouts</h1> -->
-
 	<br /><br />
 
 
@@ -85,13 +83,13 @@
 						<option value="12" <?php if ($month == 12) echo 'selected="selected"';?>>December</option>
                     </select>
                     <button type="submit" name="submit" class="push-bottom full btn btn-primary">Filter</button> 
-                    <a class="btn btn-primary pull-right" href="new-checkout.php">New Checkout <span class="glyphicon glyphicon-plus"></span></a>
+                    <a class="btn btn-primary pull-right" href="new-checkout.php">New Checkout&nbsp;&nbsp;<span class="glyphicon glyphicon-plus"></span></a>
                 </form>
 
             </div>
         </div>
 
-        <br /><br />
+        <br />
 
         <div class="row">
             <div class="col-lg-12">
@@ -114,7 +112,7 @@
 
 								printf("<tr>");
 								printf("<td><a href='checkout.php?co_id=%s'>%s</a></td>",$checkout->getID(),$checkout->getTitle());
-								printf("<td class=\"hidden-sm\">%s</td>",$checkout->getDescription());
+								printf("<td class=\"hidden-xs\">%s</td>",$checkout->getDescription());
 								printf("<td>%s</td>",$personDetails['display_name']);
 								printf("<td>%s</td>",$checkout->getStart());
 								printf("<td>%s</td>",$checkout->getEnd());
