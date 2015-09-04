@@ -31,6 +31,12 @@ body {
 	color: white;
 }
 
+.bordered {
+	border-width: 2px;
+	border-color: red;
+	border-style: solid;
+}
+
 /* -------- SIZES -------- */
 .one-quarter { width: 25%; }
 

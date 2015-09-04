@@ -87,7 +87,7 @@
 									if(!empty($co_id)){
 										$co = new Checkout();
 					    				$co->retrieveCheckout($co_id);	
-					    				printf("<td><a href='checkout.php/?co_id=%s'>%s</a></td>",$co_id,getPersonName($co->getPerson()));
+					    				printf("<td><a href='checkout.php?co_id=%s'>%s</a></td>",$co_id,getPersonName($co->getPerson()));
 									} else { //no last checkout
 										printf("<td>n/a</td>");
 									}
