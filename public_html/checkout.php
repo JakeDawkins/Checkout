@@ -1,4 +1,9 @@
 <?php
+	/*
+		NEED TO ADD A NOTIFIER THAT CHECKOUT
+		HAS BEEN DELETED
+	*/
+
 	//USER CAKE
 	require_once("models/config.php");
 	if (!securePage($_SERVER['PHP_SELF'])){die();}
@@ -62,52 +67,122 @@
     <br />
 
     <div class="container">
-	    <div class="row">
-    	    <div class="col-lg-4 col-md-4 col-sm-4 text-center">
-				<?php 
-					if($deleted){
-						echo "<h3>Checkout Deleted</h3>";
-						echo "<a href='checkouts.php'><span class=\"glyphicon glyphicon-chevron-left\"></span>&nbsp;&nbsp;Back to Checkouts</a><br />";
-					}
-					else {
-						echo "<a href=\"checkouts.php\"><span class=\"glyphicon glyphicon-chevron-left\"></span>&nbsp;&nbsp;Back to Checkouts</a>";
-						printf("<h3>Details</h3><hr />"); ?>
-						<p>
-						<?php
-							printf("<strong>Checkout ID:</strong> %s<br /><br />",$checkout->getID());
+    	<div class="row">
+    		<div class="col-lg-12">
+    			<?php echo "<a href=\"checkouts.php\"><span class=\"glyphicon glyphicon-chevron-left\"></span>&nbsp;&nbsp;Back to Checkouts</a>"; ?>
+    			<br /><br />
+    			<div class="panel panel-default">
+    				<div class="panel-heading text-center">
+    					<h3>Checkout Details</h3>
+    				</div>
+    				<div class="panel-body text-center">
+    					<p>
+    					<?php
+    						printf("<strong>Checkout ID:</strong> %s<br /><br />",$checkout->getID());
 							printf("<strong>Description:</strong> %s<br /><br />",$checkout->getDescription());
 
 							$personName = getPersonName($checkout->getPerson());
 							printf("<strong>Person:</strong> %s<br /><br />",$personName);
 							printf("<strong>Start Time:</strong> %s<br /><br />",$checkout->getStart());
 							printf("<strong>End Time:</strong> %s<br /><br />",$checkout->getEnd());
-							printf("<a href=\"checkout.php?co_id=%s&delete=true\">Delete This Checkout</a>",$co_id);
-						?>
-						<!-- <a class ="btn btn-danger btn-block" href='<?php printf("checkout.php?co_id=%s&delete=true",$co_id); ?>'>Delete</a>-->
-						</p>
-						
-				<?php } //end else ?>
-    	    </div>
-    	    <!-- SECOND COL -->
-    	    <div class="col-lg-8 col-md-8 col-sm-8 text-center">
-				<h3>Associated Gear</h3>
-				<hr />
-				<?php
+							//printf("<a href=\"checkout.php?co_id=%s&delete=true\">Delete This Checkout</a>",$co_id);
+
+    					?>
+    					</p>
+    					<a class ="btn btn-danger" href='<?php printf("checkout.php?co_id=%s&delete=true",$co_id); ?>'>Delete This Checkout</a>
+    				</div>
+    			</div>
+    		</div>
+    	</div>
+
+    	<!-- PRINT OUT CHECKOUT GEAR --> 
+    	<div class="row">
+			<?php
+				//if #types == 1, 1 across
+				//			== 2, 2 across
+				//			% 3 == 0, 3 across
+				//			% 4 == 0, 4 across
+				//			else 3 across
+
+				if(count($gearTypes) == 1){ //1 across
 					foreach($gearTypes as $gearType){
-						echo "<h3>$gearType</h3>";
-						echo "<p>";
-						foreach($gearList as $gear){
-							$name = getGearName($gear);
-							$type = gearTypeWithID(getGearType($gear));
-							if($type == $gearType){
-								echo "$name<br />";
-							}
-						}
-						echo "</p><hr />";
+						echo "<div class=\"col-lg-12\">";
+							echo "<div class=\"panel panel-default\">";
+								echo "<div class=\"panel-heading text-center\">";
+									echo "$gearType";
+								echo "</div>"; //end heading
+								echo "<div class=\"panel-body text-center\">";
+									echo "<p>";
+									foreach($gearList as $gear){
+										$name = getGearName($gear);
+										$type = gearTypeWithID(getGearType($gear));
+										if($type == $gearType){
+											echo "$name<br />";
+										}
+									}
+									echo "</p>";
+						echo "</div></div></div>"; //panel-body //panel //col
 					}
-				?>
-    	    </div>
-	    </div><!-- END ROW -->
+				} elseif (count($gearTypes) == 2){ //2 across
+					foreach($gearTypes as $gearType){
+						echo "<div class=\"col-lg-6 col-md-6 col-sm-6\">";
+							echo "<div class=\"panel panel-default\">";
+								echo "<div class=\"panel-heading text-center\">";
+									echo "$gearType";
+								echo "</div>"; //end heading
+								echo "<div class=\"panel-body text-center\">";
+									echo "<p>";
+									foreach($gearList as $gear){
+										$name = getGearName($gear);
+										$type = gearTypeWithID(getGearType($gear));
+										if($type == $gearType){
+											echo "$name<br />";
+										}
+									}
+									echo "</p>";
+						echo "</div></div></div>"; //panel-body //panel //col
+					}
+				} elseif (count($gearTypes) % 4 == 0){ //4 across
+					foreach($gearTypes as $gearType){
+						echo "<div class=\"col-lg-3 col-md-3 col-sm-6\">";
+							echo "<div class=\"panel panel-default\">";
+								echo "<div class=\"panel-heading text-center\">";
+									echo "$gearType";
+								echo "</div>"; //end heading
+								echo "<div class=\"panel-body text-center\">";
+									echo "<p>";
+									foreach($gearList as $gear){
+										$name = getGearName($gear);
+										$type = gearTypeWithID(getGearType($gear));
+										if($type == $gearType){
+											echo "$name<br />";
+										}
+									}
+									echo "</p>";
+						echo "</div></div></div>"; //panel-body //panel //col
+					}
+				} else { //3 across
+					foreach($gearTypes as $gearType){
+						echo "<div class=\"col-lg-4 col-md-4 col-sm-6\">";
+							echo "<div class=\"panel panel-default\">";
+								echo "<div class=\"panel-heading text-center\">";
+									echo "$gearType";
+								echo "</div>"; //end heading
+								echo "<div class=\"panel-body text-center\">";
+									echo "<p>";
+									foreach($gearList as $gear){
+										$name = getGearName($gear);
+										$type = gearTypeWithID(getGearType($gear));
+										if($type == $gearType){
+											echo "$name<br />";
+										}
+									}
+									echo "</p>";
+						echo "</div></div></div>"; //panel-body //panel //col
+					}
+				}
+			?>
+    	</div><!-- END ROW -->
     </div>
 
     <!-- INCLUDE BS STICKY FOOTER -->

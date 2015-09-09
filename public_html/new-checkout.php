@@ -62,12 +62,11 @@
 			$displayGear = false;
 		}
 	} //if submitted
-
-
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
 	<title>
 		New Checkout
