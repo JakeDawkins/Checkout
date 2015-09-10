@@ -96,53 +96,88 @@ if(!empty($_POST))
 		$errors[] = lang("NOTHING_TO_UPDATE");
 	}
 }
-
-require_once("models/header.php");
-echo "
-<body>
-<div id='wrapper'>
-<div id='top'><div id='logo'></div></div>
-<div id='content'>
-<h1>UserCake</h1>
-<h2>User Settings</h2>
-<div id='left-nav'>";
-include("left-nav.php");
-
-echo "
-</div>
-<div id='main'>";
-
-echo resultBlock($errors,$successes);
-
-echo "
-<div id='regbox'>
-<form name='updateAccount' action='".$_SERVER['PHP_SELF']."' method='post'>
-<p>
-<label>Password:</label>
-<input type='password' name='password' />
-</p>
-<p>
-<label>Email:</label>
-<input type='text' name='email' value='".$loggedInUser->email."' />
-</p>
-<p>
-<label>New Pass:</label>
-<input type='password' name='passwordc' />
-</p>
-<p>
-<label>Confirm Pass:</label>
-<input type='password' name='passwordcheck' />
-</p>
-<p>
-<label>&nbsp;</label>
-<input type='submit' value='Update' class='submit' />
-</p>
-</form>
-</div>
-</div>
-<div id='bottom'></div>
-</div>
-</body>
-</html>";
-
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<!-- INCLUDE BS HEADER INFO -->
+	<?php include('templates/bs-head.php'); ?>
+
+    <title>User Settings</title>
+</head>
+<body>
+	<!-- IMPORT NAVIGATION -->
+	<?php include('templates/bs-nav.php'); ?>
+
+    <!-- HEADER -->
+    <div class="container-fluid gray">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h1>Account</h1>
+                <!-- <p class="lead">A system for scheduling gear among a team</p> -->
+            </div>
+        </div><!-- /.row -->
+    </div><!-- /.container -->
+
+    <br /><br />
+
+    <div class="container">
+    	<div class="row">
+	    	<div class="col-sm-3">
+		    	<ul class="nav nav-pills nav-stacked">
+				  	<li role="presentation"><a href="account.php">Home</a></li>
+				  	<li role="presentation" class="active"><a href="user_settings.php">User Settings</a></li>
+				  	<?php
+				  	//Links for permission level 2 (default admin)
+					if ($loggedInUser->checkPermission(array(2))): ?>
+						<li role='presentation'><a href='admin_configuration.php'>Admin Configuration</a></li>
+						<li role='presentation'><a href='admin_users.php'>Admin Users</a></li>
+						<li role='presentation'><a href='admin_permissions.php'>Admin Permissions</a></li>
+						<li role='presentation'><a href='admin_pages.php'>Admin Pages</a></li>
+					<?php endif; ?>
+				</ul>
+	    	</div>
+
+    		<!-- Right side content --> 
+    		<div class="col-sm-9">
+
+				<!-- echo resultBlock($errors,$successes); -->	
+				<form role="form" name='updateAccount' action='".$_SERVER['PHP_SELF']."' method='post'>
+					<div class="form-group">
+						<label class="control-label">Password:</label>
+						<input class="form-control" type='password' name='password' />
+					</div>
+					<div class="form-group">
+						<label class="control-label">Email:</label>
+						<?php echo "<input class='form-control' type='text' name='email' value='".$loggedInUser->email."' />"; ?>
+					</div>
+					<div class="form-group">
+						<label class="control-label">New Pass:</label>
+						<input class="form-control" type='password' name='passwordc' />
+					</div>
+					<div class="form-group">
+						<label class="control-label">Confirm Pass:</label>
+						<input class="form-control" type='password' name='passwordcheck' />
+					</div>
+				
+					<input class="btn btn-success" type='submit' value='Update' class='submit' />
+						
+				</form>
+    		</div><!-- end col -->
+		</div>
+	</div>
+
+    <!-- INCLUDE BS STICKY FOOTER -->
+    <?php include('templates/bs-footer.php'); ?>
+
+    <!-- jQuery Version 1.11.1 -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+</html>
+

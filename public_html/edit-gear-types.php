@@ -44,14 +44,15 @@
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-	<title>
-		Edit Gear Types
-	</title>
+	<!-- INCLUDE BS HEADER INFO -->
+	<?php include('templates/bs-head.php'); ?>
+
+    <title>Edit Gear Types</title>
 </head>
 <body>
-	<?php //print_r($_POST); ?>
 
 	<?php
 		// if (isset($error)){
@@ -60,48 +61,79 @@
 		// 	echo '</p>';
 		// }
 	?>
+	<!-- IMPORT NAVIGATION -->
+	<?php include('templates/bs-nav.php'); ?>
 
-	<?php if (!$added && !$removed): ?>
-		<h1>Edit Gear Types</h1>
-		<?php include('templates/nav.php'); ?>
-		<hr />
+    <!-- HEADER -->
+    <div class="container-fluid gray">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h1>Edit Gear Types</h1>
+                <!-- <p class="lead">A system for scheduling gear among a team</p> -->
+            </div>
+        </div><!-- /.row -->
+    </div><!-- /.container -->
 
-		<h3>Add a New Gear Type</h3>
-		<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-			<label for="type">New Type Name:</label>
-			<input name="type" type="text" /><br /><br />
+    <br /><br />
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+				<?php if($added){ //USER ADDED A GROUP
+					echo "<div class=\"alert alert-success\" role=\"alert\">";
+					printf("New Gear Type, %s, Created!",$type);
+					echo "</div>";	
+				}?>
+            	<div class="panel panel-default">
+            		<div class="panel-heading">Add a New Gear Type</div>
+            		<div class="panel-body">
+						<form role="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+							<div class="form-group">
+								<label class="control-label" for="type">New Type Name:</label>
+								<input class="form-control" name="type" type="text" />
+							</div>
+							<br />
+							<input class="btn btn-success" type="submit" name="submit" value="Submit" />
+						</form>
+            		</div>
+            	</div><!-- end panel -->     
+            </div>
+            <div class="col-md-6">
+				<?php if($removed){ //USER REMOVED A GROUP
+					echo "<div class=\"alert alert-success\" role=\"alert\">";
+					printf("The following were removed:<br />",$type);
+					foreach($typesRemoved as $typeRemoved){
+						printf("- %s<br />",$typeRemoved);
+					}
+					echo "</div>";	
+				}?>
+            	<div class="panel panel-default">
+            		<div class="panel-heading">Remove Gear Types</div>
+            		<div class="panel-body">
+						<form role="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+							<?php
+								$types = getGearTypes();
+								foreach($types as $type){
+									echo "<div class=\"checkbox\">";
+										printf("<label><input type=\"checkbox\" name=\"deleteTypes[]\" value=\"%s\">%s</label>",$type['gear_type_id'],$type['type']);
+									echo "</div>";
+								}
+							?>
+							<br />
+							<input class="btn btn-danger" type="submit" name="submit" value="Delete Selected">
+						</form>
+            		</div>
+        		</div><!-- end panel --> 
+            </div><!-- end col --> 
+        </div><!-- /.row -->
+    </div><!-- /.container -->
 
-			<input type="submit" name="submit" value="Submit" />
-		</form>
+    <!-- INCLUDE BS STICKY FOOTER -->
+    <?php include('templates/bs-footer.php'); ?>
 
-		<!-- REMOVE -->
-		<h3>Remove Gear Types</h3>
-		<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-			<?php
-				$types = getGearTypes();
-				foreach($types as $type){
-					printf("<input type=\"checkbox\" name=\"deleteTypes[]\" value=\"%s\">%s<br />",$type['gear_type_id'],$type['type']);		
-				}
-			?>
-			<input type="submit" name="submit" value="Submit">
-		</form>
+    <!-- jQuery Version 1.11.1 -->
+    <script src="js/jquery.js"></script>
 
-	<?php else:
-		if($added){
-			printf("<h3>New Gear Type, %s, Created!</h3>",$type);
-			printf("<a href=\"inventory.php\">Back to Inventory</a>");
-		} elseif ($removed) {
-			printf("<h3>The following were removed:</h3><p>");
-			foreach($typesRemoved as $typeRemoved){
-				printf("%s<br />",$typeRemoved);
-			}
-			echo '</p>';
-			printf("<a href=\"inventory.php\">Back to Inventory</a>");
-		} else {
-			printf("an unknown error occurred.<br />");
-		}
-		
-	endif; ?>
-
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
 </body>
 </html>

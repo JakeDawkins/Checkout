@@ -68,88 +68,132 @@
 <html lang="en">
 
 <head>
-	<title>
-		New Checkout
-	</title>
+	<!-- INCLUDE BS HEADER INFO -->
+	<?php include('templates/bs-head.php'); ?>
+
+    <title>New Checkout</title>
 </head>
 <body>
-	<h1>New Checkout</h1>
-	<?php include('templates/nav.php'); ?>
+	<!-- IMPORT NAVIGATION -->
+	<?php include('templates/bs-nav.php'); ?>
 
-	<?php if($displayGear == false): ?>
+    <!-- HEADER -->
+    <div class="container-fluid gray">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h1>New Checkout</h1>
+                <!-- <p class="lead">A system for scheduling gear among a team</p> -->
+            </div>
+        </div><!-- /.row -->
+    </div><!-- /.container -->
 
-		<?php
-			if (isset($error)){
-				echo '<p class="error">';
-				if (isset($error['date'])) printf("%s<br />",$error['date']);
-				echo '</p>';
-			}
-		?>
+    <br /><br />
 
-		<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                
+				<?php if($displayGear == false): ?>
 
-			<h2>Checkout Details</h2>
+					<?php
+						if (isset($error)){
+							echo '<p class="error">';
+							if (isset($error['date'])) printf("%s<br />",$error['date']);
+							echo '</p>';
+						}
+					?>
 
-			<label for="title">Event Title:</label>
-			<input type="text" name="title" /><br />
+					<form class="" role="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
 
-			<label for ="description">Description:</label>
-			<textarea name="description" rows="3" cols="50"></textarea><br />
-			<!-- <input type="text" name="description" /><br /> -->
+						<h2>Checkout Details</h2>
+						<hr />
 
-			<label for="co_start">Begin:</label>
-			<input type="text" name="co_start" placeholder="yyyy-mm-dd hh:mm:ss" /><br />
+						<div class="form-group"> <!-- TITLE -->
+							<label class="control-label" for="title">Event Title:</label>  
+							<input type="text" class="form-control" name="title">
+						</div>
+						
+						<div class="form-group"> <!-- DESC -->
+							<label class="control-label" for="Description">Description:</label>  
+							<textarea class="form-control" name="description" rows="3"></textarea>
+						</div>
 
-			<label for="co_end">End:</label>
-			<input type="text" name="co_end" placeholder="yyyy-mm-dd hh:mm:ss" /><br />
+						<div class="form-group"><!-- START -->
+							<label class="control-label" for="co_start">Start:</label>  
+							<input type="text" class="form-control" name="co_start" placeholder="yyyy-mm-dd hh:mm:ss">
+						</div>
 
-			<input class="" type="submit" name="submit" value="Next">
-		</form>
+						<div class="form-group"> <!-- END -->
+							<label class="control-label" for="co_end">End:</label>  
+							<input type="text" class="form-control" name="co_end" placeholder="yyyy-mm-dd hh:mm:ss">
+						</div>
 
-	<?php else: ?>
+						<input class="btn btn-success" type="submit" name="submit" value="Next">
+					</form>
 
-		<h2>Checkout Details</h2>
+				<?php else: ?>
 
-		<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+					<h2>Checkout Details</h2>
+					<hr />
 
-			<label for="title">Event Title:</label>
-			<input type="text" placeholder="<?php echo $title ?>" disabled /><br />
-			<input type="hidden" name="title" value="<?php echo $title ?>" />
+					<form class="" role="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
 
-			<!-- <textarea rows="3" cols="50">Event Description</textarea><br /> -->
-			<label for="description">Description:</label>
-			<!-- <input type="text" placeholder="<?php echo $description ?>" disabled /><br /> -->
-			<input type="hidden" name="description" value="<?php echo $description ?>" />
-			<textarea name="description" rows="3" cols="50" disabled>
-				<?php echo $description ?>
-			</textarea><br />
+						<div class="form-group"> <!-- TITLE -->
+							<label class="control-label" for="title">Event Title:</label>  
+							<input type="text" class="form-control" name="title" placeholder="<?php echo $title ?>" disabled />
+								<input type="hidden" name="title" value="<?php echo $title ?>" />
+						</div>
 
-			<label for="co_start">Begin:</label>
-			<input type="text" placeholder="<?php echo $co_start ?>" disabled /><br />
-			<input type="hidden" name="co_start" value="<?php echo $co_start ?>" />
+						<div class="form-group"> <!-- DESC -->
+							<label class="control-label" for="Description">Description:</label>  
+							<textarea class="form-control" name="description" rows="3" disabled=""><?php echo $description ?></textarea>
+								<input type="hidden" name="description" value="<?php echo $description ?>" />
+						</div>
 
-			<label for="co_end">End:</label>
-			<input type="text" placeholder="<?php echo $co_end ?>" disabled /><br />
-			<input type="hidden" name="co_end" value="<?php echo $co_end ?>" />
+						<div class="form-group"><!-- START -->
+							<label class="control-label" for="co_start">Start:</label>  
+							<input type="text" class="form-control" name="co_start" placeholder="<?php echo $co_start ?>" disabled />
+								<input type="hidden" name="co_start" value="<?php echo $co_start ?>" />
+						</div>
 
-			<br />
-			<h2>Select Gear</h2>
-			<hr />
+						<div class="form-group"> <!-- END -->
+							<label class="control-label" for="co_end">End:</label>  
+							<input type="text" class="form-control" name="co_end" placeholder="<?php echo $co_end ?>" disabled />
+								<input type="hidden" name="co_end" value="<?php echo $co_end ?>" />
+						</div>
 
-			<?php
-				foreach($types as $type){
-					printf("<h3>%s</h3>",$type['type']);
-					$items = getAvailableGearWithType($type['gear_type_id'], $co_start, $co_end);
-					foreach($items as $item){
-						printf("<input type=\"checkbox\" name=\"gear[]\" value=\"%s\">%s<br />",$item['gear_id'],$item['name']);
-					}
-				}
-			?>
+						<br />
+						<h2>Select Gear</h2>
+						<hr />
 
-			<input type="submit" name="submit" value="Finish">
-		</form>
+						<?php
+							foreach($types as $type){
+								$items = getAvailableGearWithType($type['gear_type_id'], $co_start, $co_end);
+								if (count($items) > 0){
+									printf("<h3>%s</h3>",$type['type']);
+									foreach($items as $item){
+										printf("<input type=\"checkbox\" name=\"gear[]\" value=\"%s\"> %s<br />",$item['gear_id'],$item['name']);
+									}
+								}//if
+							}//foreach
+						?>
+						<br />
+						<input class="btn btn-success" type="submit" name="submit" value="Finish">
+					</form>
 
-	<?php endif; ?>
+				<?php endif; ?>
+            </div> <!-- /col -->
+        </div><!-- /row --> 
+    </div> <!-- /container -->
+
+    <!-- INCLUDE BS STICKY FOOTER -->
+    <?php include('templates/bs-footer.php'); ?>
+
+    <!-- jQuery Version 1.11.1 -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
 
 </body>
 </html>

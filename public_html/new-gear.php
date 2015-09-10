@@ -38,17 +38,29 @@
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-	<title>
-		New Gear Item
-	</title>
+	<!-- INCLUDE BS HEADER INFO -->
+	<?php include('templates/bs-head.php'); ?>
+
+	<title>New Gear Item</title>
 </head>
 <body>
-	<h1>Add a New Gear Item</h1>
-	<?php include('templates/nav.php'); ?>
+	<!-- IMPORT NAVIGATION -->
+	<?php include('templates/bs-nav.php'); ?>
 
-	<?php //print_r($_POST); ?>
+    <!-- HEADER -->
+    <div class="container-fluid gray">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h1>New Gear Item</h1>
+                <!-- <p class="lead">A system for scheduling gear among a team</p> -->
+            </div>
+        </div><!-- /.row -->
+    </div><!-- /.container -->
+
+    <br /><br />
 
 	<?php
 		// if (isset($error)){
@@ -58,24 +70,36 @@
 		// }
 	?>
 
-	<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-		<label for="name">Name:</label>
-		<input name="name" type="text" /><br /><br />
+    <div class="container">
+	    <div class="row">
+	        <div class="col-lg-12">
+				<form role="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+					
+					<div class="form-group">
+						<label class="control-label" for="name">Name:</label>
+						<input class="form-control" name="name" type="text" />
+					</div>
 
-		<label for="category">Choose a category:</label>
-		<select name="category">
-		<?php
-			foreach($types as $type){
-				printf("<option value=\"%s\">%s</option>",$type['gear_type_id'],$type['type']);
-			}
-		?>
-		</select><br />
+					<div class="form-group">
+						<label class="control-label" for="category">Choose a category:</label>
+						<select class="form-control" name="category">
+						<?php
+							foreach($types as $type){
+								printf("<option value=\"%s\">%s</option>",$type['gear_type_id'],$type['type']);
+							}
+						?>
+						</select>
+					</div>
 
-		<label for="newCategory">Or create a new category:</label>
-		<input name="newCategory" type="text" />
+					<div class="form-group">
+						<label class="control-label" for="newCategory">Or create a new category:</label>
+						<input class="form-control" name="newCategory" type="text" />
+					</div>
 
-		<input type="submit" name="submit" value="Submit" />
-	</form>
-
+					<input class="btn btn-success" type="submit" name="submit" value="Submit" />
+				</form>
+	        </div> <!-- END COL -->
+        </div> <!-- END ROW --> 
+    </div><!-- END CONTAINER -->
 </body>
 </html>
