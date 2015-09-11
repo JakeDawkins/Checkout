@@ -135,127 +135,165 @@ if(!empty($_POST))
 
 $userPermission = fetchUserPermissions($userId);
 $permissionData = fetchAllPermissions();
-
-require_once("models/header.php");
-
-echo "
-<body>
-<div id='wrapper'>
-<div id='top'><div id='logo'></div></div>
-<div id='content'>
-<h1>UserCake</h1>
-<h2>Admin User</h2>
-<div id='left-nav'>";
-
-include("left-nav.php");
-
-echo "
-</div>
-<div id='main'>";
-
-echo resultBlock($errors,$successes);
-
-echo "
-<form name='adminUser' action='".$_SERVER['PHP_SELF']."?id=".$userId."' method='post'>
-<table class='admin'><tr><td>
-<h3>User Information</h3>
-<div id='regbox'>
-<p>
-<label>ID:</label>
-".$userdetails['id']."
-</p>
-<p>
-<label>Username:</label>
-".$userdetails['user_name']."
-</p>
-<p>
-<label>Display Name:</label>
-<input type='text' name='display' value='".$userdetails['display_name']."' />
-</p>
-<p>
-<label>Email:</label>
-<input type='text' name='email' value='".$userdetails['email']."' />
-</p>
-<p>
-<label>Active:</label>";
-
-//Display activation link, if account inactive
-if ($userdetails['active'] == '1'){
-	echo "Yes";	
-}
-else{
-	echo "No
-	</p>
-	<p>
-	<label>Activate:</label>
-	<input type='checkbox' name='activate' id='activate' value='activate'>
-	";
-}
-
-echo "
-</p>
-<p>
-<label>Title:</label>
-<input type='text' name='title' value='".$userdetails['title']."' />
-</p>
-<p>
-<label>Sign Up:</label>
-".date("j M, Y", $userdetails['sign_up_stamp'])."
-</p>
-<p>
-<label>Last Sign In:</label>";
-
-//Last sign in, interpretation
-if ($userdetails['last_sign_in_stamp'] == '0'){
-	echo "Never";	
-}
-else {
-	echo date("j M, Y", $userdetails['last_sign_in_stamp']);
-}
-
-echo "
-</p>
-<p>
-<label>Delete:</label>
-<input type='checkbox' name='delete[".$userdetails['id']."]' id='delete[".$userdetails['id']."]' value='".$userdetails['id']."'>
-</p>
-<p>
-<label>&nbsp;</label>
-<input type='submit' value='Update' class='submit' />
-</p>
-</div>
-</td>
-<td>
-<h3>Permission Membership</h3>
-<div id='regbox'>
-<p>Remove Permission:";
-
-//List of permission levels user is apart of
-foreach ($permissionData as $v1) {
-	if(isset($userPermission[$v1['id']])){
-		echo "<br><input type='checkbox' name='removePermission[".$v1['id']."]' id='removePermission[".$v1['id']."]' value='".$v1['id']."'> ".$v1['name'];
-	}
-}
-
-//List of permission levels user is not apart of
-echo "</p><p>Add Permission:";
-foreach ($permissionData as $v1) {
-	if(!isset($userPermission[$v1['id']])){
-		echo "<br><input type='checkbox' name='addPermission[".$v1['id']."]' id='addPermission[".$v1['id']."]' value='".$v1['id']."'> ".$v1['name'];
-	}
-}
-
-echo"
-</p>
-</div>
-</td>
-</tr>
-</table>
-</form>
-</div>
-<div id='bottom'></div>
-</div>
-</body>
-</html>";
-
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<!-- INCLUDE BS HEADER INFO -->
+	<?php include('templates/bs-head.php'); ?>
+
+    <title>Admin User</title>
+</head>
+<body>
+	<!-- IMPORT NAVIGATION -->
+	<?php include('templates/bs-nav.php'); ?>
+
+    <!-- HEADER -->
+    <div class="container-fluid gray">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h1>Account</h1>
+            </div>
+        </div><!-- /.row -->
+    </div><!-- /.container -->
+
+    <br /><br />
+
+    <div class="container">
+    	<div class="row">
+	    	<div class="col-sm-3">
+		    	<ul class="nav nav-pills nav-stacked">
+				  	<li role="presentation"><a href="account.php">Home</a></li>
+				  	<li role="presentation"><a href="user_settings.php">User Settings</a></li>
+				  	<?php
+				  	//Links for permission level 2 (default admin)
+					if ($loggedInUser->checkPermission(array(2))): ?>
+						<li role='presentation'><a href='admin_configuration.php'>Admin Configuration</a></li>
+						<li class="active" role='presentation'><a href='admin_users.php'>Admin Users</a></li>
+						<li role='presentation'><a href='admin_permissions.php'>Admin Permissions</a></li>
+						<li role='presentation'><a href='admin_pages.php'>Admin Pages</a></li>
+					<?php endif; ?>
+				</ul>
+	    	</div>
+	    	<div class="col-sm-9">
+				<?php 
+				echo resultBlock($errors,$successes);
+
+				echo "<form class='' role='form' name='adminUser' action='".$_SERVER['PHP_SELF']."?id=".$userId."' method='post'>"; ?>			
+		    		<div class="panel panel-default">
+		    			<div class="panel-heading">
+							User Information
+		    			</div>
+		    			<div class="panel-body">
+							<div class="form-group">
+								<label class="control-label">ID:</label>
+								<?php echo $userdetails['id']; ?>
+							</div>
+							<div class="form-group">
+								<label class="control-label">Username:</label>
+								<?php echo $userdetails['user_name']; ?>
+							</div>
+							<div class="form-group">
+								<label class="control-label">Display Name:</label>
+								<?php echo "<input class='form-control' type='text' name='display' value='".$userdetails['display_name']."' />"; ?>
+							</div>
+							<div class="form-group">
+								<label class="control-label">Email:</label>
+								<?php echo "<input class='form-control' type='text' name='email' value='".$userdetails['email']."' />"; ?>
+							</div>
+							<div class="form-group">
+								<label class="control-label">Title:</label>
+								<?php echo "<input class='form-control' type='text' name='title' value='".$userdetails['title']."' />"; ?> 
+							</div>
+							<div class="form-group">
+								<label class="control-label">Active:</label>
+
+								<?php 
+								//Display activation link, if account inactive
+								if ($userdetails['active'] == '1'){
+									echo "Yes";	
+								}
+								else{
+									echo "No";
+								?>
+							</div>
+							<div class="form-group">
+								<label class="control-label">Activate:</label>
+								<?php echo "<input type='checkbox' name='activate' id='activate' value='activate'>";
+								
+								} //end else ?>
+							</div>
+							<div class="form-group">
+								<label class="control-label">Sign Up:</label>
+								<?php echo date("j M, Y", $userdetails['sign_up_stamp']); ?>
+							</div>
+							<div class="form-group">
+								<label class="control-label">Last Sign In:</label>
+								<?php 
+								//Last sign in, interpretation
+								if ($userdetails['last_sign_in_stamp'] == '0'){
+									echo "Never";	
+								}
+								else {
+									echo date("j M, Y", $userdetails['last_sign_in_stamp']);
+								}
+								?>
+							</div>
+							<div class="form-group">
+								<label class="control-label">Delete:</label>
+								<?php echo "<input type='checkbox' name='delete[".$userdetails['id']."]' id='delete[".$userdetails['id']."]' value='".$userdetails['id']."'>"; ?>
+							</div>
+		    			</div> <!-- End panel body --> 
+	    			</div><!-- End panel --> 
+	    			<div class="panel panel-default">
+	    				<div class="panel-heading">
+	    					Permission Membership
+	    				</div>
+	    				<div class="panel-body">
+	    					<div class="form-group">
+	    					<label class="control-label">Remove Permission:</label>
+								<?php
+								//List of permission levels user is apart of
+								foreach ($permissionData as $v1) {
+									if(isset($userPermission[$v1['id']])){
+										echo "<br><input type='checkbox' name='removePermission[".$v1['id']."]' id='removePermission[".$v1['id']."]' value='".$v1['id']."'> ".$v1['name'];
+									}
+								} ?>
+	    					</div>
+	    					<div class="form-group">
+		    					<label class="control-label">Add Permission:</label>
+								<?php
+									//List of permission levels user is not apart of
+									foreach ($permissionData as $v1) {
+										if(!isset($userPermission[$v1['id']])){
+											echo "<br><input type='checkbox' name='addPermission[".$v1['id']."]' id='addPermission[".$v1['id']."]' value='".$v1['id']."'> ".$v1['name'];
+										}
+									}
+								?>
+	    					</div>
+
+
+								
+	    				</div> <!-- end panel body --> 
+	    			</div> <!-- end panel --> 	
+	    			<input class="btn btn-success btn-block" type='submit' value='Update' class='submit' />
+				</form>
+	    	</div> <!-- end col --> 
+    	</div> <!-- end row -->
+	</div> <!-- end container --> 
+	
+	<br /><br />
+
+    <!-- INCLUDE BS STICKY FOOTER -->
+    <?php include('templates/bs-footer.php'); ?>
+
+    <!-- jQuery Version 1.11.1 -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+</html>
