@@ -95,8 +95,11 @@ $permissionData = fetchAllPermissions();
         <div class="row">
             <div class="col-sm-8 col-sm-offset-2">
 				<!-- echo resultBlock($errors,$successes); -->
+				<?php
+				echo "<a href=\"admin_pages.php\"><span class=\"glyphicon glyphicon-chevron-left\"></span>&nbsp;&nbsp;Back to Pages</a>"; 
+    			echo "<br /><br />";				
 
-				<form role='form' name='adminPage' action='".$_SERVER['PHP_SELF']."?id=".$pageId."' method='post'>
+				echo"<form role='form' name='adminPage' action='".$_SERVER['PHP_SELF']."?id=".$pageId."' method='post'>"; ?>
 					<input type='hidden' name='process' value='1'>
 							
 						<div class="panel panel-default">
