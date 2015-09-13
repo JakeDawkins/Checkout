@@ -48,15 +48,12 @@
         <div class="row">
             <div class="col-lg-12 text-center">
                 <h1>Checkouts</h1>
-                <!-- <p class="lead">A system for scheduling gear among a team</p> -->
             </div>
-        </div><!-- /.row -->
-    </div><!-- /.container -->
+        </div><!-- end row -->
+    </div><!-- end container -->
 
 	<br /><br />
 
-
-	<!-- CHECKOUTS TABLE CONCEPT -->
     <div class="container">
         <div class="row">
             <div class="col-lg-12">

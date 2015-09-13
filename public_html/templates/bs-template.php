@@ -29,8 +29,8 @@
                 <h1>Checkout</h1>
                 <p class="lead">A system for scheduling gear among a team</p>
             </div>
-        </div><!-- /.row -->
-    </div><!-- /.container -->
+        </div><!-- end row -->
+    </div><!-- end container -->
 
     <br /><br />
 

@@ -107,7 +107,7 @@ $pageData = fetchAllPages(); //Fetch all pages
 	<!-- INCLUDE BS HEADER INFO -->
 	<?php include('templates/bs-head.php'); ?>
 
-    <title>Welcome!</title>
+    <title>Permissions</title>
 </head>
 <body>
 	<!-- IMPORT NAVIGATION -->
@@ -117,34 +117,16 @@ $pageData = fetchAllPages(); //Fetch all pages
     <div class="container-fluid gray">
         <div class="row">
             <div class="col-lg-12 text-center">
-                <h1>Account</h1>
+                <h1>Permissions</h1>
             </div>
-        </div><!-- /.row -->
-    </div><!-- /.container -->
+        </div><!-- end row -->
+    </div><!-- end container -->
 
     <br /><br />
 
     <div class="container">
     	<div class="row">
-	    	<div class="col-sm-3">
-	    		<div class="panel panel-default">
-			    	<ul class="nav nav-pills nav-stacked">
-					  	<li role="presentation"><a href="account.php">Home</a></li>
-					  	<li role="presentation"><a href="user_settings.php">User Settings</a></li>
-					  	<?php
-					  	//Links for permission level 2 (default admin)
-						if ($loggedInUser->checkPermission(array(2))): ?>
-							<li role='presentation'><a href='admin_configuration.php'>Admin Configuration</a></li>
-							<li role='presentation'><a href='admin_users.php'>Admin Users</a></li>
-							<li class="active" role='presentation'><a href='admin_permissions.php'>Admin Permissions</a></li>
-							<li role='presentation'><a href='admin_pages.php'>Admin Pages</a></li>
-						<?php endif; ?>
-					</ul>
-				</div>
-	    	</div>
-
-    		<!-- Right side content --> 
-    		<div class="col-sm-9">
+    		<div class="col-sm-8 col-sm-offset-2">
     			<?php
 				echo "<a href=\"admin_permissions.php\"><span class=\"glyphicon glyphicon-chevron-left\"></span>&nbsp;&nbsp;Back to Permissions</a>"; 
     			echo "<br /><br />";

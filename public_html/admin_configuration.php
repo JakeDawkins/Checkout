@@ -140,7 +140,7 @@ $permissionData = fetchAllPermissions(); //Retrieve list of all permission level
 	<!-- INCLUDE BS HEADER INFO -->
 	<?php include('templates/bs-head.php'); ?>
 
-    <title>Admin Configuration</title>
+    <title>Site Configuration</title>
 </head>
 <body>
 	<!-- IMPORT NAVIGATION -->
@@ -150,33 +150,18 @@ $permissionData = fetchAllPermissions(); //Retrieve list of all permission level
     <div class="container-fluid gray">
         <div class="row">
             <div class="col-lg-12 text-center">
-                <h1>Account</h1>
-                <!-- <p class="lead">A system for scheduling gear among a team</p> -->
+                <h1>Site Configuration</h1>
             </div>
-        </div><!-- /.row -->
-    </div><!-- /.container -->
+        </div><!-- end row -->
+    </div><!-- end container -->
 
     <br /><br />
 
     <div class="container">
     	<div class="row">
-	    	<div class="col-sm-3">
-		    	<ul class="nav nav-pills nav-stacked">
-				  	<li role="presentation"><a href="account.php">Home</a></li>
-				  	<li role="presentation"><a href="user_settings.php">User Settings</a></li>
-				  	<?php
-				  	//Links for permission level 2 (default admin)
-					if ($loggedInUser->checkPermission(array(2))): ?>
-						<li class="active" role='presentation'><a href='admin_configuration.php'>Admin Configuration</a></li>
-						<li role='presentation'><a href='admin_users.php'>Admin Users</a></li>
-						<li role='presentation'><a href='admin_permissions.php'>Admin Permissions</a></li>
-						<li role='presentation'><a href='admin_pages.php'>Admin Pages</a></li>
-					<?php endif; ?>
-				</ul>
-	    	</div>
 
     		<!-- Right side content --> 
-    		<div class="col-sm-9">
+    		<div class="col-sm-8 col-sm-offset-2">
 				<!-- echo resultBlock($errors,$successes); -->
 				<?php echo "<form role='form' name='adminConfiguration' action='".$_SERVER['PHP_SELF']."' method='post'>"; ?>
 					<div class="form-group">

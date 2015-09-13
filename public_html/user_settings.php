@@ -115,33 +115,16 @@ if(!empty($_POST))
     <div class="container-fluid gray">
         <div class="row">
             <div class="col-lg-12 text-center">
-                <h1>Account</h1>
-                <!-- <p class="lead">A system for scheduling gear among a team</p> -->
+                <h1>User Settings</h1>
             </div>
-        </div><!-- /.row -->
-    </div><!-- /.container -->
+        </div><!-- end row -->
+    </div><!-- end container -->
 
     <br /><br />
 
     <div class="container">
     	<div class="row">
-	    	<div class="col-sm-3">
-		    	<ul class="nav nav-pills nav-stacked">
-				  	<li role="presentation"><a href="account.php">Home</a></li>
-				  	<li role="presentation" class="active"><a href="user_settings.php">User Settings</a></li>
-				  	<?php
-				  	//Links for permission level 2 (default admin)
-					if ($loggedInUser->checkPermission(array(2))): ?>
-						<li role='presentation'><a href='admin_configuration.php'>Admin Configuration</a></li>
-						<li role='presentation'><a href='admin_users.php'>Admin Users</a></li>
-						<li role='presentation'><a href='admin_permissions.php'>Admin Permissions</a></li>
-						<li role='presentation'><a href='admin_pages.php'>Admin Pages</a></li>
-					<?php endif; ?>
-				</ul>
-	    	</div>
-
-    		<!-- Right side content --> 
-    		<div class="col-sm-9">
+    		<div class="col-sm-8 col-sm-offset-2">
 
 				<?php echo resultBlock($errors,$successes); ?>
 				<?php echo "<form role=\"form\" name='updateAccount' action='".$_SERVER['PHP_SELF']."' method='post'>"; ?>
@@ -154,11 +137,11 @@ if(!empty($_POST))
 						<?php echo "<input class='form-control' type='text' name='email' value='".$loggedInUser->email."' />"; ?>
 					</div>
 					<div class="form-group">
-						<label class="control-label">New Pass:</label>
+						<label class="control-label">New Password:</label>
 						<input class="form-control" type='password' name='passwordc' />
 					</div>
 					<div class="form-group">
-						<label class="control-label">Confirm Pass:</label>
+						<label class="control-label">Confirm Password:</label>
 						<input class="form-control" type='password' name='passwordcheck' />
 					</div>
 				
