@@ -36,57 +36,97 @@ if (count($deletions) > 0) {
 
 //Update DB pages
 $dbpages = fetchAllPages();
-
-require_once("models/header.php");
-
-echo "
-<body>
-<div id='wrapper'>
-<div id='top'><div id='logo'></div></div>
-<div id='content'>
-<h1>UserCake</h1>
-<h2>Admin Pages</h2>
-<div id='left-nav'>";
-
-include("left-nav.php");
-
-echo "
-</div>
-<div id='main'>
-<table class='admin'>
-<tr><th>Id</th><th>Page</th><th>Access</th></tr>";
-
-//Display list of pages
-foreach ($dbpages as $page){
-	echo "
-	<tr>
-	<td>
-	".$page['id']."
-	</td>
-	<td>
-	<a href ='admin_page.php?id=".$page['id']."'>".$page['page']."</a>
-	</td>
-	<td>";
-	
-	//Show public/private setting of page
-	if($page['private'] == 0){
-		echo "Public";
-	}
-	else {
-		echo "Private";	
-	}
-	
-	echo "
-	</td>
-	</tr>";
-}
-
-echo "
-</table>
-</div>
-<div id='bottom'></div>
-</div>
-</body>
-</html>";
-
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<!-- INCLUDE BS HEADER INFO -->
+	<?php include('templates/bs-head.php'); ?>
+
+    <title>Welcome!</title>
+</head>
+<body>
+	<!-- IMPORT NAVIGATION -->
+	<?php include('templates/bs-nav.php'); ?>
+
+    <!-- HEADER -->
+    <div class="container-fluid gray">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h1>Pages</h1>
+            </div>
+        </div><!-- end row -->
+    </div><!-- end container -->
+
+    <br /><br />
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
+				<table class='table table-hover'>
+					<tr>
+						<th>Id</th>
+						<th>Page</th>
+						<th>Access</th>
+					</tr>
+
+					<?php
+					//Display list of pages
+					foreach ($dbpages as $page){
+					?>
+						<tr>
+							<td>
+								<?php echo $page['id']; ?>
+							</td>
+							<td>
+								<?php echo "<a href ='admin_page.php?id=".$page['id']."'>".$page['page']."</a>"; ?>
+							</td>
+							<td>
+								
+								<?php
+								//Show public/private setting of page
+								if($page['private'] == 0){ echo "Public"; }
+								else { echo "Private"; }
+								?>
+
+							</td>
+						</tr>
+					<?php } ?>
+				</table>
+            </div>
+        </div>
+    </div> <!-- end container -->
+
+    <br /><br />
+
+    <!-- INCLUDE BS STICKY FOOTER -->
+    <?php include('templates/bs-footer.php'); ?>
+
+    <!-- jQuery Version 1.11.1 -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -34,17 +34,24 @@
 
     <br /><br />
 
-    <!-- CHECKOUTS TABLE CONCEPT -->
+    <!-- 
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
                 
             </div>
         </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
+                
+            </div>
+        </div>
+    </div>
+    -->
 
-        <br /><br />
-
-    </div> <!-- /container -->
+    <br /><br />
 
     <!-- INCLUDE BS STICKY FOOTER -->
     <?php include('templates/bs-footer.php'); ?>
