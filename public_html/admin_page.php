@@ -65,94 +65,112 @@ if(!empty($_POST)){
 
 $pagePermissions = fetchPagePermissions($pageId);
 $permissionData = fetchAllPermissions();
-
-require_once("models/header.php");
 ?>
 
-<!-- BEGIN BODY -->
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+	<!-- INCLUDE BS HEADER INFO -->
+	<?php include('templates/bs-head.php'); ?>
+
+    <title>Pages</title>
+</head>
 <body>
-<div id='wrapper'>
-<div id='top'><div id='logo'></div></div>
-<div id='content'>
-<h1>UserCake</h1>
-<h2>Admin Page</h2>
-<div id='left-nav'>
+	<!-- IMPORT NAVIGATION -->
+	<?php include('templates/bs-nav.php'); ?>
 
-<?php include("left-nav.php"); ?>
+    <!-- HEADER -->
+    <div class="container-fluid gray">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h1>Pages</h1>
+            </div>
+        </div><!-- end row -->
+    </div><!-- end container -->
 
-</div>
-<div id='main'>
-	
-<?php
-echo resultBlock($errors,$successes);
+    <br /><br />
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
+				<!-- echo resultBlock($errors,$successes); -->
 
-echo "
-<form name='adminPage' action='".$_SERVER['PHP_SELF']."?id=".$pageId."' method='post'>
-<input type='hidden' name='process' value='1'>
-<table class='admin'>
-<tr><td>
-<h3>Page Information</h3>
-<div id='regbox'>
-<p>
-<label>ID:</label>
-".$pageDetails['id']."
-</p>
-<p>
-<label>Name:</label>
-".$pageDetails['page']."
-</p>
-<p>
-<label>Private:</label>";
+				<form role='form' name='adminPage' action='".$_SERVER['PHP_SELF']."?id=".$pageId."' method='post'>
+					<input type='hidden' name='process' value='1'>
+							
+						<div class="panel panel-default">
+							<div class="panel-heading">Page Information</div>
+							<div class="panel-body">
+								<div class="form-group">
+									<label class="control-label">ID:</label>
+									<?php echo $pageDetails['id']; ?>
+								</div>
+								<div class="form-group">
+									<label class="control-label">Name:</label>
+									<?php echo $pageDetails['page']; ?>
+								</div>
+								<div class="form-group">
+									<label class="control-label">Private:</label>
+									<?php 
+									//Display private checkbox
+									if ($pageDetails['private'] == 1){
+										echo "<input type='checkbox' name='private' id='private' value='Yes' checked>";
+									}
+									else {
+										echo "<input type='checkbox' name='private' id='private' value='Yes'>";
+									}
+									?>
+								</div>
+							</div>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-heading">Page Access</div>
+							<div class="panel-body">
+								<div class="form-group">
+									<label class="control-label">Remove Access:</label>
+									<?php 
+									//Display list of permission levels with access
+									foreach ($permissionData as $v1) {
+										if(isset($pagePermissions[$v1['id']])){
+											echo "<div class='checkbox'>";
+												echo "<label><input type='checkbox' name='removePermission[".$v1['id']."]' id='removePermission[".$v1['id']."]' value='".$v1['id']."'> ".$v1['name']."</label>";
+											echo "</div>";
+										}
+									}
+									?>
+									
+								</div>
+								<div class="form-group">
+									<label class="control-label">Add Access:</label>
+									<?php 
+									//Display list of permission levels without access
+									foreach ($permissionData as $v1) {
+										if(!isset($pagePermissions[$v1['id']])){
+											echo "<div class='checkbox'>";
+												echo "<label><input type='checkbox' name='addPermission[".$v1['id']."]' id='addPermission[".$v1['id']."]' value='".$v1['id']."'> ".$v1['name']."</label>";
+											echo "</div>";
+										}
+									}
+									?>
+								</div>
+							</div>
+						</div>
+					<input class="btn btn-success btn-block" type='submit' value='Update' class='submit' />
+				</form>
+            </div><!-- end col -->
+        </div><!-- end row -->
+    </div><!-- end container -->
 
-//Display private checkbox
-if ($pageDetails['private'] == 1){
-	echo "<input type='checkbox' name='private' id='private' value='Yes' checked>";
-}
-else {
-	echo "<input type='checkbox' name='private' id='private' value='Yes'>";
-}
+    <br /><br />
 
-echo "
-</p>
-</div></td><td>
-<h3>Page Access</h3>
-<div id='regbox'>
-<p>
-Remove Access:";
+    <!-- INCLUDE BS STICKY FOOTER -->
+    <?php include('templates/bs-footer.php'); ?>
 
-//Display list of permission levels with access
-foreach ($permissionData as $v1) {
-	if(isset($pagePermissions[$v1['id']])){
-		echo "<br><input type='checkbox' name='removePermission[".$v1['id']."]' id='removePermission[".$v1['id']."]' value='".$v1['id']."'> ".$v1['name'];
-	}
-}
+    <!-- jQuery Version 1.11.1 -->
+    <script src="js/jquery.js"></script>
 
-echo"
-</p><p>Add Access:";
-
-//Display list of permission levels without access
-foreach ($permissionData as $v1) {
-	if(!isset($pagePermissions[$v1['id']])){
-		echo "<br><input type='checkbox' name='addPermission[".$v1['id']."]' id='addPermission[".$v1['id']."]' value='".$v1['id']."'> ".$v1['name'];
-	}
-}
-
-echo"
-</p>
-</div>
-</td>
-</tr>
-</table>
-<p>
-<label>&nbsp;</label>
-<input type='submit' value='Update' class='submit' />
-</p>
-</form>
-</div>
-<div id='bottom'></div>
-</div>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
 </body>
-</html>";
-
-?>
+</html>
