@@ -179,25 +179,25 @@ $permissionData = fetchAllPermissions(); //Retrieve list of all permission level
     		<div class="col-sm-9">
 				<!-- echo resultBlock($errors,$successes); -->
 				<?php echo "<form role='form' name='adminConfiguration' action='".$_SERVER['PHP_SELF']."' method='post'>"; ?>
-					<p>
+					<div class="form-group">
 						<label class="control-label">Website Name:</label>
 						<?php echo "<input class='form-control' type='text' name='settings[".$settings['website_name']['id']."]' value='".$websiteName."' />"; ?>
-					</p>
-					<p>
+					</div>
+					<div class="form-group">
 						<label class="control-label">Website URL:</label>
 						<?php echo "<input class='form-control' type='text' name='settings[".$settings['website_url']['id']."]' value='".$websiteUrl."' />"; ?>
-					</p>
-					<p>
+					</div>
+					<div class="form-group">
 						<label class="control-label">Email:</label>
 						<?php echo "<input class='form-control' type='text' name='settings[".$settings['email']['id']."]' value='".$emailAddress."' />"; ?>
-					</p>
-					<p>
+					</div>
+					<div class="form-group">
 						<label class="control-label">Activation Threshold:</label>
 						<?php echo "<input class='form-control' type='text' name='settings[".$settings['resend_activation_threshold']['id']."]' value='".$resend_activation_threshold."' />"; ?>
-					</p>
-					<p>
+					</div>
+					<div class="form-group">
 						<label class="control-label">Language:</label>
-						<?php echo "<select name='settings[".$settings['language']['id']."]'>";
+						<?php echo "<select class='form-control' name='settings[".$settings['language']['id']."]'>";
 
 						//Display language options
 						foreach ($languages as $optLang){
@@ -211,10 +211,10 @@ $permissionData = fetchAllPermissions(); //Retrieve list of all permission level
 						?>
 
 						</select>
-					</p>
-					<p>
+					</div>
+					<div class="form-group">
 						<label class="control-label">Email Activation:</label>
-						<?php echo "<select name='settings[".$settings['activation']['id']."]'>";
+						<?php echo "<select class='form-control' name='settings[".$settings['activation']['id']."]'>";
 
 						//Display email activation options
 						if ($emailActivation == "true"){
@@ -231,10 +231,10 @@ $permissionData = fetchAllPermissions(); //Retrieve list of all permission level
 						}
 
 						?>
-					</p>
-					<p>
+					</div>
+					<div class="form-group">
 						<label class="control-label">Template:</label>
-						<?php echo "<select name='settings[".$settings['template']['id']."]'>";
+						<?php echo "<select class='form-control' name='settings[".$settings['template']['id']."]'>";
 
 						//Display template options
 						foreach ($templates as $temp){
@@ -248,7 +248,7 @@ $permissionData = fetchAllPermissions(); //Retrieve list of all permission level
 						?>
 
 						</select>
-					</p>
+					</div>
 					<input class='btn btn-success' type='submit' name='Submit' value='Submit' />
 				</form>
 
