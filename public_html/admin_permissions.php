@@ -36,54 +36,92 @@ if(!empty($_POST)) {
 }//form posted
 
 $permissionData = fetchAllPermissions(); //Retrieve list of all permission levels
-
-require_once("models/header.php");
-
-echo "
-<body>
-<div id='wrapper'>
-<div id='top'><div id='logo'></div></div>
-<div id='content'>
-<h1>UserCake</h1>
-<h2>Admin Permissions</h2>
-<div id='left-nav'>";
-
-include("left-nav.php");
-
-echo "
-</div>
-<div id='main'>";
-
-echo resultBlock($errors,$successes);
-
-echo "
-<form name='adminPermissions' action='".$_SERVER['PHP_SELF']."' method='post'>
-<table class='admin'>
-<tr>
-<th>Delete</th><th>Permission Name</th>
-</tr>";
-
-//List each permission level
-foreach ($permissionData as $v1) {
-	echo "
-	<tr>
-	<td><input type='checkbox' name='delete[".$v1['id']."]' id='delete[".$v1['id']."]' value='".$v1['id']."'></td>
-	<td><a href='admin_permission.php?id=".$v1['id']."'>".$v1['name']."</a></td>
-	</tr>";
-}
-
-echo "
-</table>
-<p>
-<label>Permission Name:</label>
-<input type='text' name='newPermission' />
-</p>
-<input type='submit' name='Submit' value='Submit' />
-</form>
-</div>
-<div id='bottom'></div>
-</div>
-</body>
-</html>";
-
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<!-- INCLUDE BS HEADER INFO -->
+	<?php include('templates/bs-head.php'); ?>
+
+    <title>Welcome!</title>
+</head>
+<body>
+	<!-- IMPORT NAVIGATION -->
+	<?php include('templates/bs-nav.php'); ?>
+
+    <!-- HEADER -->
+    <div class="container-fluid gray">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h1>Account</h1>
+            </div>
+        </div><!-- /.row -->
+    </div><!-- /.container -->
+
+    <br /><br />
+
+    <div class="container">
+    	<div class="row">
+	    	<div class="col-sm-3">
+		    	<ul class="nav nav-pills nav-stacked">
+				  	<li role="presentation"><a href="account.php">Home</a></li>
+				  	<li role="presentation"><a href="user_settings.php">User Settings</a></li>
+				  	<?php
+				  	//Links for permission level 2 (default admin)
+					if ($loggedInUser->checkPermission(array(2))): ?>
+						<li role='presentation'><a href='admin_configuration.php'>Admin Configuration</a></li>
+						<li role='presentation'><a href='admin_users.php'>Admin Users</a></li>
+						<li class="active" role='presentation'><a href='admin_permissions.php'>Admin Permissions</a></li>
+						<li role='presentation'><a href='admin_pages.php'>Admin Pages</a></li>
+					<?php endif; ?>
+				</ul>
+	    	</div>
+
+    		<!-- Right side content --> 
+    		<div class="col-sm-9">
+				<!-- echo resultBlock($errors,$successes); -->
+				<?php echo "<form role='form' name='adminPermissions' action='".$_SERVER['PHP_SELF']."' method='post'>"; ?>
+					<table class='table admin'>
+					<tr>
+						<th>Delete</th><th>Permission Name</th>
+					</tr>
+
+					<?php
+						//List each permission level
+						foreach ($permissionData as $v1) {
+							echo "
+							<tr>
+							<td><input type='checkbox' name='delete[".$v1['id']."]' id='delete[".$v1['id']."]' value='".$v1['id']."'></td>
+							<td><a href='admin_permission.php?id=".$v1['id']."'>".$v1['name']."</a></td>
+							</tr>";
+						}
+					?>
+
+					</table>
+					<div class="form-group"> 
+						<label class="control-label">New Permission:</label>
+						<input class="form-control" type='text' name='newPermission' placeholder='Name'/>
+					</div>
+
+					<input class="btn btn-primary" type='submit' name='Submit' value='Submit' />
+
+				</form>
+    		</div> <!-- end col -->
+		</div>
+	</div>
+
+    <!-- INCLUDE BS STICKY FOOTER -->
+    <?php include('templates/bs-footer.php'); ?>
+
+    <!-- jQuery Version 1.11.1 -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+</html>
+
+

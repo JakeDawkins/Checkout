@@ -181,7 +181,12 @@ $permissionData = fetchAllPermissions();
 				<?php 
 				echo resultBlock($errors,$successes);
 
+				echo "<a href=\"admin_users.php\"><span class=\"glyphicon glyphicon-chevron-left\"></span>&nbsp;&nbsp;Back to Users</a>"; 
+    			echo "<br /><br />";
+
 				echo "<form class='' role='form' name='adminUser' action='".$_SERVER['PHP_SELF']."?id=".$userId."' method='post'>"; ?>			
+		    		
+
 		    		<div class="panel panel-default">
 		    			<div class="panel-heading">
 							User Information
@@ -221,8 +226,12 @@ $permissionData = fetchAllPermissions();
 							</div>
 							<div class="form-group">
 								<label class="control-label">Activate:</label>
-								<?php echo "<input type='checkbox' name='activate' id='activate' value='activate'>";
-								
+								<?php 
+								echo "<div class=\"checkbox\">";
+  									echo "<label><input type='checkbox' name='activate' id='activate' value='activate'> Activate</label>";
+								echo "</div>";
+
+								//echo "<input type='checkbox' name='activate' id='activate' value='activate'>";								
 								} //end else ?>
 							</div>
 							<div class="form-group">
@@ -258,7 +267,11 @@ $permissionData = fetchAllPermissions();
 								//List of permission levels user is apart of
 								foreach ($permissionData as $v1) {
 									if(isset($userPermission[$v1['id']])){
-										echo "<br><input type='checkbox' name='removePermission[".$v1['id']."]' id='removePermission[".$v1['id']."]' value='".$v1['id']."'> ".$v1['name'];
+										echo "<div class=\"checkbox\">";
+		  									echo "<label><input type='checkbox' name='removePermission[".$v1['id']."]' id='removePermission[".$v1['id']."]' value='".$v1['id']."'> ".$v1['name']."</label>";
+										echo "</div>";						
+
+										//echo "<br><input type='checkbox' name='removePermission[".$v1['id']."]' id='removePermission[".$v1['id']."]' value='".$v1['id']."'> ".$v1['name'];
 									}
 								} ?>
 	    					</div>
@@ -268,14 +281,14 @@ $permissionData = fetchAllPermissions();
 									//List of permission levels user is not apart of
 									foreach ($permissionData as $v1) {
 										if(!isset($userPermission[$v1['id']])){
-											echo "<br><input type='checkbox' name='addPermission[".$v1['id']."]' id='addPermission[".$v1['id']."]' value='".$v1['id']."'> ".$v1['name'];
+										echo "<div class=\"checkbox\">";
+		  									echo "<label><input type='checkbox' name='removePermission[".$v1['id']."]' id='removePermission[".$v1['id']."]' value='".$v1['id']."'> ".$v1['name']."</label>";
+										echo "</div>";	
+											//echo "<br><input type='checkbox' name='addPermission[".$v1['id']."]' id='addPermission[".$v1['id']."]' value='".$v1['id']."'> ".$v1['name'];
 										}
 									}
 								?>
 	    					</div>
-
-
-								
 	    				</div> <!-- end panel body --> 
 	    			</div> <!-- end panel --> 	
 	    			<input class="btn btn-success btn-block" type='submit' value='Update' class='submit' />
