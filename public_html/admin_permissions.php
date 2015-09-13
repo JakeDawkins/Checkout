@@ -83,7 +83,7 @@ $permissionData = fetchAllPermissions(); //Retrieve list of all permission level
     		<div class="col-sm-9">
 				<!-- echo resultBlock($errors,$successes); -->
 				<?php echo "<form role='form' name='adminPermissions' action='".$_SERVER['PHP_SELF']."' method='post'>"; ?>
-					<table class='table admin'>
+					<table class='table table-hover'>
 					<tr>
 						<th>Delete</th><th>Permission Name</th>
 					</tr>

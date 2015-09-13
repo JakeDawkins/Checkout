@@ -21,7 +21,26 @@
 	                   	if(isset($loggedInUser)){
        	                    echo '<li><a href="inventory.php">Inventory</a></li>';
                     		echo '<li><a href="checkouts.php">Checkouts</a></li>';
-	                   		echo '<li><a href="account.php">Account</a></li>';
+	                   		echo '<li class="dropdown">'; ?>
+                            <!-- <li class="dropdown"><a href="account.php">Account</a></li> -->
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li class="dropdown-header">User Options</li>
+                                    <li><a href="account.php">Account Home</a></li>
+                                    <li><a href="user_settings.php">User Settings</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li class="dropdown-header">Admin Options</li>
+                                    <?php
+                                    //Links for permission level 2 (default admin)
+                                    if ($loggedInUser->checkPermission(array(2))): ?>
+                                        <li><a href='admin_configuration.php'>Site Configuration</a></li>
+                                        <li><a href='admin_users.php'>Users</a></li>
+                                        <li><a href='admin_permissions.php'>Permissions</a></li>
+                                        <li><a href='admin_pages.php'>Pages</a></li>
+                                    <?php endif; ?>
+                                  </ul>
+                            <?php
+                            echo '</li>';
 	                   		echo '<li><a href="logout.php">Log Out</a></li>';
 						} else { echo '<li><a href="login.php">Log In</a></li>'; }
                     ?>
