@@ -159,10 +159,8 @@ $permissionData = fetchAllPermissions(); //Retrieve list of all permission level
 
     <div class="container">
     	<div class="row">
-
-    		<!-- Right side content --> 
     		<div class="col-sm-8 col-sm-offset-2">
-				<!-- echo resultBlock($errors,$successes); -->
+				<?php echo resultBlock($errors,$successes); ?>
 				<?php echo "<form role='form' name='adminConfiguration' action='".$_SERVER['PHP_SELF']."' method='post'>"; ?>
 					<div class="form-group">
 						<label class="control-label">Website Name:</label>

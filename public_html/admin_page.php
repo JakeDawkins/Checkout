@@ -94,8 +94,8 @@ $permissionData = fetchAllPermissions();
     <div class="container">
         <div class="row">
             <div class="col-sm-8 col-sm-offset-2">
-				<!-- echo resultBlock($errors,$successes); -->
-				<?php
+				<?php 
+				echo resultBlock($errors,$successes);
 				echo "<a href=\"admin_pages.php\"><span class=\"glyphicon glyphicon-chevron-left\"></span>&nbsp;&nbsp;Back to Pages</a>"; 
     			echo "<br /><br />";				
 

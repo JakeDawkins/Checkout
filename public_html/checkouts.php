@@ -111,11 +111,19 @@
 								printf("<td><a href='checkout.php?co_id=%s'>%s</a></td>",$checkout->getID(),$checkout->getTitle());
 								printf("<td class=\"hidden-xs\">%s</td>",$checkout->getDescription());
 								printf("<td>%s</td>",$personDetails['display_name']);
-								printf("<td>%s</td>",$checkout->getStart());
-								printf("<td>%s</td>",$checkout->getEnd());
+								$co_start = new DateTime($checkout->getStart());
+								$co_end = new DateTime($checkout->getEnd());
+								printf("<td>%s</td>",$co_start->format('m-d g:iA'));
+								printf("<td>%s</td>",$co_end->format('m-d g:iA'));
 								printf("<td class=\"hidden-xs hidden-sm\">");
+								$i = 0; //counter. Only want to show a few items
 								foreach($checkout->getGearList() as $gear){
-									printf("%s<br>",getGearName($gear));
+									if ($i > 4){
+										echo "...<br />"; 
+										break;
+									}
+									$i++;
+									printf("%s<br />",getGearName($gear));
 								}
 								printf("</td></tr>");
 							}

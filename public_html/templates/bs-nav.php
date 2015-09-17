@@ -10,7 +10,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Checkout</a>
+                <a class="navbar-brand" href="checkouts.php">Checkout</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
@@ -18,7 +18,7 @@
                     <?php
 	                    //Logged in: show all links
 	                    //logged out: show login link only
-	                   	if(isset($loggedInUser)){
+	                   	if(isset($loggedInUser->user_id)){
        	                    echo '<li><a href="inventory.php">Inventory</a></li>';
                     		echo '<li><a href="checkouts.php">Checkouts</a></li>';
 	                   		echo '<li class="dropdown">'; ?>
@@ -32,17 +32,21 @@
                                     <li class="dropdown-header">Admin Options</li>
                                     <?php
                                     //Links for permission level 2 (default admin)
-                                    if ($loggedInUser->checkPermission(array(2))): ?>
+                                    if ($loggedInUser->checkPermission(array(2))){ ?>
                                         <li><a href='admin_configuration.php'>Site Configuration</a></li>
                                         <li><a href='admin_users.php'>Users</a></li>
                                         <li><a href='admin_permissions.php'>Permissions</a></li>
                                         <li><a href='admin_pages.php'>Pages</a></li>
-                                    <?php endif; ?>
+                                    <?php } ?>
                                   </ul>
                             <?php
                             echo '</li>';
 	                   		echo '<li><a href="logout.php">Log Out</a></li>';
-						} else { echo '<li><a href="login.php">Log In</a></li>'; }
+						} 
+                        else { 
+                            echo '<li><a href="register.php">Register</a></li>';
+                            echo '<li><a href="login.php">Log In</a></li>'; 
+                        }
                     ?>
                     
                 </ul>

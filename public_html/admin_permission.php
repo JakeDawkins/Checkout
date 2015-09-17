@@ -32,10 +32,10 @@ if(!empty($_POST)){
 			
 			//Validate new name
 			if (permissionNameExists($permission)){
-				$errors[] = lang("ACCOUNT_PERMISSIONNAME_IN_USE", array($permission));
+				$errors[] = lang("PERMISSION_NAME_IN_USE", array($permission));
 			}
 			elseif (minMaxRange(1, 50, $permission)){
-				$errors[] = lang("ACCOUNT_PERMISSION_CHAR_LIMIT", array(1, 50));	
+				$errors[] = lang("PERMISSION_CHAR_LIMIT", array(1, 50));	
 			}
 			else {
 				if (updatePermissionName($permissionId, $permission)){
@@ -130,7 +130,7 @@ $pageData = fetchAllPages(); //Fetch all pages
     			<?php
 				echo "<a href=\"admin_permissions.php\"><span class=\"glyphicon glyphicon-chevron-left\"></span>&nbsp;&nbsp;Back to Permissions</a>"; 
     			echo "<br /><br />";
-
+				echo resultBlock($errors,$successes);
 	    		echo "<form role='form' name='adminPermission' action='".$_SERVER['PHP_SELF']."?id=".$permissionId."' method='post'>"; ?>
 	        		<div class="panel panel-default">
 			    		<div class="panel-heading">Permission Information</div>
@@ -228,21 +228,7 @@ $pageData = fetchAllPages(); //Fetch all pages
 		    		<input class="btn btn-success btn-block" type='submit' value='Update' class='submit' />
 		    	</form>
     		</div> <!-- end col -->
-
-
-
-
-<!-- echo resultBlock($errors,$successes); -->
-
-
-	<table class='admin'>
-		<tr>
-		<td>
-
-		</td>
-		</tr>
-	</table>
-
-	
-
-</form>
+		</div> <!-- end row -->
+	</div> <!-- end container -->
+</body>
+</html>

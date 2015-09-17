@@ -125,9 +125,8 @@ if(!empty($_POST))
     <div class="container">
     	<div class="row">
     		<div class="col-sm-8 col-sm-offset-2">
-
-				<?php echo resultBlock($errors,$successes); ?>
-				<?php echo "<form role=\"form\" name='updateAccount' action='".$_SERVER['PHP_SELF']."' method='post'>"; ?>
+				<?php echo resultBlock($errors,$successes);
+				echo "<form role=\"form\" name='updateAccount' action='".$_SERVER['PHP_SELF']."' method='post'>"; ?>
 					<div class="form-group">
 						<label class="control-label">Password:</label>
 						<input class="form-control" type='password' name='password' />

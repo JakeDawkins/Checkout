@@ -25,6 +25,8 @@
 		}
 
 		newGearItem($name,$category);
+		$added = true;
+
 	}
 
 	//------------------------ Validation ------------------------
@@ -73,6 +75,14 @@
     <div class="container">
 	    <div class="row">
 	        <div class="col-lg-12">
+    			<?php echo "<a href=\"inventory.php\"><span class=\"glyphicon glyphicon-chevron-left\"></span>&nbsp;&nbsp;Back to Inventory</a>"; ?>
+    			<br /><br />
+
+	        	<?php if($added){ //USER ADDED AN ITEM
+					echo "<div class=\"alert alert-success\" role=\"alert\">";
+					printf("New Item, %s, Added!",$name);
+					echo "</div>";	
+				}?>
 				<form role="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
 					
 					<div class="form-group">
@@ -101,5 +111,15 @@
 	        </div> <!-- END COL -->
         </div> <!-- END ROW --> 
     </div><!-- END CONTAINER -->
+
+    <!-- INCLUDE BS STICKY FOOTER -->
+    <?php include('templates/bs-footer.php'); ?>
+
+    <!-- jQuery Version 1.11.1 -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
 </body>
 </html>

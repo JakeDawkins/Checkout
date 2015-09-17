@@ -78,11 +78,15 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
+    			<?php echo "<a href=\"inventory.php\"><span class=\"glyphicon glyphicon-chevron-left\"></span>&nbsp;&nbsp;Back to Inventory</a>"; ?>
+    			<br /><br />
+
 				<?php if($added){ //USER ADDED A GROUP
 					echo "<div class=\"alert alert-success\" role=\"alert\">";
 					printf("New Gear Type, %s, Created!",$type);
 					echo "</div>";	
 				}?>
+
             	<div class="panel panel-default">
             		<div class="panel-heading">Add a New Gear Type</div>
             		<div class="panel-body">

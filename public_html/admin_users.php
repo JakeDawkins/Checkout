@@ -36,7 +36,6 @@ $userData = fetchAllUsers(); //Fetch information for all users
         <div class="row">
             <div class="col-lg-12 text-center">
                 <h1>Users</h1>
-                <!-- <p class="lead">A system for scheduling gear among a team</p> -->
             </div>
         </div><!-- end row -->
     </div><!-- end container -->
@@ -46,9 +45,9 @@ $userData = fetchAllUsers(); //Fetch information for all users
     <div class="container">
     	<div class="row">
 	    	<div class="col-sm-8 col-sm-offset-2">
-				<?php echo resultBlock($errors,$successes); ?>
+				<?php echo resultBlock($errors,$successes);
 				
-				<?php echo "<form name='adminUsers' action='".$_SERVER['PHP_SELF']."' method='post'>";?>
+				echo "<form name='adminUsers' action='".$_SERVER['PHP_SELF']."' method='post'>";?>
 				<table class="table table-hover" class='admin'>
 				<tr>
 					<th>Delete</th><th>Username</th><th>Display Name</th><th>Title</th><th>Last Sign In</th>

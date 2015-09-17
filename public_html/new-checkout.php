@@ -172,7 +172,10 @@
 								if (count($items) > 0){
 									printf("<h3>%s</h3>",$type['type']);
 									foreach($items as $item){
-										printf("<input type=\"checkbox\" name=\"gear[]\" value=\"%s\"> %s<br />",$item['gear_id'],$item['name']);
+										echo "<div class='checkbox'>";
+										//printf("<input type=\"checkbox\" name=\"gear[]\" value=\"%s\"> %s<br />",$item['gear_id'],$item['name']);
+										echo "<label><input type='checkbox' name='gear[]' value='" . $item['gear_id'] . "'> " . $item['name'] . "</label>";
+										echo "</div>";
 									}
 								}//if
 							}//foreach
