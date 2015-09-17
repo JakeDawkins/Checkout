@@ -92,7 +92,7 @@ class Checkout {
 		$database = new DB();
 		$checkouts = array();
 
-		$sql = "SELECT co_id, co_start FROM checkouts";
+		$sql = "SELECT co_id, co_start FROM checkouts ORDER BY co_start";
 		$results = $database->select($sql);
 
 		foreach ($results as $result) {
