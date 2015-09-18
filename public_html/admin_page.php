@@ -1,5 +1,4 @@
 <?php
-
 require_once("models/config.php");
 if (!securePage($_SERVER['PHP_SELF'])){die();}
 $pageId = $_GET['id'];
@@ -46,7 +45,6 @@ if(!empty($_POST)){
 		else {
 			$errors[] = lang("SQL_ERROR");
 		}
-
 	}
 
 	//Add permission level(s) access to page

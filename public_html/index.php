@@ -1,6 +1,5 @@
 <?php
-
-    header( 'Location: account.php' );
+    header( 'Location: checkouts.php' );
 	//USER CAKE
 	require_once("models/config.php");
 	if (!securePage($_SERVER['PHP_SELF'])){die();}
@@ -9,8 +8,6 @@
 	require_once('models/Gear.php');
 	require_once('models/Checkout.php');
 	require_once('models/Person.php');
-
-
 ?>
 
 <!DOCTYPE html>
@@ -37,7 +34,6 @@
     </div><!-- /.container -->
 
     <br /><br />
-
 
     <!-- INCLUDE BS STICKY FOOTER -->
     <?php include('templates/bs-footer.php'); ?>

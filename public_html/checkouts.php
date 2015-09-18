@@ -21,18 +21,17 @@
 		$year = date('y');
 	}
 
-
 	$start = $date;
 	$end = strtotime(date("Y-m-d", strtotime($date)) . "+1 month");
 	$end = date('Y-m-d', $end);
 
 	$checkouts = array();
 	$checkouts = Checkout::getCheckoutsInRange($start, $end);
-
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<!-- INCLUDE BS HEADER INFO -->
 	<?php include('templates/bs-head.php'); ?>
@@ -57,11 +56,8 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <!-- <form class="form-inline"> -->
-                <form class="form-inline" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="GET">
+                <form role="form" class="form-inline" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="GET">
                     <select class="push-bottom form-control" style="display: inline" name="year" id="sel1">
-                        <!-- <option value="2015" selected="selected">2015</option>
-                        <option value="2016">2016</option> -->
                         <option value="2015" <?php if ($year == 15) echo 'selected="selected"';?>>2015</option>
 						<option value="2016" <?php if ($year == 16) echo 'selected="selected"';?>>2016</option>
                     </select>
@@ -134,6 +130,8 @@
         </div>
     </div> <!-- /container -->
 
+    <br /><br />
+
     <!-- INCLUDE BS STICKY FOOTER -->
     <?php include('templates/bs-footer.php'); ?>
 
@@ -142,6 +140,5 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
-
 </body>
 </html>

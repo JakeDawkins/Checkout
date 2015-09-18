@@ -103,59 +103,47 @@
 						}
 					?>
 
-					<form class="" role="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-
+					<form role="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
 						<h2>Checkout Details</h2>
 						<hr />
-
 						<div class="form-group"> <!-- TITLE -->
 							<label class="control-label" for="title">Event Title:</label>  
 							<input type="text" class="form-control" name="title">
 						</div>
-						
 						<div class="form-group"> <!-- DESC -->
 							<label class="control-label" for="Description">Description:</label>  
 							<textarea class="form-control" name="description" rows="3"></textarea>
 						</div>
-
 						<div class="form-group"><!-- START -->
 							<label class="control-label" for="co_start">Start:</label>  
 							<input type="text" class="form-control" name="co_start" placeholder="yyyy-mm-dd hh:mm:ss">
 						</div>
-
 						<div class="form-group"> <!-- END -->
 							<label class="control-label" for="co_end">End:</label>  
 							<input type="text" class="form-control" name="co_end" placeholder="yyyy-mm-dd hh:mm:ss">
 						</div>
-
 						<input class="btn btn-success" type="submit" name="submit" value="Next">
 					</form>
-
 				<?php else: ?>
-
 					<h2>Checkout Details</h2>
 					<hr />
 
-					<form class="" role="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-
+					<form role="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
 						<div class="form-group"> <!-- TITLE -->
 							<label class="control-label" for="title">Event Title:</label>  
 							<input type="text" class="form-control" name="title" placeholder="<?php echo $title ?>" disabled />
 								<input type="hidden" name="title" value="<?php echo $title ?>" />
 						</div>
-
 						<div class="form-group"> <!-- DESC -->
 							<label class="control-label" for="Description">Description:</label>  
 							<textarea class="form-control" name="description" rows="3" disabled=""><?php echo $description ?></textarea>
 								<input type="hidden" name="description" value="<?php echo $description ?>" />
 						</div>
-
 						<div class="form-group"><!-- START -->
 							<label class="control-label" for="co_start">Start:</label>  
 							<input type="text" class="form-control" name="co_start" placeholder="<?php echo $co_start ?>" disabled />
 								<input type="hidden" name="co_start" value="<?php echo $co_start ?>" />
 						</div>
-
 						<div class="form-group"> <!-- END -->
 							<label class="control-label" for="co_end">End:</label>  
 							<input type="text" class="form-control" name="co_end" placeholder="<?php echo $co_end ?>" disabled />
@@ -183,11 +171,12 @@
 						<br />
 						<input class="btn btn-success" type="submit" name="submit" value="Finish">
 					</form>
-
 				<?php endif; ?>
             </div> <!-- /col -->
         </div><!-- /row --> 
     </div> <!-- /container -->
+
+    <br /><br />
 
     <!-- INCLUDE BS STICKY FOOTER -->
     <?php include('templates/bs-footer.php'); ?>
@@ -197,59 +186,5 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
-
 </body>
 </html>
-
-
-<!--
-
-RESULTS FROM TYPES
-[0] => Array
-	[gear_type_id] => 1
-	[type] => Camera
-[1] => Array
-	[gear_type_id] => 2
-	[type] => Lens
-
-
-RESULTS FROM AVAILABLE GEAR
-[0] => Array (
-	[gear_id] => 1
-	[gear_type_id] => 1
-	[name] => cam1 )
-[1] => Array (
-	[gear_id] => 2
-	[gear_type_id] => 1
-	[name] => cam2 )
-[2] => Array (
-	[gear_id] => 3
-	[gear_type_id] => 1
-	[name] => cam3 )
-[3] => Array (
-	[gear_id] => 4
-	[gear_type_id] => 1
-	[name] => cam4 )
-[4] => Array (
-	[gear_id] => 5
-	[gear_type_id] => 1
-	[name] => camera4-id )
-[5] => Array (
-	[gear_id] => 6
-	[gear_type_id] => 1
-	[name] => test-name )
-
-FORM SUBMIT
-Array (
-	[title] => title
-	[description] => desc
-	[co_start] => 2015-12-12 12:00:00
-	[co_end] => 2015-12-12 12:00:01
-	[gear] => Array (
-		[0] => 1
-		[1] => 2
-		[2] => 6 )
-	[next] => Next )
-
-
--->

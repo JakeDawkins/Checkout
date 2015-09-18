@@ -1,16 +1,13 @@
 <?php
-
 require_once("models/config.php");
 if (!securePage($_SERVER['PHP_SELF'])){die();}
 
 //Forms posted
-if(!empty($_POST))
-{
+if(!empty($_POST)) {
 	$deletions = $_POST['delete'];
 	if ($deletion_count = deleteUsers($deletions)){
 		$successes[] = lang("ACCOUNT_DELETIONS_SUCCESSFUL", array($deletion_count));
-	}
-	else {
+	} else {
 		$errors[] = lang("SQL_ERROR");
 	}
 }
@@ -50,7 +47,11 @@ $userData = fetchAllUsers(); //Fetch information for all users
 				echo "<form name='adminUsers' action='".$_SERVER['PHP_SELF']."' method='post'>";?>
 				<table class="table table-hover" class='admin'>
 				<tr>
-					<th>Delete</th><th>Username</th><th>Display Name</th><th>Title</th><th>Last Sign In</th>
+					<th>Delete</th>
+					<th>Username</th>
+					<th>Display Name</th>
+					<th>Title</th>
+					<th>Last Sign In</th>
 				</tr>
 
 				<?php 
@@ -87,6 +88,8 @@ $userData = fetchAllUsers(); //Fetch information for all users
 		</div>
 	</div> <!-- end container -->
 
+	<br /><br />
+
     <!-- INCLUDE BS STICKY FOOTER -->
     <?php include('templates/bs-footer.php'); ?>
 
@@ -95,6 +98,5 @@ $userData = fetchAllUsers(); //Fetch information for all users
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
-
 </body>
 </html>

@@ -107,6 +107,28 @@ class Checkout {
 		return $checkouts;
 	}
 
+	public static function getCheckoutsInRangeForPerson($person_id, $start, $end){
+		$database = new DB();
+		$checkouts = array();
+
+		$sql = "SELECT co_id, co_start FROM checkouts WHERE person_id='$person_id' ORDER BY co_start";
+		$results = $database->select($sql);
+
+		foreach ($results as $result) {
+			if($result['co_start'] > $start && $result['co_start'] < $end){
+				$newCO = new Checkout();
+				$newCO->retrieveCheckout($result['co_id']);
+				$checkouts[] = $newCO;
+				//printf("%s",$newCO->printObject()); //check construction
+			}
+		}//foreach
+		
+		return $checkouts;
+
+
+
+	}
+
 	//get the checkout's related information from the db
 	public function retrieveCheckout($co_id){
 		$database = new DB();

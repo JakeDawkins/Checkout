@@ -1,9 +1,4 @@
 <?php
-	/*
-		NEED TO ADD A NOTIFIER THAT CHECKOUT
-		HAS BEEN DELETED
-	*/
-
 	//USER CAKE
 	require_once("models/config.php");
 	if (!securePage($_SERVER['PHP_SELF'])){die();}
@@ -39,7 +34,6 @@
 			$gearTypes[] = $type;
 		}
 	}//foreach
-
 ?>
 
 <!DOCTYPE html>
@@ -60,12 +54,11 @@
         <div class="row">
             <div class="col-lg-12 text-center">
                 <h1><?php printf("%s",$checkout->getTitle()); ?></h1>
-                <!-- <p class="lead">A system for scheduling gear among a team</p> -->
             </div>
         </div><!-- /.row -->
     </div><!-- /.container -->
 
-    <br />
+    <br /><br />
 
     <div class="container">
     	<div class="row">
@@ -186,6 +179,8 @@
     	</div><!-- END ROW -->
     </div>
 
+    <br /><br />
+
     <!-- INCLUDE BS STICKY FOOTER -->
     <?php include('templates/bs-footer.php'); ?>
 
@@ -194,6 +189,5 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
-
 </body>
 </html>

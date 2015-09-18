@@ -1,5 +1,4 @@
 <?php
-
 require_once("models/config.php");
 if (!securePage($_SERVER['PHP_SELF'])){die();}
 
@@ -96,6 +95,8 @@ $permissionData = fetchAllPermissions(); //Retrieve list of all permission level
 		</div>
 	</div>
 
+	<br /><br />
+
     <!-- INCLUDE BS STICKY FOOTER -->
     <?php include('templates/bs-footer.php'); ?>
 
@@ -104,8 +105,5 @@ $permissionData = fetchAllPermissions(); //Retrieve list of all permission level
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
-
 </body>
 </html>
-
-

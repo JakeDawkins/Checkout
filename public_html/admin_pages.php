@@ -1,5 +1,4 @@
 <?php
-
 require_once("models/config.php");
 if (!securePage($_SERVER['PHP_SELF'])){die();}
 
@@ -17,7 +16,7 @@ foreach ($pages as $page){
 
 //Enter new pages in DB if found
 if (count($creations) > 0) {
-	createPages($creations)	;
+	createPages($creations);
 }
 
 if (count($dbpages) > 0){
@@ -45,7 +44,7 @@ $dbpages = fetchAllPages();
 	<!-- INCLUDE BS HEADER INFO -->
 	<?php include('templates/bs-head.php'); ?>
 
-    <title>Welcome!</title>
+    <title>Pages</title>
 </head>
 <body>
 	<!-- IMPORT NAVIGATION -->
@@ -111,22 +110,3 @@ $dbpages = fetchAllPages();
     <script src="js/bootstrap.min.js"></script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

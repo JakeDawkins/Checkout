@@ -34,7 +34,6 @@
 	if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['gear'])) {
 		//create checkout object
 		$co = new Checkout();
-
 		$co->setTitle($title);
 		$co->setPerson($loggedInUser->user_id);
 		$co->setStart($co_start);
@@ -68,8 +67,6 @@
 			$displayGear = false;
 		}
 	} //if submitted
-
-
 ?>
 
 <!DOCTYPE html>

@@ -1,5 +1,4 @@
 <?php
-
 require_once("models/config.php");
 if (!securePage($_SERVER['PHP_SELF'])){die();}
 $permissionId = $_GET['id'];
@@ -13,7 +12,6 @@ $permissionDetails = fetchPermissionDetails($permissionId); //Fetch information 
 
 //Forms posted
 if(!empty($_POST)){
-	
 	//Delete selected permission level
 	if(!empty($_POST['delete'])){
 		$deletions = $_POST['delete'];
@@ -23,9 +21,7 @@ if(!empty($_POST)){
 		else {
 			$errors[] = lang("SQL_ERROR");	
 		}
-	}
-	else
-	{
+	} else {
 		//Update permission level name
 		if($permissionDetails['name'] != $_POST['name']) {
 			$permission = trim($_POST['name']);
@@ -90,7 +86,7 @@ if(!empty($_POST)){
 				$errors[] = lang("SQL_ERROR");
 			}
 		}
-			$permissionDetails = fetchPermissionDetails($permissionId);
+		$permissionDetails = fetchPermissionDetails($permissionId);
 	}
 }
 
@@ -162,7 +158,6 @@ $pageData = fetchAllPages(); //Fetch all pages
 										echo "</div>";
 									}
 								}
-
 							?>
 
 							<hr />
@@ -230,5 +225,16 @@ $pageData = fetchAllPages(); //Fetch all pages
     		</div> <!-- end col -->
 		</div> <!-- end row -->
 	</div> <!-- end container -->
+
+    <br /><br />
+
+    <!-- INCLUDE BS STICKY FOOTER -->
+    <?php include('templates/bs-footer.php'); ?>
+
+    <!-- jQuery Version 1.11.1 -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
 </body>
 </html>

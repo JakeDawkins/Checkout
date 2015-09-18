@@ -3,8 +3,6 @@
 	require_once("models/config.php");
 	if (!securePage($_SERVER['PHP_SELF'])){die();}
 
-	//require_once('model/Gear.php');
-	//require_once('model/Checkout.php');
 	require_once('models/Gear.php');
 	require_once('models/Form.php');
 
@@ -26,17 +24,7 @@
 
 		newGearItem($name,$category);
 		$added = true;
-
 	}
-
-	//------------------------ Validation ------------------------
-
-	//only check when submitted
-	if ($_SERVER["REQUEST_METHOD"] == "POST") { //submitted
-
-	} //if submitted
-
-
 ?>
 
 <!DOCTYPE html>
@@ -57,20 +45,11 @@
         <div class="row">
             <div class="col-lg-12 text-center">
                 <h1>New Gear Item</h1>
-                <!-- <p class="lead">A system for scheduling gear among a team</p> -->
             </div>
         </div><!-- /.row -->
     </div><!-- /.container -->
 
     <br /><br />
-
-	<?php
-		// if (isset($error)){
-		// 	echo '<p class="error">';
-		// 	if (isset($error['date'])) printf("%s<br />",$error['date']);
-		// 	echo '</p>';
-		// }
-	?>
 
     <div class="container">
 	    <div class="row">
@@ -112,6 +91,8 @@
         </div> <!-- END ROW --> 
     </div><!-- END CONTAINER -->
 
+    <br /><br />
+
     <!-- INCLUDE BS STICKY FOOTER -->
     <?php include('templates/bs-footer.php'); ?>
 
@@ -120,6 +101,5 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
-
 </body>
 </html>

@@ -29,8 +29,6 @@
 			}
 			$removed = true;
 		}
-		
-		//newGearItem($name,$category);
 	}
 
 	//------------------------ Validation ------------------------
@@ -39,8 +37,6 @@
 	if ($_SERVER["REQUEST_METHOD"] == "POST") { //submitted
 
 	} //if submitted
-
-
 ?>
 
 <!DOCTYPE html>
@@ -53,14 +49,6 @@
     <title>Edit Gear Types</title>
 </head>
 <body>
-
-	<?php
-		// if (isset($error)){
-		// 	echo '<p class="error">';
-		// 	if (isset($error['date'])) printf("%s<br />",$error['date']);
-		// 	echo '</p>';
-		// }
-	?>
 	<!-- IMPORT NAVIGATION -->
 	<?php include('templates/bs-nav.php'); ?>
 
@@ -69,12 +57,12 @@
         <div class="row">
             <div class="col-lg-12 text-center">
                 <h1>Edit Gear Types</h1>
-                <!-- <p class="lead">A system for scheduling gear among a team</p> -->
             </div>
         </div><!-- /.row -->
     </div><!-- /.container -->
 
     <br /><br />
+
     <div class="container">
         <div class="row">
             <div class="col-md-6">
@@ -130,6 +118,8 @@
             </div><!-- end col --> 
         </div><!-- /.row -->
     </div><!-- /.container -->
+
+    <br /><br />
 
     <!-- INCLUDE BS STICKY FOOTER -->
     <?php include('templates/bs-footer.php'); ?>

@@ -14,13 +14,7 @@ if (!securePage($_SERVER['PHP_SELF'])){die();}
     $end = date('Y-m-d', $end);
 
     $checkouts = array();
-    $checkouts = Checkout::getCheckoutsInRange($start, $end);
-    foreach($checkouts as $checkout){
-        if($checkout->getPerson() != $loggedInUser->user_id){
-            //remove from checkouts array if not checked out by user
-            unset($checkouts[$checkout]);
-        }
-    }
+    $checkouts = Checkout::getCheckoutsInRangeForPerson($loggedInUser->user_id, $start, $end);
 
 ?>
 
@@ -42,7 +36,6 @@ if (!securePage($_SERVER['PHP_SELF'])){die();}
         <div class="row">
             <div class="col-lg-12 text-center">
                 <h1>Account</h1>
-                <!-- <p class="lead">A system for scheduling gear among a team</p> -->
             </div>
         </div><!-- /.row -->
     </div><!-- /.container -->
@@ -52,9 +45,10 @@ if (!securePage($_SERVER['PHP_SELF'])){die();}
     <div class="container">
     	<div class="row">
 	    	<div class="col-sm-8 col-sm-offset-2">
-	    	<?php //echo "Hey, $loggedInUser->displayname. <br />This is an example secure page designed to demonstrate some of the basic features of UserCake. Just so you know, your title at the moment is $loggedInUser->title, and that can be changed in the admin panel. You registered this account on " . date("M d, Y", $loggedInUser->signupTimeStamp()) ?>
 	    	<h3>Upcoming Checkouts</h3>
             <br />
+            <!-- User has checkouts -->
+            <?php if(count($checkouts) != 0): ?>
                 <table class="table table-hover">
                     <thead>
                         <tr>
@@ -95,10 +89,20 @@ if (!securePage($_SERVER['PHP_SELF'])){die();}
                         ?>
                     </tbody>
                 </table>
+            <!-- User has no checkouts --> 
+            <?php else : ?>
+                <div class="alert alert-info">
+                    You don't have any checkouts assigned to you in the upcoming month.
+                    You can go <a href="checkouts.php">here</a> to browse other checkouts, or 
+                    <a href="new-checkout.php">here</a> to make a new checkout.
+                </div>
+            <?php endif; ?>
             </div>
     	</div>
     </div>
 
+    <br /><br />
+    
     <!-- INCLUDE BS STICKY FOOTER -->
     <?php include('templates/bs-footer.php'); ?>
 

@@ -1,5 +1,4 @@
 <?php
-
 require_once("models/config.php");
 if (!securePage($_SERVER['PHP_SELF'])){die();}
 
@@ -89,8 +88,7 @@ if(!empty($_POST))
 	//Validate new language selection
 	if ($newSettings[6] != $language) {
 		$newLanguage = $newSettings[6];
-		if(minMaxRange(1,150,$language))
-		{
+		if(minMaxRange(1,150,$language)){
 			$errors[] = lang("CONFIG_LANGUAGE_CHAR_LIMIT",array(1,150));
 		}
 		elseif (!file_exists($newLanguage)) {
@@ -106,8 +104,7 @@ if(!empty($_POST))
 	//Validate new template selection
 	if ($newSettings[7] != $template) {
 		$newTemplate = $newSettings[7];
-		if(minMaxRange(1,150,$template))
-		{
+		if(minMaxRange(1,150,$template)){
 			$errors[] = lang("CONFIG_TEMPLATE_CHAR_LIMIT",array(1,150));
 		}
 		elseif (!file_exists($newTemplate)) {
@@ -131,7 +128,6 @@ $languages = getLanguageFiles(); //Retrieve list of language files
 $templates = getTemplateFiles(); //Retrieve list of template files
 $permissionData = fetchAllPermissions(); //Retrieve list of all permission levels
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -239,6 +235,8 @@ $permissionData = fetchAllPermissions(); //Retrieve list of all permission level
 		</div> <!-- end row -->
 	</div><!-- end container -->
 
+	<br /><br />
+
     <!-- INCLUDE BS STICKY FOOTER -->
     <?php include('templates/bs-footer.php'); ?>
 
@@ -247,6 +245,5 @@ $permissionData = fetchAllPermissions(); //Retrieve list of all permission level
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
-
 </body>
-
+</html>

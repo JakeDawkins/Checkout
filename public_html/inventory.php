@@ -17,7 +17,6 @@
 			deleteGearItem($gearItem);
 		}
 	}
-
 ?>
 
 <!DOCTYPE html>
@@ -99,6 +98,8 @@
             </div>
         </div>
     </div> <!-- /container -->
+
+    <br /><br />
 
     <!-- INCLUDE BS STICKY FOOTER -->
     <?php include('templates/bs-footer.php'); ?>
