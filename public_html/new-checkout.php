@@ -114,13 +114,89 @@
 							<label class="control-label" for="Description">Description:</label>  
 							<textarea class="form-control" name="description" rows="3"></textarea>
 						</div>
-						<div class="form-group"><!-- START -->
-							<label class="control-label" for="co_start">Start:</label>  
-							<input type="text" class="form-control" name="co_start" placeholder="yyyy-mm-dd hh:mm:ss">
+						<div class="inline form-group"><!-- START -->
+							<label class="control-label" for="co_start">Start:</label>   -->
+							<!-- <input type="text" class="form-control" name="co_start" placeholder="yyyy-mm-dd hh:mm:ss"> -->
+							<select class="form-control" style="display: inline" name="start_month">
+								<option value="01">January</option>
+								<option value="02">February</option>
+								<option value="03">March</option>
+								<option value="04">April</option>
+								<option value="05">May</option>
+								<option value="06">June</option>
+								<option value="07">July</option>
+								<option value="08">August</option>
+								<option value="09">September</option>
+								<option value="10">October</option>
+								<option value="11">November</option>
+								<option value="12">December</option>
+							</select>
+							<select class="form-control" style="display: inline" name="start_day">
+					            <option value"01">01</option>
+					            <option value"02">02</option>
+					            <option value"03">03</option>
+					            <option value"04">04</option>
+					            <option value"05">05</option>
+					            <option value"06">06</option>
+					            <option value"07">07</option>
+					            <option value"08">08</option>
+					            <option value"09">09</option>
+					            <option value"10">10</option>
+					            <option value"11">11</option>
+					            <option value"12">12</option>
+					            <option value"13">13</option>
+					            <option value"14">14</option>
+					            <option value"15">15</option>
+					            <option value"16">16</option>
+					            <option value"17">17</option>
+					            <option value"18">18</option>
+					            <option value"19">19</option>
+					            <option value"20">20</option>
+					            <option value"21">21</option>
+					            <option value"22">22</option>
+					            <option value"23">23</option>
+					            <option value"24">24</option>
+					            <option value"25">25</option>
+					            <option value"26">26</option>
+					            <option value"27">27</option>
+					            <option value"28">28</option>
+					            <option value"29" id="29">29</option>
+					            <option value"30" id="30">30</option>
+					            <option value"31" id="31">31</option>
+							</select>
+							<select class="form-control" style="display: inline" name="start_year">
+								<option value="2015" <?php if ($year == 15) echo 'selected="selected"';?>>2015</option>
+								<option value="2016" <?php if ($year == 16) echo 'selected="selected"';?>>2016</option>
+							</select>
+							<select class="form-control" style="display: inline" name="start_hour">
+					            <option value"01">1</option>
+					            <option value"02">2</option>
+					            <option value"03">3</option>
+					            <option value"04">4</option>
+					            <option value"05">5</option>
+					            <option value"06">6</option>
+								<option value"07">7</option>
+					            <option value"08">8</option>
+					            <option value"09">9</option>
+					            <option value"10">10</option>
+					            <option value"11">11</option>
+					            <option value"12">12</option>
+							</select>
+							<select class="form-control" style="display: inline" name="start_min">
+
+
+
+							</select>
+							<select class="form-control" style="display: inline" name="start_ampm">
+
+
+
+
+							</select>
 						</div>
-						<div class="form-group"> <!-- END -->
-							<label class="control-label" for="co_end">End:</label>  
-							<input type="text" class="form-control" name="co_end" placeholder="yyyy-mm-dd hh:mm:ss">
+						<div class="inline form-group"> <!-- END -->
+							<label class="control-label" for="co_end">End:</label>   -->
+							<!-- <input type="text" class="form-control" name="co_end" placeholder="yyyy-mm-dd hh:mm:ss"> -->
 						</div>
 						<input class="btn btn-success" type="submit" name="submit" value="Next">
 					</form>
