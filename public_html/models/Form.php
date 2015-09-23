@@ -7,17 +7,4 @@ function test_input($data) {
 	return $data;
 }
 
-
-//------------------------ validation ------------------------
-
-function buildDateTime($y, $m, $d, $h, $min, $s){
-	return "$y-$m-$d $h:$min:$s";
-}
-
-
-function isDateTime($dateTime) {
-	return (bool)strtotime($dateTime);
-}
-
-
 ?>
