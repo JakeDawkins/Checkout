@@ -59,16 +59,18 @@
 					?>
                     <table class="table table-hover"> 
                         <colgroup>
-                            <col class="one-quarter">
-                            <col class="one-quarter">
-                            <col class="one-quarter">
-                            <col class="one-quarter">
+                            <col class="one-fifth">
+                            <col class="one-fifth">
+                            <col class="one-fifth">
+                            <col class="one-fifth">
+                            <col class="one-fifth">
                         </colgroup>
                         <thead>
                             <tr>
                                 <th class="hidden-xs hidden-sm">ID</th>
                                 <th>Name</th>
                                 <th>Last Checkout</th>
+                                <th class="text-center">Quantity</th>
                                 <th class="text-center">Delete</th>
                             </tr>
                         </thead>
@@ -76,7 +78,7 @@
                             <?php
 								foreach($gearList as $gear){
 									printf("<tr>");
-									printf("<td class=\"hidden-xs hidden-sm\">%s</td>",$gear['gear_id']);
+									printf("<td class='hidden-xs hidden-sm'>%s</td>",$gear['gear_id']);
 									printf("<td>%s</td>",$gear['name']);
 
 									$co_id = fetchLastCheckout($gear['gear_id']);
@@ -87,7 +89,8 @@
 									} else { //no last checkout
 										printf("<td>n/a</td>");
 									}
-									printf("<td class=\"text-center\"><a href=\"inventory.php?deleteGearItem=%s\"><span class=\"glyphicon glyphicon-remove\"></span></a></td>",$gear['gear_id']);	
+									printf("<td class='text-center'>%s</td>",$gear['qty']);
+									printf("<td class='text-center'><a href='inventory.php?deleteGearItem=%s'><span class='glyphicon glyphicon-remove'></span></a></td>",$gear['gear_id']);	
 									printf("</tr>");
 								}
 							?>

@@ -38,15 +38,31 @@ body {
 }
 
 /* -------- SIZES -------- */
+.one-eighth { width: 12.5%; }
+
+.one-fifth { width: 20%; }
+
 .one-quarter { width: 25%; }
 
 .one-third { width: 33.333%; }
 
+.three-eighths { width: 37.5%; }
+
+.two-fifths { width: 40%; }
+
 .one-half { width: 50%; }
+
+.three-fifths { width: 60%; }
 
 .two-thirds { width: 66.667%; }
 
+.five-eighths { width: 67.5%; }
+
 .three-quarters { width: 75%; }
+
+.four-fifths { width: 80%; }
+
+.seven-eighths { width: 87.5%; }
 
 .whole { width: 100%; }
 
