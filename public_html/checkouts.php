@@ -27,6 +27,12 @@
 
 	$checkouts = array();
 	$checkouts = Checkout::getCheckoutsInRange($start, $end);
+
+	//------------------------ messages ------------------------
+	if(isset($_GET['co_del'])){
+		$co_del = test_input($_GET['co_del']);
+		if ($co_del) $successes[] = lang("CO_DEL"); 
+	}
 ?>
 
 <!DOCTYPE html>
@@ -56,6 +62,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
+            	<?php echo resultBlock($errors,$successes); ?>
                 <form role="form" class="form-inline" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="GET">
                     <select class="push-bottom form-control" style="display: inline" name="year" id="sel1">
                         <option value="2015" <?php if ($year == 15) echo 'selected="selected"';?>>2015</option>

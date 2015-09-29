@@ -57,6 +57,15 @@ require_once('db.php');
 		$database->query($sql);
 	}
 
+//------------------------ modifiers ------------------------
+
+	//renames gear type with gear_id to newName
+	function renameGearType($gear_type_id, $newName){
+		$database = new DB();
+		$sql = "UPDATE gear_types SET type='$newName' WHERE gear_type_id='$gear_type_id'";
+		$database->query($sql);
+	}
+
 //------------------------ search functions ------------------------
 	function getGearName($gear_id){
 		$database = new DB();

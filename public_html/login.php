@@ -73,10 +73,10 @@ if(!empty($_POST)) {
 </head>
 <body>
 	<!-- IMPORT NAVIGATION -->
-	<?php include('templates/bs-nav.php'); ?>
+	<?php//include('templates/bs-nav.php'); ?>
 
     <!-- HEADER -->
-    <div class="container-fluid gray">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <h1>Login</h1>
@@ -88,7 +88,7 @@ if(!empty($_POST)) {
 
     <div class="container">
         <div class="row">
-            <div class="col-sm-8 col-sm-offset-2">
+            <div class="col-sm-6 col-sm-offset-3">
 				<?php echo resultBlock($errors,$successes);
 
 				echo "<form role='form' name='login' action='".$_SERVER['PHP_SELF']."' method='post'>"; ?>
@@ -101,6 +101,7 @@ if(!empty($_POST)) {
 						<input class="form-control" type='password' name='password' />
 					</div>
 					<input class="btn btn-success btn-block" type='submit' value='Login' class='submit' />
+					<a class="btn btn-primary btn-block" href="register.php">Register</a>
 				</form>
            </div>
         </div>
@@ -109,7 +110,7 @@ if(!empty($_POST)) {
     <br /><br />
 
     <!-- INCLUDE BS STICKY FOOTER -->
-    <?php include('templates/bs-footer.php'); ?>
+    <?php //include('templates/bs-footer.php'); ?>
 
     <!-- jQuery Version 1.11.1 -->
     <script src="js/jquery.js"></script>

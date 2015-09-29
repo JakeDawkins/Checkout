@@ -17,7 +17,7 @@
 		if($_GET['delete']){
 			Checkout::removeCheckout($co_id);
 			$deleted = true;
-			header("Location: checkouts.php");
+			header("Location: checkouts.php?co_del=true");
 		}
 	}
 

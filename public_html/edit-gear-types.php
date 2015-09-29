@@ -29,6 +29,13 @@
 			}
 			$removed = true;
 		}
+
+		if(!empty($_POST['rename'])){
+			$type = test_input($_POST['rename']);
+			$newName = test_input($_POST['newName']);
+			renameGearType($type, $newName);
+			$modified = true;
+		}
 	}
 
 	//------------------------ Validation ------------------------
@@ -88,7 +95,37 @@
 						</form>
             		</div>
             	</div><!-- end panel -->     
-            </div>
+				<?php if($modified){ //USER ADDED A GROUP
+					echo "<div class=\"alert alert-success\" role=\"alert\">";
+					echo "Gear type renamed successfully";
+					echo "</div>";	
+				}?>
+            	<div class="panel panel-default">
+		            <div class="panel-heading">
+		            	Rename Gear Types
+		            </div>
+		            <div class="panel-body">
+			            <form role="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+							<div class="form-group">
+								<label for="rename">Select a type to rename:</label>
+								<select class="form-control" id="rename" name="rename">
+									<?php
+										$types = getGearTypes();
+										foreach($types as $type){
+											printf("<option value=\"%s\">%s</option>",$type['gear_type_id'],$type['type']);
+										}
+									?>
+								</select>
+							</div>
+							<div class="form-group">
+								<label class="control-label" for="newName">Rename to:</label>
+								<input class="form-control" name="newName" type="text" />
+							</div>
+							<input class="btn btn-success" type="submit" name="submit" value="Submit" />
+						</form>
+		            </div>
+	            </div><!-- end panel -->
+            </div><!-- end col -->
             <div class="col-md-6">
 				<?php if($removed){ //USER REMOVED A GROUP
 					echo "<div class=\"alert alert-success\" role=\"alert\">";
