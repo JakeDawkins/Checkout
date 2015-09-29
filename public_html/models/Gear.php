@@ -101,9 +101,9 @@ require_once('db.php');
 			$results = $database->select($sql);
 			$type_id = $results[0]['gear_type_id'];//$row["gear_type_id"];
 
-			$sql = "SELECT * FROM gear WHERE gear_type_id='$type_id'";
+			$sql = "SELECT * FROM gear WHERE gear_type_id='$type_id' ORDER BY name";
 		} else { //type ID passed in
-			$sql = "SELECT * FROM gear WHERE gear_type_id='$type'";
+			$sql = "SELECT * FROM gear WHERE gear_type_id='$type' ORDER BY name";
 		}
 
 		return $database->select($sql);
@@ -188,7 +188,7 @@ require_once('db.php');
 	//returns an array of gear types in the DB.
 	function getGearTypes() {
 		$database = new DB();
-		$sql = "SELECT * FROM gear_types";
+		$sql = "SELECT * FROM gear_types ORDER BY type";
 		return $database->select($sql);
 	}
 
