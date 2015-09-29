@@ -6,23 +6,9 @@ require_once('db.php');
 	//inserts a new gear item into db
 	//	type: gear_type_id in gear_types table
 	//	qty: max qty in stock
-	//function newGearItem($name,$type,$qty) {
-	function newGearItem($name,$type) { //OLD DECLARATION
+	function newGearItem($name,$type,$qty) {
 		$database = new DB();
-
-		if (is_numeric($type)) {
-			//$sql = "INSERT INTO gear(name,gear_type_id,qty) VALUES('$name','$type','$qty')";
-			$sql = "INSERT INTO gear(name,gear_type_id) VALUES('$name','$type')"; //OLD
-			// printf("__%s__",$sql);
-		} else {
-			$sql = "SELECT gear_type_id FROM gear_types WHERE type='$type'";
-			// printf("__%s__",$sql);
-			$results = $database->select($sql);
-			$gear_type_id = $results[0]['gear_type_id'];
-			//$sql = "INSERT INTO gear(name,gear_type_id,qty) VALUES('$name','$gear_type_id','$qty')";
-			$sql = "INSERT INTO gear(name,gear_type_id) VALUES('$name','$gear_type_id')";
-			// printf("__%s__",$sql);
-		}
+		$sql = "INSERT INTO gear(name,gear_type_id,qty) VALUES('$name','$type','$qty')";
 		$database->query($sql);
 	}
 
@@ -66,6 +52,13 @@ require_once('db.php');
 		$database->query($sql);
 	}
 
+	//updates gear item quantities
+	function updateGearQty($gear_id, $qty){
+		$database = new DB();
+		$sql = "UPDATE gear SET qty='$qty' WHERE gear_id='$gear_id'";
+		$database->query($sql);
+	}
+
 //------------------------ search functions ------------------------
 	function getGearName($gear_id){
 		$database = new DB();
@@ -74,6 +67,7 @@ require_once('db.php');
 		return $results[0]['name'];
 	}
 
+	//returns the ID of the gear type, not the type name
 	function getGearType($gear_id){
 		$database = new DB();
 		$sql = "SELECT gear_type_id FROM gear WHERE gear_id='$gear_id'";
@@ -81,7 +75,8 @@ require_once('db.php');
 		return $results[0]['gear_type_id'];
 	}
 
-	function getGearQty($gear_id){
+	//get the total quantity of a gear item. Not affected by checkouts
+	function getTotalGearQty($gear_id){
 		$database = new DB();
 		$sql = "SELECT qty FROM gear WHERE gear_id='$gear_id'";
 		$results = $database->select($sql);

@@ -22,7 +22,8 @@
 			$category = newGearType($newCategory);
 		}
 
-		newGearItem($name,$category);
+		//TODO -- change default qty away from 1
+		newGearItem($name,$category,1);
 		$added = true;
 	}
 ?>
