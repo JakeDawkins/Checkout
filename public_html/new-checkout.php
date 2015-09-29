@@ -123,17 +123,11 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-xs-12">
-                <?php echo resultBlock($errors,$successes); ?>
-				<?php if($displayGear == false): ?>
-
-					<?php
-						if (isset($error)){
-							echo '<p class="error">';
-							if (isset($error['date'])) printf("%s<br />",$error['date']);
-							echo '</p>';
-						}
-					?>
+            <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
+            	<?php echo "<a href=\"checkouts.php\"><span class=\"glyphicon glyphicon-chevron-left\"></span>&nbsp;&nbsp;Back to Checkouts</a>";
+                echo "<br /><br />";
+                echo resultBlock($errors,$successes); 
+				if($displayGear == false): ?>
 
 					<form role="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
 						<h2>Checkout Details</h2>
@@ -358,10 +352,9 @@
 							foreach($types as $type){
 								$items = getAvailableGearWithType($type['gear_type_id'], $co_start, $co_end);
 								if (count($items) > 0){
-									printf("<h3>%s</h3>",$type['type']);
+									printf("<h4>%s</h4>",$type['type']);
 									foreach($items as $item){
 										echo "<div class='checkbox'>";
-										//printf("<input type=\"checkbox\" name=\"gear[]\" value=\"%s\"> %s<br />",$item['gear_id'],$item['name']);
 										echo "<label><input type='checkbox' name='gear[]' value='" . $item['gear_id'] . "'> " . $item['name'] . "</label>";
 										echo "</div>";
 									}

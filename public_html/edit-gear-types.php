@@ -72,7 +72,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-sm-6">
     			<?php echo "<a href=\"inventory.php\"><span class=\"glyphicon glyphicon-chevron-left\"></span>&nbsp;&nbsp;Back to Inventory</a>"; ?>
     			<br /><br />
 
@@ -90,7 +90,6 @@
 								<label class="control-label" for="type">New Type Name:</label>
 								<input class="form-control" name="type" type="text" />
 							</div>
-							<br />
 							<input class="btn btn-success" type="submit" name="submit" value="Submit" />
 						</form>
             		</div>
@@ -126,7 +125,7 @@
 		            </div>
 	            </div><!-- end panel -->
             </div><!-- end col -->
-            <div class="col-md-6">
+            <div class="col-sm-6">
 				<?php if($removed){ //USER REMOVED A GROUP
 					echo "<div class=\"alert alert-success\" role=\"alert\">";
 					printf("The following were removed:<br />",$type);
@@ -147,7 +146,6 @@
 									echo "</div>";
 								}
 							?>
-							<br />
 							<input class="btn btn-danger" type="submit" name="submit" value="Delete Selected">
 						</form>
             		</div>

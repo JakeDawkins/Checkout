@@ -53,7 +53,7 @@
 
     <div class="container">
 	    <div class="row">
-	        <div class="col-lg-12">
+	        <div class="col-sm-6 col-sm-offset-3">
     			<?php echo "<a href=\"inventory.php\"><span class=\"glyphicon glyphicon-chevron-left\"></span>&nbsp;&nbsp;Back to Inventory</a>"; ?>
     			<br /><br />
 
