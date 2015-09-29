@@ -13,7 +13,9 @@
 
 	//process each variable
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {
+		$submitted = true;
 		$name = test_input($_POST['name']);
+		$qty = test_input($_POST['qty']);
 		$category = test_input($_POST['category']);
 		$newCategory = test_input($_POST['newCategory']);
 
@@ -22,9 +24,15 @@
 			$category = newGearType($newCategory);
 		}
 
-		//TODO -- change default qty away from 1
-		newGearItem($name,$category,1);
-		$added = true;
+		if(empty($qty)) $qty = 1; //default
+
+		
+		//TODO...
+		//temp validation to prevent problems
+		if(!empty($name) && !empty($qty) && !empty($category) && is_numeric($qty)){
+			newGearItem($name,$category,$qty);
+			$added = true;
+		} else $added = false;
 	}
 ?>
 
@@ -58,16 +66,27 @@
     			<?php echo "<a href=\"inventory.php\"><span class=\"glyphicon glyphicon-chevron-left\"></span>&nbsp;&nbsp;Back to Inventory</a>"; ?>
     			<br /><br />
 
-	        	<?php if($added){ //USER ADDED AN ITEM
-					echo "<div class=\"alert alert-success\" role=\"alert\">";
-					printf("New Item, %s, Added!",$name);
-					echo "</div>";	
-				}?>
+	        	<?php 
+	        		if($submitted && $added){ //USER ADDED AN ITEM
+						echo "<div class=\"alert alert-success\" role=\"alert\">";
+						printf("New Item, %s, Added!",$name);
+						echo "</div>";	
+					} elseif($submitted && !$added) {
+						echo "<div class=\"alert alert-danger\" role=\"alert\">";
+						printf("Add failed. Check your input values");
+						echo "</div>";	
+					}
+				?>
 				<form role="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
 					
 					<div class="form-group">
 						<label class="control-label" for="name">Name:</label>
 						<input class="form-control" name="name" type="text" />
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="qty">Quantity:</label>
+						<input class="form-control" name="qty" type="text" placeholder="1"/>
 					</div>
 
 					<div class="form-group">
