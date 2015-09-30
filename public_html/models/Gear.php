@@ -163,14 +163,27 @@ require_once('db.php');
 	//lists the available quantity of any item. 
 	function availableQty($gear_id, $co_start, $co_end){
 		$database = new DB();
+		$remainingQty = getTotalGearQty($gear_id);
 
-		//list rentals in time range
+		//list rentals in the time range
 		$sql = "SELECT * FROM checkouts INNER JOIN co_gear ON checkouts.co_id = co_gear.co_id WHERE co_start < '$co_end' AND co_end > '$co_start'";
-
 		$results = $database->select($sql);
 
-		//TODO
+		//no restuls... item available
+		if(count($results) == 0){
+			return $remainingQty;
+		}
 
+		//results contain all checkouts in the given time range.
+		//check each checkout to see if it has the desired gear item in it
+		foreach ($results as $row){
+			if ($row['gear_id'] == $gear_id){
+				$remainingQty -= $row['qty'];
+			}
+		}
+
+		//no checkouts have that gear item listed.
+		return $remainingQty;
 	}
 
 

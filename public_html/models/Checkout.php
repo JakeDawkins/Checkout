@@ -173,7 +173,7 @@ class Checkout {
 			$database->query($sql);
 
 			//retrieve co_id from newly inserted checkout
-			$sql = "SELECT co_id FROM checkouts WHERE person_id='$this->person_id' AND co_start='$this->co_start' AND co_end='$this->co_end'";
+			$sql = "SELECT co_id FROM checkouts WHERE person_id='$this->person_id' AND co_start='$this->co_start' AND co_end='$this->co_end' AND description='$this->description'";
 			// printf("___%s<br>",$sql);
 			$results = $database->select($sql);
 			$this->co_id = $results[0]['co_id'];
