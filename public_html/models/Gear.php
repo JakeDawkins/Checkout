@@ -45,7 +45,14 @@ require_once('db.php');
 
 //------------------------ modifiers ------------------------
 
-	//renames gear type with gear_id to newName
+	//renames gear with gear_id to newName
+	function renameGear($gear_id, $newName){
+		$database = new DB();
+		$sql = "UPDATE gear SET name='$newName' WHERE gear_id='$gear_id'";
+		$database->query($sql);
+	}
+
+	//renames gear type with gear_type_id to newName
 	function renameGearType($gear_type_id, $newName){
 		$database = new DB();
 		$sql = "UPDATE gear_types SET type='$newName' WHERE gear_type_id='$gear_type_id'";
@@ -56,6 +63,13 @@ require_once('db.php');
 	function updateGearQty($gear_id, $qty){
 		$database = new DB();
 		$sql = "UPDATE gear SET qty='$qty' WHERE gear_id='$gear_id'";
+		$database->query($sql);
+	}
+
+	//changes the type of gear associated with a specific item ,$gear_id
+	function updateGearType($gear_id, $type){
+		$database = new DB();
+		$sql = "UPDATE gear SET gear_type_id='$type' WHERE gear_id='$gear_id'";
 		$database->query($sql);
 	}
 
