@@ -77,8 +77,10 @@
 
 							$personName = getPersonName($checkout->getPerson());
 							printf("<strong>Person:</strong> %s<br /><br />",$personName);
-							printf("<strong>Start Time:</strong> %s<br /><br />",$checkout->getStart());
-							printf("<strong>End Time:</strong> %s<br /><br />",$checkout->getEnd());
+							$co_start = new DateTime($checkout->getStart());
+							$co_end = new DateTime($checkout->getEnd());
+							printf("<strong>Start Time:</strong> %s<br /><br />",$co_start->format('m-d-y g:iA'));
+							printf("<strong>End Time:</strong> %s<br /><br />",$co_end->format('m-d-y g:iA'));
 							//printf("<a href=\"checkout.php?co_id=%s&delete=true\">Delete This Checkout</a>",$co_id);
 
     					?>
