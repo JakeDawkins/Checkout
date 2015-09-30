@@ -182,7 +182,7 @@ class Checkout {
 		//add the checkout gear relations
 		foreach($this->gearList as $gearItem){
 			//check to see if the item is available
-			if (isAvailable($gearItem,$this->co_start,$this->co_end)){
+			if (availableQty($gearItem,$this->co_start,$this->co_end) > 0){
 				$sql = "INSERT INTO co_gear(gear_id,co_id) VALUES('$gearItem','$this->co_id')";	
 				// printf("___%s<br>",$sql);
 				$database->query($sql);
