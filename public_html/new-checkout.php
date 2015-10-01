@@ -3,7 +3,6 @@
 	require_once("models/config.php");
 	if (!securePage($_SERVER['PHP_SELF'])){die();}
 
-	//require_once('model/Gear.php');
 	require_once('models/Checkout.php');
 	require_once('models/Form.php');
 
@@ -354,9 +353,21 @@
 								if (count($items) > 0){
 									printf("<h4>%s</h4>",$type['type']);
 									foreach($items as $item){
-										echo "<div class='checkbox'>";
-										echo "<label><input type='checkbox' name='gear[]' value='" . $item['gear_id'] . "'> " . $item['name'] . "</label>";
-										echo "</div>";
+										$qty = availableQty($item['gear_id'], $co_start, $co_end);
+										//echo "qty: " . $qty;
+										if($qty == 1){
+											echo "<div class='checkbox'>";
+											echo "<label><input type='checkbox' name='gear[]' value='" . $item['gear_id'] . "'> " . $item['name'] . "</label>";
+											echo "</div>";	
+										} else {
+											echo "qty: $qty<br />";
+											//echo "<select name='gear[]'>"
+											//for($i=0; $i < $qty; $i++){
+											//	echo
+											//}
+											//echo "</select>"
+										}
+										
 									}
 								}//if
 							}//foreach
