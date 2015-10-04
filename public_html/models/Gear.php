@@ -147,7 +147,6 @@ require_once('db.php');
         		$available_gear[] = $row;
     		}
 		}
-
 		return $available_gear;
 	}
 

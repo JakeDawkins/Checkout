@@ -10,44 +10,91 @@
 
 	//define variables and set to empty values
 	$co_start = $co_end = $title = $description = "";
-	$displayGear = false;
 
 	//form pt. 1 submitted
 	//process each variable
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {
-		$title = test_input($_POST['title']);
-		$description = test_input($_POST['description']);
-		$co_start = test_input($_POST['co_start']);	
-		$co_end = test_input($_POST['co_end']);
-
-		//start timedate
-		$start_day = test_input($_POST['start_day']);
-		$start_month = test_input($_POST['start_month']);
-		$start_year = test_input($_POST['start_year']);
-		$start_hour = test_input($_POST['start_hour']);
-		$start_min = test_input($_POST['start_min']);
-		$start_ampm = test_input($_POST['start_ampm']);
-		if ($start_ampm == "pm") $start_hour += 12;
-		else {
-			if ($start_hour == 12) $start_hour = 0;
+		//check what step we're on.
+		if(isset($_POST['step'])){
+			$step = test_input($_POST['step']);
 		}
 
-		//end timedate
-		$end_day = test_input($_POST['end_day']);
-		$end_month = test_input($_POST['end_month']);
-		$end_year = test_input($_POST['end_year']);
-		$end_hour = test_input($_POST['end_hour']);
-		$end_min = test_input($_POST['end_min']);
-		$end_ampm = test_input($_POST['end_ampm']);
-		if ($end_ampm == "pm") $end_hour += 12;
-		else {
-			if ($start_hour == 12) $start_hour = 0;
-		}
+		//step 1 submitted.
+		//time and date should be submitted, but datestring not formed.
+		if($step == 1){
+			$title = test_input($_POST['title']);
+			$description = test_input($_POST['description']);
 
-		if(!isset($_POST['gear'])){ //pt 1 submitted
+			//start timedate
+			$start_day = test_input($_POST['start_day']);
+			$start_month = test_input($_POST['start_month']);
+			$start_year = test_input($_POST['start_year']);
+			$start_hour = test_input($_POST['start_hour']);
+			$start_min = test_input($_POST['start_min']);
+			$start_ampm = test_input($_POST['start_ampm']);
+			if ($start_ampm == "pm") $start_hour += 12;
+			else {
+				if ($start_hour == 12) $start_hour = 0;
+			}
+
+			//end timedate
+			$end_day = test_input($_POST['end_day']);
+			$end_month = test_input($_POST['end_month']);
+			$end_year = test_input($_POST['end_year']);
+			$end_hour = test_input($_POST['end_hour']);
+			$end_min = test_input($_POST['end_min']);
+			$end_ampm = test_input($_POST['end_ampm']);
+			if ($end_ampm == "pm") $end_hour += 12;
+			else {
+				if ($start_hour == 12) $start_hour = 0;
+			}
+
 			$co_start = $start_year . "-" . $start_month . "-" . $start_day . " " . $start_hour . ":" . $start_min . ":00"; 	
 			$co_end = $end_year . "-" . $end_month . "-" . $end_day . " " . $end_hour . ":" . $end_min . ":00"; 
-		} else { //pt 2 submitted
+		} else if ($step == 2){ //step 2 submitted
+			//time and date string should be constructed.
+			//need to process gear list
+
+			//collect vars from step 1
+			$title = test_input($_POST['title']);
+			$description = test_input($_POST['description']);
+			$co_start = test_input($_POST['co_start']);	
+			$co_end = test_input($_POST['co_end']);
+
+			//construct a clean gear list
+			$gearList = array();
+			$gearToGetQtyFor = array();
+			foreach ($_POST['gear'] as $gearItem) {
+				$gearList[] = test_input($gearItem);
+
+				//if the available qty is > 1, we need to find out
+				//what qty the user wants to check out
+				if(availableQty($gearItem, $co_start, $co_end) > 1){
+					$gearToGetQtyFor[] = $gearItem;
+				}
+			}
+		} else if ($step == 3){ //step 3 submitted
+			//collect vars from step 1
+			$title = test_input($_POST['title']);
+			$description = test_input($_POST['description']);
+			$co_start = test_input($_POST['co_start']);	
+			$co_end = test_input($_POST['co_end']);
+
+			//construct a clean gear list
+			$gearList = array();
+			foreach ($_POST['gear'] as $gearItem) {
+				$gearList[] = test_input($gearItem);
+			}
+
+			//clean up gear qty array from post
+			$gearQty = array();
+			foreach ($_POST['gearQty'] as $qty) {
+				$gearQty[] = test_input($qty);
+			}
+
+			$i = 0; // to iterate thru gear qty array
+
+			//need to process quantities & finalize
 			//create checkout object
 			$co = new Checkout();
 
@@ -57,40 +104,41 @@
 			$co->setEnd($co_end);
 			$co->setDescription($description);
 
-			foreach ($_POST['gear'] as $gearItem) {
-				$cleanGearItem = test_input($gearItem);
-				$co->addToGearList($cleanGearItem);
+			foreach ($gearList as $gearItem) {
+				if(availableQty($gearItem, $co_start, $co_end) > 1){
+					$co->addToGearList($gearItem,$gearQty[$i]);
+					$i++;
+				} else {
+					$co->addToGearList($gearItem,1);	
+				}	
 			}
 
 			$co->finalizeCheckout();
 			$co_id = $co->getID();
 			header("Location: checkout.php?co_id=$co_id");
 		}
-	}
 
-	//need both start and end in order to list available gear
-	if(!empty($co_start) && !empty($co_end)) $displayGear = true;
+	}//end if POST
+
+	//increment step
+	$step++;
 
 	//------------------------ Validation ------------------------
 	//only check when submitted
 	if ($_SERVER["REQUEST_METHOD"] == "POST") { //submitted
 		if(empty($title)){
 			$errors[] = "Please enter a title";
-			$displayGear = false;
 		}
 		if (empty($description)){
 			$errors[] = "Please enter a description";
-			$displayGear = false;
 		}
 		if($co_start != $co_end){ //user modified start/end fields
 			if ($co_start > $co_end) {
 				//dates not in right order
 				$errors[] = "Date Error: The start date is after the end date";
-				$displayGear = false;
 			}
 		} else {
 			$errors[] = "Date Error: The start and end dates & times are the same";
-			$displayGear = false;
 		}
 	} //if submitted
 ?>
@@ -113,7 +161,6 @@
         <div class="row">
             <div class="col-lg-12 text-center">
                 <h1>New Checkout</h1>
-                <!-- <p class="lead">A system for scheduling gear among a team</p> -->
             </div>
         </div><!-- /.row -->
     </div><!-- /.container -->
@@ -126,10 +173,11 @@
             	<?php echo "<a href=\"checkouts.php\"><span class=\"glyphicon glyphicon-chevron-left\"></span>&nbsp;&nbsp;Back to Checkouts</a>";
                 echo "<br /><br />";
                 echo resultBlock($errors,$successes); 
-				if($displayGear == false): ?>
+				if($step == 1): ?>
 
 					<form role="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-						<h2>Checkout Details</h2>
+						<input type="hidden" name="step" value="1" />
+						<h2>Step 1: Event Details</h2>
 						<hr />
 						<div class="form-group"> <!-- TITLE -->
 							<label class="control-label" for="title">Event Title:</label>  
@@ -317,35 +365,24 @@
 						</div>
 						<input class="btn btn-success" type="submit" name="submit" value="Next">
 					</form>
-				<?php else: ?>
-					<h2>Checkout Details</h2>
+				<?php elseif($step == 2): ?>
+					<h2>Step 1: Event Details</h2>
+					<div class="alert alert-info" role="alert">
+						<?php
+							echo "Title: " . $title . "<br /> Description: " . $description . "<br />" . $co_start . " --> " . $co_end;
+						?>
+					</div>
+
+					<h2>Step 2: Select Gear</h2>
+					<p>Quantities (where applicable) are shown next to the name.<br />They will be chosen in step 3.</p>
 					<hr />
 
 					<form role="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-						<div class="form-group"> <!-- TITLE -->
-							<label class="control-label" for="title">Event Title:</label>  
-							<input type="text" class="form-control" name="title" placeholder="<?php echo $title ?>" disabled />
-								<input type="hidden" name="title" value="<?php echo $title ?>" />
-						</div>
-						<div class="form-group"> <!-- DESC -->
-							<label class="control-label" for="Description">Description:</label>  
-							<textarea class="form-control" name="description" rows="3" disabled=""><?php echo $description ?></textarea>
-								<input type="hidden" name="description" value="<?php echo $description ?>" />
-						</div>
-						<div class="form-group"><!-- START -->
-							<label class="control-label" for="co_start">Start:</label>  
-							<input type="text" class="form-control" name="co_start" placeholder="<?php echo $co_start ?>" disabled />
-								<input type="hidden" name="co_start" value="<?php echo $co_start ?>" />
-						</div>
-						<div class="form-group"> <!-- END -->
-							<label class="control-label" for="co_end">End:</label>  
-							<input type="text" class="form-control" name="co_end" placeholder="<?php echo $co_end ?>" disabled />
-								<input type="hidden" name="co_end" value="<?php echo $co_end ?>" />
-						</div>
-
-						<br />
-						<h2>Select Gear</h2>
-						<hr />
+						<input type="hidden" name="step" value="2" />
+						<input type="hidden" name="title" value="<?php echo $title ?>" />
+						<input type="hidden" name="description" value="<?php echo $description ?>" />
+						<input type="hidden" name="co_start" value="<?php echo $co_start ?>" />
+						<input type="hidden" name="co_end" value="<?php echo $co_end ?>" />
 
 						<?php
 							foreach($types as $type){
@@ -354,26 +391,62 @@
 									printf("<h4>%s</h4>",$type['type']);
 									foreach($items as $item){
 										$qty = availableQty($item['gear_id'], $co_start, $co_end);
-										//echo "qty: " . $qty;
-										if($qty == 1){
-											echo "<div class='checkbox'>";
-											echo "<label><input type='checkbox' name='gear[]' value='" . $item['gear_id'] . "'> " . $item['name'] . "</label>";
-											echo "</div>";	
-										} else {
-											echo "qty: $qty<br />";
-											//echo "<select name='gear[]'>"
-											//for($i=0; $i < $qty; $i++){
-											//	echo
-											//}
-											//echo "</select>"
+										echo "<div class='checkbox'>";
+										echo "<label><input type='checkbox' name='gear[]' value='" . $item['gear_id'] . "'> " . $item['name'];
+										if($qty > 1){
+											echo " (" . $qty . ")";
 										}
-										
+										echo "</label></div>";	
 									}
 								}//if
 							}//foreach
 						?>
 						<br />
-						<input class="btn btn-success" type="submit" name="submit" value="Finish">
+						<input class="btn btn-success" type="submit" name="submit" value="Next">
+					</form>
+				<?php elseif($step == 3): ?>
+					<h2>Step 1: Event Details</h2>
+					<div class="alert alert-info" role="alert">
+						<?php
+							echo "Title: " . $title . "<br /> Description: " . $description . "<br />" . $co_start . " --> " . $co_end;
+						?>
+					</div>
+					<h2>Step 2: Select Gear</h2>
+					<div class="alert alert-info" role="alert">
+						<?php
+							foreach($gearList as $gear){
+								$gearName = getGearName($gear);
+								echo $gearName . "<br />";
+							}
+						?>
+					</div>
+
+					<h3>Step 3: Choose Quantities</h3>
+					<form role="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+						<input type="hidden" name="step" value="3" />
+						<input type="hidden" name="title" value="<?php echo $title ?>" />
+						<input type="hidden" name="description" value="<?php echo $description ?>" />
+						<input type="hidden" name="co_start" value="<?php echo $co_start ?>" />
+						<input type="hidden" name="co_end" value="<?php echo $co_end ?>" />
+						<?php
+							//make sure gear list is resubmitted
+							foreach ($gearList as $gear) {
+								echo "<input type='hidden' name='gear[]' value='$gear' />";
+							}
+
+							//get quantities...
+							foreach($gearToGetQtyFor as $gear) {
+								$gearName = getGearName($gear);
+								echo $gearName . "&nbsp;&nbsp;&nbsp;";
+								echo "<select name='gearQty[]'>";
+								$qty = availableQty($gear, $co_start, $co_end);
+								for($i = 1; $i <= $qty; $i++){
+									echo "<option value='$i'>$i</option>";
+								}
+								echo "</select><br />";
+							}
+						?>
+						<input class="btn btn-success" type="submit" name="submit" value="Submit">
 					</form>
 				<?php endif; ?>
             </div> <!-- /col -->
