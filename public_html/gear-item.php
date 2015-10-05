@@ -14,7 +14,13 @@
         $name = getGearName($gear_id);
         $type = getGearType($gear_id);
         $qty = getTotalGearQty($gear_id);
+        if(isset($_GET['deleteGearItem'])){
+            $delGearItem = test_input($_GET['deleteGearItem']);    
+            deleteGearItem($delGearItem);
+            header("Location: inventory.php");
+        }
     }
+
 ?>
 
 <!DOCTYPE html>
@@ -55,7 +61,8 @@
                             echo "<strong>Name:</strong> " . $name . "<br /><br />";
                             echo "<strong>Type:</strong> " . gearTypeWithID($type) . "<br /><br />";
                             echo "<strong>Quantity:</strong> " . $qty . "<br /><br />";
-                            echo "<a class='btn btn-primary' href='edit-gear.php?gear_id=" . $gear_id . "'>Edit</a>";
+                            echo "<a class='btn btn-primary' href='edit-gear.php?gear_id=" . $gear_id . "'>Edit</a> &nbsp;&nbsp;";
+                            echo "<a class='btn btn-danger' href='gear-item.php?deleteGearItem=" . $gear_id . "'>Delete</a>"; 
                             //TODO 
                             //echo "<strong>Status:</strong> " . $gear_id . "<br />";
                         ?>

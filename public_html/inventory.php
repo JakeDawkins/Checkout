@@ -11,12 +11,6 @@
 
 	$types = getGearTypes();
 
-	if ($_SERVER["REQUEST_METHOD"] == "GET") {
-		if(isset($_GET['deleteGearItem'])){
-			$gearItem = test_input($_GET['deleteGearItem']);	
-			deleteGearItem($gearItem);
-		}
-	}
 ?>
 
 <!DOCTYPE html>
@@ -58,20 +52,21 @@
 							} else {
 					?>
                     <table class="table table-hover"> 
-                        <colgroup>
+                        <!-- <colgroup>
                             <col class="one-fifth">
                             <col class="one-fifth">
                             <col class="one-fifth">
                             <col class="one-fifth">
                             <col class="one-fifth">
-                        </colgroup>
+                            <col class="one-fifth">
+                        </colgroup> -->
                         <thead>
                             <tr>
                                 <th class="hidden-xs hidden-sm">ID</th>
                                 <th>Name</th>
+                                <th>Status</th>
                                 <th>Last Checkout</th>
                                 <th class="text-center">Quantity</th>
-                                <th class="text-center">Delete</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -80,6 +75,7 @@
 									printf("<tr>");
 									printf("<td class='hidden-xs hidden-sm'>%s</td>",$gear['gear_id']);
 									printf("<td><a href='gear-item.php?gear_id=%s'>%s</a></td>",$gear['gear_id'],$gear['name']);
+									echo "<td>" . statusString($gear['gear_id']) . "</td>";
 
 									$co_id = fetchLastCheckout($gear['gear_id']);
 									if(!empty($co_id)){
@@ -90,7 +86,6 @@
 										printf("<td>n/a</td>");
 									}
 									printf("<td class='text-center'>%s</td>",$gear['qty']);
-									printf("<td class='text-center'><a href='inventory.php?deleteGearItem=%s'><span class='glyphicon glyphicon-remove'></span></a></td>",$gear['gear_id']);	
 									printf("</tr>");
 								}
 							?>

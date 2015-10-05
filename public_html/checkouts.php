@@ -126,7 +126,7 @@
 										break;
 									}
 									$i++;
-									printf("%s<br />",getGearName($gear));
+									printf("%s<br />",getGearName($gear[0]));
 								}
 								printf("</td></tr>");
 							}

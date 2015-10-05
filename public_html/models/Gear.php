@@ -221,7 +221,13 @@ require_once('db.php');
 	//returns a string with current item status
 	function statusString($gear_id){
 		$now = date('Y-m-d h:m:s');
-		return availableQty($gear_id, $now, $now) . "/" . getTotalGearQty($gear_id) . " Available";
+		if(getTotalGearQty($gear_id) > 1){
+			return availableQty($gear_id, $now, $now) . "/" . getTotalGearQty($gear_id) . " Available";	
+		} else { //max 1 qty. Just display in stock or not.
+			if(availableQty($gear_id, $now, $now) == 1) return "In Stock";
+			else return "Out";
+		}
+		
 	}
 
 ?>
