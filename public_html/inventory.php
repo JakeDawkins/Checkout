@@ -79,7 +79,7 @@
 								foreach($gearList as $gear){
 									printf("<tr>");
 									printf("<td class='hidden-xs hidden-sm'>%s</td>",$gear['gear_id']);
-									printf("<td><a href='edit-gear.php?gear_id=%s'>%s</a></td>",$gear['gear_id'],$gear['name']);
+									printf("<td><a href='gear-item.php?gear_id=%s'>%s</a></td>",$gear['gear_id'],$gear['name']);
 
 									$co_id = fetchLastCheckout($gear['gear_id']);
 									if(!empty($co_id)){

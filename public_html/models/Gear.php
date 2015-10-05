@@ -209,4 +209,13 @@ require_once('db.php');
 		return $results[0]['co_id'];
 	}
 
+	//fetch a list of all checkouts containing this item
+	//reverse chronological order
+	function fetchCheckoutsWithGear($gear_id) {
+		$database = new DB();
+		$sql = "SELECT * FROM co_gear INNER JOIN checkouts ON co_gear.co_id = checkouts.co_id WHERE gear_id = '$gear_id' AND co_start < NOW() ORDER BY co_end DESC";
+		$results = $database->select($sql);
+		return $results;
+	}
+
 ?>
