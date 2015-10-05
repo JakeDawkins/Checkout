@@ -5,9 +5,9 @@
 	require_once('models/funcs.php'); //to fetch details about person
 	require_once('models/Person.php');
 
-	fetchCheckoutsWithGear(135);
-	echo "<br /><br />";	
-	fetchCheckoutsWithGear(136);
+	$str = statusString(136);
+	echo $str;
+
 ?>
 
 <!DOCTYPE html>

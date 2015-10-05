@@ -218,4 +218,10 @@ require_once('db.php');
 		return $results;
 	}
 
+	//returns a string with current item status
+	function statusString($gear_id){
+		$now = date('Y-m-d h:m:s');
+		return availableQty($gear_id, $now, $now) . "/" . getTotalGearQty($gear_id) . " Available";
+	}
+
 ?>
