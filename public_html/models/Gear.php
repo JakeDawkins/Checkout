@@ -73,6 +73,17 @@ require_once('db.php');
 		$database->query($sql);
 	}
 
+	function updateGearDisabled($gear_id, $state){
+		$database = new DB();
+		if($state == true || $state == 1){
+			$sql = "UPDATE gear SET isDisabled='1' WHERE gear_id='$gear_id'";
+		} else {
+			$sql = "UPDATE gear SET isDisabled='0' WHERE gear_id='$gear_id'";
+		}
+		
+		$database->query($sql);
+	}
+
 //------------------------ search functions ------------------------
 	function getGearName($gear_id){
 		$database = new DB();
@@ -220,14 +231,24 @@ require_once('db.php');
 
 	//returns a string with current item status
 	function statusString($gear_id){
+		if(isDisabled($gear_id)){
+			return "Disabled";
+		}
 		$now = date('Y-m-d h:m:s');
 		if(getTotalGearQty($gear_id) > 1){
 			return availableQty($gear_id, $now, $now) . "/" . getTotalGearQty($gear_id) . " Available";	
 		} else { //max 1 qty. Just display in stock or not.
 			if(availableQty($gear_id, $now, $now) == 1) return "In Stock";
 			else return "Out";
-		}
-		
+		}	
+	}
+
+	//checks whether the gear item has been disabled returns bool
+	function isDisabled($gear_id){
+		$database = new DB();
+		$sql = "SELECT * FROM gear WHERE gear_id = '$gear_id'";
+		$results = $database->select($sql);
+		return ($results[0]['isDisabled'] == 1);
 	}
 
 ?>

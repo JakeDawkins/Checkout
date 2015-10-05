@@ -18,6 +18,7 @@
         $oldName = getGearName($gear_id);
         $oldType = getGearType($gear_id);
         $oldQty = getTotalGearQty($gear_id);
+        $oldIsDisabled = isDisabled($gear_id);
     }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -28,6 +29,7 @@
         $qty = test_input($_POST['qty']);
         $type = test_input($_POST['type']);
         $newType = test_input($_POST['newType']);
+        $newIsDisabled = test_input($_POST['disabled']);
 
         //------------------------ name changes ------------------------
         if(!empty($name)){//user changed name
@@ -58,7 +60,16 @@
             updateGearType($gear_id, $type);
             $successes[] = "Updated gear type";
         }
-    }
+
+        //------------------------ disable state (always submits) ------------------------
+        if(isDisabled($gear_id) && !$newIsDisabled){
+            updateGearDisabled($gear_id,$newIsDisabled);
+            $successes[] = "Gear enabled for checkouts";
+        } else if(!isDisabled($gear_id) && $newIsDisabled){
+            updateGearDisabled($gear_id,$newIsDisabled);
+            $successes[] = "Gear disabled for checkouts";
+        }
+    }   
 ?>
 
 <!DOCTYPE html>
@@ -88,7 +99,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-6 col-sm-offset-3">
-                <?php echo "<a href=\"inventory.php\"><span class=\"glyphicon glyphicon-chevron-left\"></span>&nbsp;&nbsp;Back to Inventory</a>"; ?>
+                <?php echo "<a href='gear-item.php?gear_id=" . $gear_id . "'><span class='glyphicon glyphicon-chevron-left'></span>&nbsp;&nbsp;Back to Item Details</a>"; ?>
                 <br /><br />
                 <?php 
                     echo resultBlock($errors,$successes);
@@ -128,6 +139,14 @@
                         <label class="control-label" for="newType">Or create a new category:</label>
                         <input class="form-control" name="newType" type="text" />
                     </div>
+
+                    <div class="checkbox">
+                        <label class="control-label">
+                            <input type="checkbox" name="disabled" value="true" <?php if(isDisabled($gear_id)) echo "checked";?> />
+                            &nbsp;&nbsp;Disable</label>
+                    </div>
+                    <p><em>** For items with a quantity higher than 1, to disable single items, simply decrease the quantity.</em></p>
+                    <br />
 
                     <input class="btn btn-success" type="submit" name="submit" value="Submit" />
                 </form>
