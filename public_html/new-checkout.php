@@ -369,7 +369,10 @@
 					<h2>Step 1: Event Details</h2>
 					<div class="alert alert-info" role="alert">
 						<?php
-							echo "Title: " . $title . "<br /> Description: " . $description . "<br />" . $co_start . " --> " . $co_end;
+							echo "Title: " . $title . "<br /> Description: " . $description . "<br />"; 
+							$formattedStart = new DateTime($co_start);
+							$formattedEnd = new DateTime($co_end);
+							echo $formattedStart->format('m-d-y g:iA') . " <span class='glyphicon glyphicon-arrow-right'></span> " . $formattedEnd->format('m-d-y g:iA');
 						?>
 					</div>
 
@@ -408,7 +411,10 @@
 					<h2>Step 1: Event Details</h2>
 					<div class="alert alert-info" role="alert">
 						<?php
-							echo "Title: " . $title . "<br /> Description: " . $description . "<br />" . $co_start . " --> " . $co_end;
+							echo "Title: " . $title . "<br /> Description: " . $description . "<br />"; 
+							$formattedStart = new DateTime($co_start);
+							$formattedEnd = new DateTime($co_end);
+							echo $formattedStart->format('m-d-y g:iA') . " <span class='glyphicon glyphicon-arrow-right'></span> " . $formattedEnd->format('m-d-y g:iA');
 						?>
 					</div>
 					<h2>Step 2: Select Gear</h2>
@@ -446,6 +452,7 @@
 								echo "</select><br />";
 							}
 						?>
+						<br />
 						<input class="btn btn-success" type="submit" name="submit" value="Submit">
 					</form>
 				<?php endif; ?>
