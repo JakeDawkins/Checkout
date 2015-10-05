@@ -153,7 +153,7 @@ require_once('db.php');
 
 		foreach($results as $row) {
 			//check if in stock for dates
-    		if(availableQty($row['gear_id'],$co_start, $co_end) > 0){
+    		if(availableQty($row['gear_id'],$co_start, $co_end) > 0 && !isDisabled($row['gear_id'])){
         		//add object to return array if in stock
         		$available_gear[] = $row;
     		}
