@@ -5,9 +5,6 @@
 	require_once('models/funcs.php'); //to fetch details about person
 	require_once('models/Person.php');
 
-	$str = statusString(136);
-	echo $str;
-
 ?>
 
 <!DOCTYPE html>

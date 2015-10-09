@@ -3,7 +3,6 @@
 	require_once("models/config.php");
 	if (!securePage($_SERVER['PHP_SELF'])){die();}
 
-	//require_once('model/Gear.php');
 	require_once('models/Checkout.php');
 	require_once('models/Form.php');
 
@@ -11,202 +10,499 @@
 
 	//define variables and set to empty values
 	$co_start = $co_end = $title = $description = "";
-	$displayGear = false;
 
-	//see what checkout to edit and retrieve data
-	if ($_SERVER["REQUEST_METHOD"] == "GET"){
+	if ($_SERVER["REQUEST_METHOD"] == "GET") {
 		$co_id = test_input($_GET['co_id']);
-		$edit_co = new Checkout();
-		$edit_co->retrieveCheckout($co_id);
-		$edit_co->printObject();
+
+		$co = new Checkout();
+		$co->retrieveCheckout($co_id);
+
+		$co_start = $co->getStart();
+		$co_end = $co->getEnd();
+		$formattedStart = new DateTime($co_start);
+		$formattedEnd = new DateTime($co_end);
+		
+		$s_year = $formattedStart->format('Y');
+		$s_month = $formattedStart->format('m');
+		$s_day = $formattedStart->format('d'); 
+		$s_hour = $formattedStart->format('H');
+		$s_min = $formattedStart->format('i');
+
+		$e_year = $formattedEnd->format('Y');
+		$e_month = $formattedEnd->format('m');
+		$e_day = $formattedEnd->format('d'); 
+		$e_hour = $formattedEnd->format('H');
+		$e_min = $formattedEnd->format('i');
 	}
 
 	//form pt. 1 submitted
 	//process each variable
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {
-		$co_start = test_input($_POST['co_start']);
-		$co_end = test_input($_POST['co_end']);
-		$title = test_input($_POST['title']);
-		$description = test_input($_POST['description']);
-	}
-
-	//form's final version submitted. process checkout
-	if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['gear'])) {
-		//create checkout object
-		$co = new Checkout();
-		$co->setTitle($title);
-		$co->setPerson($loggedInUser->user_id);
-		$co->setStart($co_start);
-		$co->setEnd($co_end);
-		$co->setDescription($description);
-
-		foreach ($_POST['gear'] as $gearItem) {
-			$cleanGearItem = test_input($gearItem);
-			$co->addToGearList($cleanGearItem);
+		//check what step we're on.
+		if(isset($_POST['step'])){
+			$step = test_input($_POST['step']);
 		}
 
-		$co->finalizeCheckout();
-	}
+		//step 1 submitted.
+		//time and date should be submitted, but datestring not formed.
+		if($step == 1){
+			$title = test_input($_POST['title']);
+			$description = test_input($_POST['description']);
+			$co_id = test_input($_POST['co_id']);
 
-	//need both start and end in order to list available gear
-	if(!empty($co_start) && !empty($co_end)) $displayGear = true;
+			//start timedate
+			$start_day = test_input($_POST['start_day']);
+			$start_month = test_input($_POST['start_month']);
+			$start_year = test_input($_POST['start_year']);
+			$start_hour = test_input($_POST['start_hour']);
+			$start_min = test_input($_POST['start_min']);
+			$start_ampm = test_input($_POST['start_ampm']);
+			if ($start_ampm == "pm") $start_hour += 12;
+			else {
+				if ($start_hour == 12) $start_hour = 0;
+			}
+
+			//end timedate
+			$end_day = test_input($_POST['end_day']);
+			$end_month = test_input($_POST['end_month']);
+			$end_year = test_input($_POST['end_year']);
+			$end_hour = test_input($_POST['end_hour']);
+			$end_min = test_input($_POST['end_min']);
+			$end_ampm = test_input($_POST['end_ampm']);
+			if ($end_ampm == "pm") $end_hour += 12;
+			else {
+				if ($start_hour == 12) $start_hour = 0;
+			}
+
+			$co_start = $start_year . "-" . $start_month . "-" . $start_day . " " . $start_hour . ":" . $start_min . ":00"; 	
+			$co_end = $end_year . "-" . $end_month . "-" . $end_day . " " . $end_hour . ":" . $end_min . ":00"; 
+
+			//TODO -- see if we need to change anything
+			$co = new Checkout();
+			$co->retrieveCheckout($co_id);
+
+
+			if(!empty($title) && $co->getTitle() != $title){
+				$co->setTitle($title);
+				$successes[] = "Title updated successfully";
+			} 
+			if($co->getDescription() != $description){
+				$co->setDescription($description);
+				$successes[] = "Description updated successfully";
+			} 
+			if(!empty($co_start) && $co->getStart() != $co_start){
+				$co->setStart($co_start);
+				$successes[] = "Start time/date updated successfully";
+			} 
+			if(!empty($co_end) && $co->getEnd() != $co_end){
+				$co->setEnd($co_end);
+				$successes[] = "End time/date updated successfully";
+			} 
+		} else if ($step == 2){ //step 2 submitted
+			//time and date string should be constructed.
+			//need to process gear list
+
+			//collect vars from step 1
+			$title = test_input($_POST['title']);
+			$description = test_input($_POST['description']);
+			$co_start = test_input($_POST['co_start']);	
+			$co_end = test_input($_POST['co_end']);
+
+			//construct a clean gear list
+			$gearList = array();
+			$gearToGetQtyFor = array();
+			foreach ($_POST['gear'] as $gearItem) {
+				$gearList[] = test_input($gearItem);
+
+				//if the available qty is > 1, we need to find out
+				//what qty the user wants to check out
+				if(availableQty($gearItem, $co_start, $co_end) > 1){
+					$gearToGetQtyFor[] = $gearItem;
+				}
+			}
+		} else if ($step == 3){ //step 3 submitted
+			//collect vars from step 1
+			$title = test_input($_POST['title']);
+			$description = test_input($_POST['description']);
+			$co_start = test_input($_POST['co_start']);	
+			$co_end = test_input($_POST['co_end']);
+
+			//construct a clean gear list
+			$gearList = array();
+			foreach ($_POST['gear'] as $gearItem) {
+				$gearList[] = test_input($gearItem);
+			}
+
+			//clean up gear qty array from post
+			$gearQty = array();
+			foreach ($_POST['gearQty'] as $qty) {
+				$gearQty[] = test_input($qty);
+			}
+
+			$i = 0; // to iterate thru gear qty array
+
+			//need to process quantities & finalize
+			//create checkout object
+			$co = new Checkout();
+
+			$co->setTitle($title);
+			$co->setPerson($loggedInUser->user_id);
+			$co->setStart($co_start);
+			$co->setEnd($co_end);
+			$co->setDescription($description);
+
+			foreach ($gearList as $gearItem) {
+				if(availableQty($gearItem, $co_start, $co_end) > 1){
+					$co->addToGearList($gearItem,$gearQty[$i]);
+					$i++;
+				} else {
+					$co->addToGearList($gearItem,1);	
+				}	
+			}
+
+			$co->finalizeCheckout();
+			$co_id = $co->getID();
+			header("Location: checkout.php?co_id=$co_id");
+		}
+
+	}//end if POST
+
+	//increment step
+	$step++;
 
 	//------------------------ Validation ------------------------
-	//make sure dates are legit and in right order.
-
 	//only check when submitted
 	if ($_SERVER["REQUEST_METHOD"] == "POST") { //submitted
-		if(isDateTime($co_start) && isDateTime($co_end)){ //valid date format
+		if(empty($title)){
+			$errors[] = "Please enter a title";
+		}
+		if (empty($description)){
+			$errors[] = "Please enter a description";
+		}
+		if($co_start != $co_end){ //user modified start/end fields
 			if ($co_start > $co_end) {
 				//dates not in right order
-				$error['date'] = "Date Error: The start date is after the end date!";
-				$displayGear = false;
+				$errors[] = "Date Error: The start date is after the end date";
 			}
-		} else { //invalid date(s)
-			$error['date'] = "Date Error: One or both dates are invalid";
-			$displayGear = false;
+		} else {
+			$errors[] = "Date Error: The start and end dates & times are the same";
 		}
 	} //if submitted
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-	<title>
-		Edit Checkout
-	</title>
+	<!-- INCLUDE BS HEADER INFO -->
+	<?php include('templates/bs-head.php'); ?>
+
+    <title>Edit Checkout</title>
 </head>
 <body>
-	<h1>Edit Checkout</h1>
-	<?php include('templates/nav.php'); ?>
+	<!-- IMPORT NAVIGATION -->
+	<?php include('templates/bs-nav.php'); ?>
 
-	<?php if($displayGear == false): ?>
+    <!-- HEADER -->
+    <div class="container-fluid gray">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h1>Edit Checkout</h1>
+            </div>
+        </div><!-- end row -->
+    </div><!-- end container -->
 
-		<?php
-			if (isset($error)){
-				echo '<p class="error">';
-				if (isset($error['date'])) printf("%s<br />",$error['date']);
-				echo '</p>';
-			}
-		?>
+    <br /><br />
 
-		<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
+            	<?php echo "<a href='checkout.php?co_id=" . $co_id . "'><span class='glyphicon glyphicon-chevron-left'></span>&nbsp;&nbsp;Back to Checkout Details</a>";
+                echo "<br /><br />";
+                echo resultBlock($errors,$successes); 
+                if($step == 1): ?>
 
-			<h2>Checkout Details</h2>
+	                <h2>Edit Details</h2>
+	                <hr />
 
-			<label for="title">Event Title:</label>
-			<input type="text" name="title" /><br />
+					<form role="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+						<input type="hidden" name="step" value="1" />
 
-			<label for ="description">Description:</label>
-			<textarea name="description" rows="3" cols="50"></textarea><br />
-			<!-- <input type="text" name="description" /><br /> -->
+						<div class="form-group"> <!-- TITLE -->
+							<label class="control-label" for="title">Event Title:</label>  
+							<input type="text" class="form-control" name="title" placeholder="<?php echo $co->getTitle(); ?>">
+						</div>
+						<div class="form-group"> <!-- DESC -->
+							<label class="control-label" for="Description">Description:</label>  
+							<textarea class="form-control" name="description" rows="3"><?php echo $co->getDescription(); ?></textarea>
+						</div>
+						<div class="alert alert-warning">
+						Changing the date of a checkout may change what gear is available for checkout.
+						</div>
+						<div class="form-inline form-group"><!-- START -->
+							<label class="control-label" for="start_date">Start date:</label>
+							<select class="form-control" style="display: inline" name="start_month">
+								<option value="01" <?php if ($s_month == 01) echo 'selected="selected"';?>>January</option>
+								<option value="02" <?php if ($s_month == 02) echo 'selected="selected"';?>>February</option>
+								<option value="03" <?php if ($s_month == 03) echo 'selected="selected"';?>>March</option>
+								<option value="04" <?php if ($s_month == 04) echo 'selected="selected"';?>>April</option>
+								<option value="05" <?php if ($s_month == 05) echo 'selected="selected"';?>>May</option>
+								<option value="06" <?php if ($s_month == 06) echo 'selected="selected"';?>>June</option>
+								<option value="07" <?php if ($s_month == 07) echo 'selected="selected"';?>>July</option>
+								<option value="08" <?php if ($s_month == 08) echo 'selected="selected"';?>>August</option>
+								<option value="09" <?php if ($s_month == 09) echo 'selected="selected"';?>>September</option>
+								<option value="10" <?php if ($s_month == 10) echo 'selected="selected"';?>>October</option>
+								<option value="11" <?php if ($s_month == 11) echo 'selected="selected"';?>>November</option>
+								<option value="12" <?php if ($s_month == 12) echo 'selected="selected"';?>>December</option>
+							</select>
+							<select class="form-control" style="display: inline" name="start_day">
+					            <option value"01" <?php if ($s_day == 01) echo 'selected="selected"';?>>01</option>
+					            <option value"02" <?php if ($s_day == 02) echo 'selected="selected"';?>>02</option>
+					            <option value"03" <?php if ($s_day == 03) echo 'selected="selected"';?>>03</option>
+					            <option value"04" <?php if ($s_day == 04) echo 'selected="selected"';?>>04</option>
+					            <option value"05" <?php if ($s_day == 05) echo 'selected="selected"';?>>05</option>
+					            <option value"06" <?php if ($s_day == 06) echo 'selected="selected"';?>>06</option>
+					            <option value"07" <?php if ($s_day == 07) echo 'selected="selected"';?>>07</option>
+					            <option value"08" <?php if ($s_day == 08) echo 'selected="selected"';?>>08</option>
+					            <option value"09" <?php if ($s_day == 09) echo 'selected="selected"';?>>09</option>
+					            <option value"10" <?php if ($s_day == 10) echo 'selected="selected"';?>>10</option>
+					            <option value"11" <?php if ($s_day == 11) echo 'selected="selected"';?>>11</option>
+					            <option value"12" <?php if ($s_day == 12) echo 'selected="selected"';?>>12</option>
+					            <option value"13" <?php if ($s_day == 13) echo 'selected="selected"';?>>13</option>
+					            <option value"14" <?php if ($s_day == 14) echo 'selected="selected"';?>>14</option>
+					            <option value"15" <?php if ($s_day == 15) echo 'selected="selected"';?>>15</option>
+					            <option value"16" <?php if ($s_day == 16) echo 'selected="selected"';?>>16</option>
+					            <option value"17" <?php if ($s_day == 17) echo 'selected="selected"';?>>17</option>
+					            <option value"18" <?php if ($s_day == 18) echo 'selected="selected"';?>>18</option>
+					            <option value"19" <?php if ($s_day == 19) echo 'selected="selected"';?>>19</option>
+					            <option value"20" <?php if ($s_day == 20) echo 'selected="selected"';?>>20</option>
+					            <option value"21" <?php if ($s_day == 21) echo 'selected="selected"';?>>21</option>
+					            <option value"22" <?php if ($s_day == 22) echo 'selected="selected"';?>>22</option>
+					            <option value"23" <?php if ($s_day == 23) echo 'selected="selected"';?>>23</option>
+					            <option value"24" <?php if ($s_day == 24) echo 'selected="selected"';?>>24</option>
+					            <option value"25" <?php if ($s_day == 25) echo 'selected="selected"';?>>25</option>
+					            <option value"26" <?php if ($s_day == 26) echo 'selected="selected"';?>>26</option>
+					            <option value"27" <?php if ($s_day == 27) echo 'selected="selected"';?>>27</option>
+					            <option value"28" <?php if ($s_day == 28) echo 'selected="selected"';?>>28</option>
+					            <option value"29" id="29" <?php if ($s_day == 29) echo 'selected="selected"';?>>29</option>
+					            <option value"30" id="30" <?php if ($s_day == 30) echo 'selected="selected"';?>>30</option>
+					            <option value"31" id="31" <?php if ($s_day == 31) echo 'selected="selected"';?>>31</option>
+							</select>
+							<select class="form-control" style="display: inline" name="start_year">
+								<option value="2015" <?php if ($s_year == 15) echo 'selected="selected"';?>>2015</option>
+								<option value="2016" <?php if ($s_year == 16) echo 'selected="selected"';?>>2016</option>
+							</select>
+							<label class="control-label" for="start_time">&nbsp;&nbsp;Start Time </label>
+							<select class="form-control" style="display: inline" name="start_hour">
+								<option value="01" <?php if ($s_hour == 01) echo 'selected="selected"';?>>01</option>
+								<option value="02" <?php if ($s_hour == 02) echo 'selected="selected"';?>>02</option>
+								<option value="03" <?php if ($s_hour == 03) echo 'selected="selected"';?>>03</option>
+								<option value="04" <?php if ($s_hour == 04) echo 'selected="selected"';?>>04</option>
+								<option value="05" <?php if ($s_hour == 05) echo 'selected="selected"';?>>05</option>
+								<option value="06" <?php if ($s_hour == 06) echo 'selected="selected"';?>>06</option>
+								<option value="07" <?php if ($s_hour == 07) echo 'selected="selected"';?>>07</option>
+								<option value="08" <?php if ($s_hour == 08) echo 'selected="selected"';?>>08</option>
+								<option value="09" <?php if ($s_hour == 09) echo 'selected="selected"';?>>09</option>
+								<option value="10" <?php if ($s_hour == 10) echo 'selected="selected"';?>>10</option>
+								<option value="11" <?php if ($s_hour == 11) echo 'selected="selected"';?>>11</option>
+								<option value="12" <?php if ($s_hour == 12) echo 'selected="selected"';?>>12</option>
+							</select>
+							<select class="form-control" style="display: inline" name="start_min">
+					        	<option value"00" <?php if ($s_min == 00) echo 'selected="selected"';?>>00</option>
+					            <option value"05" <?php if ($s_min == 05) echo 'selected="selected"';?>>05</option>
+					            <option value"10" <?php if ($s_min == 10) echo 'selected="selected"';?>>10</option>
+					            <option value"15" <?php if ($s_min == 15) echo 'selected="selected"';?>>15</option>
+					            <option value"20" <?php if ($s_min == 20) echo 'selected="selected"';?>>20</option>
+					            <option value"25" <?php if ($s_min == 25) echo 'selected="selected"';?>>25</option>
+					            <option value"30" <?php if ($s_min == 30) echo 'selected="selected"';?>>30</option>
+								<option value"35" <?php if ($s_min == 35) echo 'selected="selected"';?>>35</option>
+					            <option value"40" <?php if ($s_min == 40) echo 'selected="selected"';?>>40</option>
+					            <option value"45" <?php if ($s_min == 45) echo 'selected="selected"';?>>45</option>
+					            <option value"50" <?php if ($s_min == 50) echo 'selected="selected"';?>>50</option>
+					            <option value"55" <?php if ($s_min == 55) echo 'selected="selected"';?>>55</option>
+							</select>
+							<select class="form-control" style="display: inline" name="start_ampm">
+					        	<option value="am">AM</option>
+					        	<option value="pm">PM</option>
+							</select>
+						</div>
+						<div class="form-inline form-group"> <!-- END -->
+							<label class="control-label" for="start_date">End date:</label>
+							<select class="form-control" style="display: inline" name="end_month">
+								<option value="01" <?php if ($e_month == 01) echo 'selected="selected"';?>>January</option>
+								<option value="02" <?php if ($e_month == 02) echo 'selected="selected"';?>>February</option>
+								<option value="03" <?php if ($e_month == 03) echo 'selected="selected"';?>>March</option>
+								<option value="04" <?php if ($e_month == 04) echo 'selected="selected"';?>>April</option>
+								<option value="05" <?php if ($e_month == 05) echo 'selected="selected"';?>>May</option>
+								<option value="06" <?php if ($e_month == 06) echo 'selected="selected"';?>>June</option>
+								<option value="07" <?php if ($e_month == 07) echo 'selected="selected"';?>>July</option>
+								<option value="08" <?php if ($e_month == 08) echo 'selected="selected"';?>>August</option>
+								<option value="09" <?php if ($e_month == 09) echo 'selected="selected"';?>>September</option>
+								<option value="10" <?php if ($e_month == 10) echo 'selected="selected"';?>>October</option>
+								<option value="11" <?php if ($e_month == 11) echo 'selected="selected"';?>>November</option>
+								<option value="12" <?php if ($e_month == 12) echo 'selected="selected"';?>>December</option>
+							</select>
+							<select class="form-control" style="display: inline" name="end_day">
+					            <option value"01" <?php if ($e_day == 01) echo 'selected="selected"';?>>01</option>
+					            <option value"02" <?php if ($e_day == 02) echo 'selected="selected"';?>>02</option>
+					            <option value"03" <?php if ($e_day == 03) echo 'selected="selected"';?>>03</option>
+					            <option value"04" <?php if ($e_day == 04) echo 'selected="selected"';?>>04</option>
+					            <option value"05" <?php if ($e_day == 05) echo 'selected="selected"';?>>05</option>
+					            <option value"06" <?php if ($e_day == 06) echo 'selected="selected"';?>>06</option>
+					            <option value"07" <?php if ($e_day == 07) echo 'selected="selected"';?>>07</option>
+					            <option value"08" <?php if ($e_day == 08) echo 'selected="selected"';?>>08</option>
+					            <option value"09" <?php if ($e_day == 09) echo 'selected="selected"';?>>09</option>
+					            <option value"10" <?php if ($e_day == 10) echo 'selected="selected"';?>>10</option>
+					            <option value"11" <?php if ($e_day == 11) echo 'selected="selected"';?>>11</option>
+					            <option value"12" <?php if ($e_day == 12) echo 'selected="selected"';?>>12</option>
+					            <option value"13" <?php if ($e_day == 13) echo 'selected="selected"';?>>13</option>
+					            <option value"14" <?php if ($e_day == 14) echo 'selected="selected"';?>>14</option>
+					            <option value"15" <?php if ($e_day == 15) echo 'selected="selected"';?>>15</option>
+					            <option value"16" <?php if ($e_day == 16) echo 'selected="selected"';?>>16</option>
+					            <option value"17" <?php if ($e_day == 17) echo 'selected="selected"';?>>17</option>
+					            <option value"18" <?php if ($e_day == 18) echo 'selected="selected"';?>>18</option>
+					            <option value"19" <?php if ($e_day == 19) echo 'selected="selected"';?>>19</option>
+					            <option value"20" <?php if ($e_day == 20) echo 'selected="selected"';?>>20</option>
+					            <option value"21" <?php if ($e_day == 21) echo 'selected="selected"';?>>21</option>
+					            <option value"22" <?php if ($e_day == 22) echo 'selected="selected"';?>>22</option>
+					            <option value"23" <?php if ($e_day == 23) echo 'selected="selected"';?>>23</option>
+					            <option value"24" <?php if ($e_day == 24) echo 'selected="selected"';?>>24</option>
+					            <option value"25" <?php if ($e_day == 25) echo 'selected="selected"';?>>25</option>
+					            <option value"26" <?php if ($e_day == 26) echo 'selected="selected"';?>>26</option>
+					            <option value"27" <?php if ($e_day == 27) echo 'selected="selected"';?>>27</option>
+					            <option value"28" <?php if ($e_day == 28) echo 'selected="selected"';?>>28</option>
+					            <option value"29" id="29" <?php if ($e_day == 29) echo 'selected="selected"';?>>29</option>
+					            <option value"30" id="30" <?php if ($e_day == 30) echo 'selected="selected"';?>>30</option>
+					            <option value"31" id="31" <?php if ($e_day == 31) echo 'selected="selected"';?>>31</option>
+							</select>
+							<select class="form-control" style="display: inline" name="end_year">
+								<option value="2015" <?php if ($e_year == 15) echo 'selected="selected"';?>>2015</option>
+								<option value="2016" <?php if ($e_year == 16) echo 'selected="selected"';?>>2016</option>
+							</select>
+							<label class="control-label" for="start_time">&nbsp;&nbsp;End Time </label>
+							<select class="form-control" style="display: inline" name="end_hour">
+								<option value="01" <?php if ($e_hour == 01) echo 'selected="selected"';?>>01</option>
+								<option value="02" <?php if ($e_hour == 02) echo 'selected="selected"';?>>02</option>
+								<option value="03" <?php if ($e_hour == 03) echo 'selected="selected"';?>>03</option>
+								<option value="04" <?php if ($e_hour == 04) echo 'selected="selected"';?>>04</option>
+								<option value="05" <?php if ($e_hour == 05) echo 'selected="selected"';?>>05</option>
+								<option value="06" <?php if ($e_hour == 06) echo 'selected="selected"';?>>06</option>
+								<option value="07" <?php if ($e_hour == 07) echo 'selected="selected"';?>>07</option>
+								<option value="08" <?php if ($e_hour == 08) echo 'selected="selected"';?>>08</option>
+								<option value="09" <?php if ($e_hour == 09) echo 'selected="selected"';?>>09</option>
+								<option value="10" <?php if ($e_hour == 10) echo 'selected="selected"';?>>10</option>
+								<option value="11" <?php if ($e_hour == 11) echo 'selected="selected"';?>>11</option>
+								<option value="12" <?php if ($e_hour == 12) echo 'selected="selected"';?>>12</option>
+							</select>
+							<select class="form-control" style="display: inline" name="end_min">
+					        	<option value"00" <?php if ($e_min == 00) echo 'selected="selected"';?>>00</option>
+					            <option value"05" <?php if ($e_min == 05) echo 'selected="selected"';?>>05</option>
+					            <option value"10" <?php if ($e_min == 10) echo 'selected="selected"';?>>10</option>
+					            <option value"15" <?php if ($e_min == 15) echo 'selected="selected"';?>>15</option>
+					            <option value"20" <?php if ($e_min == 20) echo 'selected="selected"';?>>20</option>
+					            <option value"25" <?php if ($e_min == 25) echo 'selected="selected"';?>>25</option>
+					            <option value"30" <?php if ($e_min == 30) echo 'selected="selected"';?>>30</option>
+								<option value"35" <?php if ($e_min == 35) echo 'selected="selected"';?>>35</option>
+					            <option value"40" <?php if ($e_min == 40) echo 'selected="selected"';?>>40</option>
+					            <option value"45" <?php if ($e_min == 45) echo 'selected="selected"';?>>45</option>
+					            <option value"50" <?php if ($e_min == 50) echo 'selected="selected"';?>>50</option>
+					            <option value"55" <?php if ($e_min == 55) echo 'selected="selected"';?>>55</option>
+							</select>
+							<select class="form-control" style="display: inline" name="end_ampm">
+					        	<option value="am">AM</option>
+					        	<option value="pm">PM</option>
+							</select>
+						</div>
+						<input class="btn btn-success" type="submit" name="submit" value="Next">
+					</form>
+				<?php elseif($step==2): ?>
+					<h2>Edit Gear</h2>
+					<p>Quantities (where applicable) are shown next to the name.<br />They will be chosen in the next step.</p>
+					<hr />
 
-			<label for="co_start">Begin:</label>
-			<input type="text" name="co_start" placeholder="yyyy-mm-dd hh:mm:ss" /><br />
+					<form role="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+						<?php
+							foreach($types as $type){
+								$items = getAvailableGearWithType($type['gear_type_id'], $co_start, $co_end);
+								if (count($items) > 0){
+									printf("<h4>%s</h4>",$type['type']);
+									foreach($items as $item){
+										$qty = availableQty($item['gear_id'], $co_start, $co_end);
+										echo "<div class='checkbox'>";
+										echo "<label><input type='checkbox' name='gear[]' value='" . $item['gear_id'] . "'> " . $item['name'];
+										if($qty > 1){
+											echo " (" . $qty . ")";
+										}
+										echo "</label></div>";	
+									}
+								}//if
+							}//foreach
+						?>
+						<br />
+						<input class="btn btn-success" type="submit" name="submit" value="Next">
+					</form>
+				<?php elseif($step == 3): ?>
+					<h2>Step 1: Event Details</h2>
+					<div class="alert alert-info" role="alert">
+						<?php
+							echo "Title: " . $title . "<br /> Description: " . $description . "<br />"; 
+							$formattedStart = new DateTime($co_start);
+							$formattedEnd = new DateTime($co_end);
+							echo $formattedStart->format('m-d-y g:iA') . " <span class='glyphicon glyphicon-arrow-right'></span> " . $formattedEnd->format('m-d-y g:iA');
+						?>
+					</div>
+					<h2>Step 2: Select Gear</h2>
+					<div class="alert alert-info" role="alert">
+						<?php
+							foreach($gearList as $gear){
+								$gearName = getGearName($gear);
+								echo $gearName . "<br />";
+							}
+						?>
+					</div>
 
-			<label for="co_end">End:</label>
-			<input type="text" name="co_end" placeholder="yyyy-mm-dd hh:mm:ss" /><br />
+					<h3>Step 3: Choose Quantities</h3>
+					<form role="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+						<input type="hidden" name="step" value="3" />
+						<input type="hidden" name="title" value="<?php echo $title ?>" />
+						<input type="hidden" name="description" value="<?php echo $description ?>" />
+						<input type="hidden" name="co_start" value="<?php echo $co_start ?>" />
+						<input type="hidden" name="co_end" value="<?php echo $co_end ?>" />
+						<?php
+							//make sure gear list is resubmitted
+							foreach ($gearList as $gear) {
+								echo "<input type='hidden' name='gear[]' value='$gear' />";
+							}
 
-			<input class="" type="submit" name="submit" value="Next">
-		</form>
+							//get quantities...
+							foreach($gearToGetQtyFor as $gear) {
+								$gearName = getGearName($gear);
+								echo $gearName . "&nbsp;&nbsp;&nbsp;";
+								echo "<select name='gearQty[]'>";
+								$qty = availableQty($gear, $co_start, $co_end);
+								for($i = 1; $i <= $qty; $i++){
+									echo "<option value='$i'>$i</option>";
+								}
+								echo "</select><br />";
+							}
+						?>
+						<br />
+						<input class="btn btn-success" type="submit" name="submit" value="Submit">
+					</form>
+				<?php endif; ?>
+            </div> <!-- /col -->
+        </div><!-- /row --> 
+    </div> <!-- /container -->
 
-	<?php else: ?>
+    <br /><br />
 
-		<h2>Checkout Details</h2>
+    <!-- INCLUDE BS STICKY FOOTER -->
+    <?php include('templates/bs-footer.php'); ?>
 
-		<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+    <!-- jQuery Version 1.11.1 -->
+    <script src="js/jquery.js"></script>
 
-			<label for="title">Event Title:</label>
-			<input type="text" placeholder="<?php echo $title ?>" disabled /><br />
-			<input type="hidden" name="title" value="<?php echo $title ?>" />
-
-			<!-- <textarea rows="3" cols="50">Event Description</textarea><br /> -->
-			<label for="description">Description:</label>
-			<!-- <input type="text" placeholder="<?php echo $description ?>" disabled /><br /> -->
-			<input type="hidden" name="description" value="<?php echo $description ?>" />
-			<textarea name="description" rows="3" cols="50" disabled>
-				<?php echo $description ?>
-			</textarea><br />
-
-			<label for="co_start">Begin:</label>
-			<input type="text" placeholder="<?php echo $co_start ?>" disabled /><br />
-			<input type="hidden" name="co_start" value="<?php echo $co_start ?>" />
-
-			<label for="co_end">End:</label>
-			<input type="text" placeholder="<?php echo $co_end ?>" disabled /><br />
-			<input type="hidden" name="co_end" value="<?php echo $co_end ?>" />
-
-			<br />
-			<h2>Select Gear</h2>
-			<hr />
-
-			<?php
-				foreach($types as $type){
-					printf("<h3>%s</h3>",$type['type']);
-					$items = getAvailableGearWithType($type['gear_type_id'], $co_start, $co_end);
-					foreach($items as $item){
-						printf("<input type=\"checkbox\" name=\"gear[]\" value=\"%s\">%s<br />",$item['gear_id'],$item['name']);
-					}
-				}
-			?>
-
-			<input type="submit" name="submit" value="Finish">
-		</form>
-
-	<?php endif; ?>
-
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
 </body>
 </html>
-
-
-<!--
-
-RESULTS FROM TYPES
-[0] => Array
-	[gear_type_id] => 1
-	[type] => Camera
-[1] => Array
-	[gear_type_id] => 2
-	[type] => Lens
-
-
-RESULTS FROM AVAILABLE GEAR
-[0] => Array (
-	[gear_id] => 1
-	[gear_type_id] => 1
-	[name] => cam1 )
-[1] => Array (
-	[gear_id] => 2
-	[gear_type_id] => 1
-	[name] => cam2 )
-[2] => Array (
-	[gear_id] => 3
-	[gear_type_id] => 1
-	[name] => cam3 )
-[3] => Array (
-	[gear_id] => 4
-	[gear_type_id] => 1
-	[name] => cam4 )
-[4] => Array (
-	[gear_id] => 5
-	[gear_type_id] => 1
-	[name] => camera4-id )
-[5] => Array (
-	[gear_id] => 6
-	[gear_type_id] => 1
-	[name] => test-name )
-
-FORM SUBMIT
-Array (
-	[title] => title
-	[description] => desc
-	[co_start] => 2015-12-12 12:00:00
-	[co_end] => 2015-12-12 12:00:01
-	[gear] => Array (
-		[0] => 1
-		[1] => 2
-		[2] => 6 )
-	[next] => Next )
-
-
--->

@@ -145,7 +145,10 @@
                             <input type="checkbox" name="disabled" value="true" <?php if(isDisabled($gear_id)) echo "checked";?> />
                             &nbsp;&nbsp;Disable</label>
                     </div>
-                    <p><em>** For items with a quantity higher than 1, to disable single items, simply decrease the quantity.</em></p>
+                    <?php
+                        
+                    ?>
+                    
                     <br />
 
                     <input class="btn btn-success" type="submit" name="submit" value="Submit" />

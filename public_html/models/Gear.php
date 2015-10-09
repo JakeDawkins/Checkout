@@ -187,13 +187,34 @@ require_once('db.php');
 		return $qty;
 	}
 
-	//TODO
-	//returns whether a gear item is...
-	//	1. in stock
-	//	2. checked out
-	//	3. disabled
-	function gearStatus($gear_id){
-		return 0;
+	//determining available qty of an item, excluding checkouts from co_id
+	//	gear_id 			-- item to check
+	//	co_id 				-- checkout to exclude 
+	//	co_start / co_end 	-- start/end time
+	function availableQtyExcludingCheckout($gear_id, $co_id, $co_start, $co_end){
+		$database = new DB();
+
+		//available qty not excluding the checkout
+		$qty = availableQty($gear_id, $co_start, $co_end);
+
+		if($qty == getTotalGearQty($gear_id)) return $qty;
+
+		//find qty checked out by co_id and add to qty
+
+		//list checkouts in the time range
+		$sql = "SELECT * FROM checkouts INNER JOIN co_gear ON checkouts.co_id = co_gear.co_id WHERE co_start < '$co_end' AND co_end > '$co_start'";
+		$results = $database->select($sql);
+
+		//results contain all checkouts in the given time range.
+		//check each checkout to see if it has the desired gear item in it
+		foreach ($results as $row){
+			if ($row['co_id'] == $co_id){
+				$qty += $row['qty'];
+			}
+		}
+
+		//no checkouts have that gear item listed.
+		return $qty;
 	}
 
 	//returns an array of gear types in the DB.
