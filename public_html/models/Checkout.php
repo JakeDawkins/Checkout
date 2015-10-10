@@ -45,6 +45,13 @@ class Checkout {
 		return "<hr>ID:$this->co_id<br>TITLE:$this->title<br>PERSON:$this->person_id<br>START:$this->co_start<br>END:$this->co_end<br>DESC:$this->description<hr>";
 	}
 
+	public function qtyOfItem($gear_id) {
+		foreach($this->gearList as $gear){
+			if($gear[0] == $gear_id) return $gear[1];
+		}
+		return -1;
+	}
+
 	//------------------------ Setters ------------------------
 
 	public function setID($co_id) {

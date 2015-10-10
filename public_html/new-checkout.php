@@ -427,7 +427,8 @@
 						?>
 					</div>
 
-					<h3>Step 3: Choose Quantities</h3>
+					<h2>Step 3: Choose Quantities</h2>
+					<hr />
 					<form role="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
 						<input type="hidden" name="step" value="3" />
 						<input type="hidden" name="title" value="<?php echo $title ?>" />
@@ -441,15 +442,19 @@
 							}
 
 							//get quantities...
-							foreach($gearToGetQtyFor as $gear) {
-								$gearName = getGearName($gear);
-								echo $gearName . "&nbsp;&nbsp;&nbsp;";
-								echo "<select name='gearQty[]'>";
-								$qty = availableQty($gear, $co_start, $co_end);
-								for($i = 1; $i <= $qty; $i++){
-									echo "<option value='$i'>$i</option>";
+							if(count($gearToGetQtyFor) == 0){
+								echo "<p><strong>There are no items to get quantity for. Click below to finish</strong></p>";
+							} else {
+								foreach($gearToGetQtyFor as $gear) {
+									$gearName = getGearName($gear);
+									echo $gearName . "&nbsp;&nbsp;&nbsp;";
+									echo "<select name='gearQty[]'>";
+									$qty = availableQty($gear, $co_start, $co_end);
+									for($i = 1; $i <= $qty; $i++){
+										echo "<option value='$i'>$i</option>";
+									}
+									echo "</select><br /><br />";
 								}
-								echo "</select><br />";
 							}
 						?>
 						<br />

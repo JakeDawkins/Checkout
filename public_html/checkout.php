@@ -62,13 +62,11 @@
 
     <div class="container">
     	<div class="row">
-    		<div class="col-lg-12">
+    		<div class="col-sm-8 col-sm-offset-2">
     			<?php echo "<a href=\"checkouts.php\"><span class=\"glyphicon glyphicon-chevron-left\"></span>&nbsp;&nbsp;Back to Checkouts</a>"; ?>
     			<br /><br />
     			<div class="panel panel-default">
-    				<div class="panel-heading text-center">
-    					<h3>Checkout Details</h3>
-    				</div>
+    				<div class="panel-heading text-center">Checkout Details</div>
     				<div class="panel-body text-center">
     					<p>
     					<?php
@@ -81,33 +79,25 @@
 							$co_end = new DateTime($checkout->getEnd());
 							printf("<strong>Start Time:</strong> %s<br /><br />",$co_start->format('m-d-y g:iA'));
 							printf("<strong>End Time:</strong> %s<br /><br />",$co_end->format('m-d-y g:iA'));
-							//printf("<a href=\"checkout.php?co_id=%s&delete=true\">Delete This Checkout</a>",$co_id);
-
+	    					echo "<a class='btn btn-primary' href='edit-checkout.php?co_id=" . $co_id . "'>Edit</a> &nbsp;&nbsp;";
+                            echo "<a class='btn btn-danger' href='checkout.php?co_id=%s&delete=true'>Delete</a>"; 
     					?>
     					</p>
-    					<a class ="btn btn-danger" href='<?php printf("checkout.php?co_id=%s&delete=true",$co_id); ?>'>Delete This Checkout</a>
     				</div>
     			</div>
     		</div>
     	</div>
 
     	<!-- PRINT OUT CHECKOUT GEAR --> 
-    	<div class="row">
+    	<!-- <div class="row"> -->
 			<?php
-				//if #types == 1, 1 across
-				//			== 2, 2 across
-				//			% 3 == 0, 3 across
-				//			% 4 == 0, 4 across
-				//			else 3 across
-
 				if(count($gearTypes) == 1){ //1 across
+					echo "<div class='row'>";
 					foreach($gearTypes as $gearType){
-						echo "<div class=\"col-lg-12\">";
-							echo "<div class=\"panel panel-default\">";
-								echo "<div class=\"panel-heading text-center\">";
-									echo "$gearType";
-								echo "</div>"; //end heading
-								echo "<div class=\"panel-body text-center\">";
+						echo "<div class='col-sm-8 col-sm-offset-2'>";
+							echo "<div class='panel panel-default'>";
+								echo "<div class='panel-heading text-center'>" . $gearType . "</div>";
+								echo "<div class='panel-body text-center'>";
 									echo "<p>";
 									foreach($gearList as $gear){
 										$name = getGearName($gear[0]);
@@ -121,14 +111,18 @@
 									echo "</p>";
 						echo "</div></div></div>"; //panel-body //panel //col
 					}
-				} elseif (count($gearTypes) == 2){ //2 across
+					echo "</div>"; //end row
+				} else {//elseif (count($gearTypes) == 2){ //2 across
+					$i = 0;
 					foreach($gearTypes as $gearType){
-						echo "<div class=\"col-lg-6 col-md-6 col-sm-6\">";
-							echo "<div class=\"panel panel-default\">";
-								echo "<div class=\"panel-heading text-center\">";
-									echo "$gearType";
-								echo "</div>"; //end heading
-								echo "<div class=\"panel-body text-center\">";
+						if($i % 2 == 0){ //start row
+							echo "<div class='row'>";
+							echo "<div class='col-sm-4 col-sm-offset-2'>";	
+						} 
+						else echo "<div class='col-sm-4'>";
+							echo "<div class='panel panel-default'>";
+								echo "<div class='panel-heading text-center'>" . $gearType . "</div>";
+								echo "<div class='panel-body text-center'>";
 									echo "<p>";
 									foreach($gearList as $gear){
 										$name = getGearName($gear[0]);
@@ -141,52 +135,16 @@
 									}
 									echo "</p>";
 						echo "</div></div></div>"; //panel-body //panel //col
-					}
-				} elseif (count($gearTypes) % 4 == 0){ //4 across
-					foreach($gearTypes as $gearType){
-						echo "<div class=\"col-lg-3 col-md-3 col-sm-6\">";
-							echo "<div class=\"panel panel-default\">";
-								echo "<div class=\"panel-heading text-center\">";
-									echo "$gearType";
-								echo "</div>"; //end heading
-								echo "<div class=\"panel-body text-center\">";
-									echo "<p>";
-									foreach($gearList as $gear){
-										$name = getGearName($gear[0]);
-										$qty = $gear[1];
-										$type = gearTypeWithID(getGearType($gear[0]));
-										if($type == $gearType){
-											if ($qty > 1) echo "$name ($qty)<br />";
-											else echo "$name<br />";
-										}
-									}
-									echo "</p>";
-						echo "</div></div></div>"; //panel-body //panel //col
-					}
-				} else { //3 across
-					foreach($gearTypes as $gearType){
-						echo "<div class=\"col-lg-4 col-md-4 col-sm-6\">";
-							echo "<div class=\"panel panel-default\">";
-								echo "<div class=\"panel-heading text-center\">";
-									echo "$gearType";
-								echo "</div>"; //end heading
-								echo "<div class=\"panel-body text-center\">";
-									echo "<p>";
-									foreach($gearList as $gear){
-										$name = getGearName($gear[0]);
-										$qty = $gear[1];
-										$type = gearTypeWithID(getGearType($gear[0]));
-										if($type == $gearType){
-											if ($qty > 1) echo "$name ($qty)<br />";
-											else echo "$name<br />";
-										}
-									}
-									echo "</p>";
-						echo "</div></div></div>"; //panel-body //panel //col
+
+						//if second col on row or last col, end the row
+						if($i % 2 == 1 || $i == count($gearTypes)-1){
+							echo "</div>"; //end row
+						}
+						$i++;
 					}
 				}
 			?>
-    	</div><!-- END ROW -->
+    	<!-- </div> END ROW -->
     </div>
 
     <br /><br />
