@@ -11,6 +11,7 @@
 	//define variables and set to empty values
 	$co_start = $co_end = $title = $description = "";
 
+	//get initial checkout info
 	if ($_SERVER["REQUEST_METHOD"] == "GET") {
 		$co_id = test_input($_GET['co_id']);
 
@@ -25,18 +26,23 @@
 		$s_year = $formattedStart->format('Y');
 		$s_month = $formattedStart->format('m');
 		$s_day = $formattedStart->format('d'); 
-		$s_hour = $formattedStart->format('H');
+		$s_hour = $formattedStart->format('H') % 12;
 		$s_min = $formattedStart->format('i');
+		if($formattedStart->format('H') >= 12){
+			$s_ampm = "pm";
+		} else $s_ampm = "am";
 
 		$e_year = $formattedEnd->format('Y');
 		$e_month = $formattedEnd->format('m');
 		$e_day = $formattedEnd->format('d'); 
-		$e_hour = $formattedEnd->format('H');
+		$e_hour = $formattedEnd->format('H') % 12;
 		$e_min = $formattedEnd->format('i');
+		if($formattedEnd->format('H') >= 12){
+			$e_ampm = "pm";
+		} else $e_ampm = "am";
 	}
 
-	//form pt. 1 submitted
-	//process each variable
+	//form submitted
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		//check what step we're on.
 		if(isset($_POST['step'])){
@@ -71,30 +77,43 @@
 			$end_ampm = test_input($_POST['end_ampm']);
 			if ($end_ampm == "pm") $end_hour += 12;
 			else {
-				if ($start_hour == 12) $start_hour = 0;
+				if ($end_hour == 12) $end_hour = 0;
 			}
 
 			$co_start = $start_year . "-" . $start_month . "-" . $start_day . " " . $start_hour . ":" . $start_min . ":00"; 	
 			$co_end = $end_year . "-" . $end_month . "-" . $end_day . " " . $end_hour . ":" . $end_min . ":00"; 
 
-			//TODO -- see if we need to change anything
+			//see if we need to change anything
 			$co = new Checkout();
 			$co->retrieveCheckout($co_id);
 
+			//construct a simple gearList
+			$simpleGearList = array();
+			foreach($co->getGearList() as $gear){
+				$simpleGearList[] = $gear[0];
+			}
 
 			if(!empty($title) && $co->getTitle() != $title){
+				echo "TITLE: " . $co->getTitle() . " --> " . $title . "<br />";
+
 				$co->setTitle($title);
 				$successes[] = "Title updated successfully";
 			} 
 			if($co->getDescription() != $description){
+				echo "DESC: " . $co->getDescription() . " --> " . $description . "<br />";
+
 				$co->setDescription($description);
 				$successes[] = "Description updated successfully";
 			} 
 			if(!empty($co_start) && $co->getStart() != $co_start){
+				echo "START: " . $co->getStart() . " --> " . $co_start . "<br />";
+
 				$co->setStart($co_start);
 				$successes[] = "Start time/date updated successfully";
 			} 
 			if(!empty($co_end) && $co->getEnd() != $co_end){
+				echo "END: " . $co->getEnd() . " --> " . $co_end . "<br />";
+
 				$co->setEnd($co_end);
 				$successes[] = "End time/date updated successfully";
 			} 
@@ -103,6 +122,7 @@
 			//need to process gear list
 
 			//collect vars from step 1
+			$co_id = test_input($_POST['co_id']);
 			$title = test_input($_POST['title']);
 			$description = test_input($_POST['description']);
 			$co_start = test_input($_POST['co_start']);	
@@ -116,7 +136,7 @@
 
 				//if the available qty is > 1, we need to find out
 				//what qty the user wants to check out
-				if(availableQty($gearItem, $co_start, $co_end) > 1){
+				if(availableQtyExcludingCheckout($gearItem, $co_id , $co_start, $co_end) > 1){
 					$gearToGetQtyFor[] = $gearItem;
 				}
 			}
@@ -162,32 +182,13 @@
 
 			$co->finalizeCheckout();
 			$co_id = $co->getID();
-			header("Location: checkout.php?co_id=$co_id");
+			//header("Location: checkout.php?co_id=$co_id");
 		}
 
 	}//end if POST
 
 	//increment step
 	$step++;
-
-	//------------------------ Validation ------------------------
-	//only check when submitted
-	if ($_SERVER["REQUEST_METHOD"] == "POST") { //submitted
-		if(empty($title)){
-			$errors[] = "Please enter a title";
-		}
-		if (empty($description)){
-			$errors[] = "Please enter a description";
-		}
-		if($co_start != $co_end){ //user modified start/end fields
-			if ($co_start > $co_end) {
-				//dates not in right order
-				$errors[] = "Date Error: The start date is after the end date";
-			}
-		} else {
-			$errors[] = "Date Error: The start and end dates & times are the same";
-		}
-	} //if submitted
 ?>
 
 <!DOCTYPE html>
@@ -222,11 +223,12 @@
                 echo resultBlock($errors,$successes); 
                 if($step == 1): ?>
 
-	                <h2>Edit Details</h2>
+	                <h2>Step 1: Edit Details</h2>
 	                <hr />
 
 					<form role="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
 						<input type="hidden" name="step" value="1" />
+						<input type="hidden" name="co_id" value="<?php echo $co_id ?>" />
 
 						<div class="form-group"> <!-- TITLE -->
 							<label class="control-label" for="title">Event Title:</label>  
@@ -322,12 +324,12 @@
 					            <option value"55" <?php if ($s_min == 55) echo 'selected="selected"';?>>55</option>
 							</select>
 							<select class="form-control" style="display: inline" name="start_ampm">
-					        	<option value="am">AM</option>
-					        	<option value="pm">PM</option>
+					        	<option value="am" <?php if ($s_ampm == "am") echo 'selected="selected"';?>>AM</option>
+					        	<option value="pm" <?php if ($s_ampm == "pm") echo 'selected="selected"';?>>PM</option>
 							</select>
 						</div>
 						<div class="form-inline form-group"> <!-- END -->
-							<label class="control-label" for="start_date">End date:</label>
+							<label class="control-label" for="end_date">End date:</label>
 							<select class="form-control" style="display: inline" name="end_month">
 								<option value="01" <?php if ($e_month == 01) echo 'selected="selected"';?>>January</option>
 								<option value="02" <?php if ($e_month == 02) echo 'selected="selected"';?>>February</option>
@@ -379,7 +381,7 @@
 								<option value="2015" <?php if ($e_year == 15) echo 'selected="selected"';?>>2015</option>
 								<option value="2016" <?php if ($e_year == 16) echo 'selected="selected"';?>>2016</option>
 							</select>
-							<label class="control-label" for="start_time">&nbsp;&nbsp;End Time </label>
+							<label class="control-label" for="end_time">&nbsp;&nbsp;End Time </label>
 							<select class="form-control" style="display: inline" name="end_hour">
 								<option value="01" <?php if ($e_hour == 01) echo 'selected="selected"';?>>01</option>
 								<option value="02" <?php if ($e_hour == 02) echo 'selected="selected"';?>>02</option>
@@ -409,31 +411,50 @@
 					            <option value"55" <?php if ($e_min == 55) echo 'selected="selected"';?>>55</option>
 							</select>
 							<select class="form-control" style="display: inline" name="end_ampm">
-					        	<option value="am">AM</option>
-					        	<option value="pm">PM</option>
+					        	<option value="am" <?php if ($e_ampm == "am") echo 'selected="selected"';?>>AM</option>
+					        	<option value="pm" <?php if ($e_ampm == "pm") echo 'selected="selected"';?>>PM</option>
 							</select>
 						</div>
 						<input class="btn btn-success" type="submit" name="submit" value="Next">
 					</form>
 				<?php elseif($step==2): ?>
-					<h2>Edit Gear</h2>
+					<h2>Step 1: Event Details</h2>
+					<div class="alert alert-info" role="alert">
+						<?php
+							echo "Title: " . $co->getTitle() . "<br /> Description: " . $co->getDescription() . "<br />"; 
+							$formattedStart = new DateTime($co_start);
+							$formattedEnd = new DateTime($co_end);
+							echo $formattedStart->format('m-d-y g:iA') . " <span class='glyphicon glyphicon-arrow-right'></span> " . $formattedEnd->format('m-d-y g:iA');
+						?>
+					</div>
+
+					<h2>Step 2: Edit Gear</h2>
 					<p>Quantities (where applicable) are shown next to the name.<br />They will be chosen in the next step.</p>
 					<hr />
 
 					<form role="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+						<input type="hidden" name="co_id" value="<?php echo $co_id; ?>" />
 						<?php
 							foreach($types as $type){
-								$items = getAvailableGearWithType($type['gear_type_id'], $co_start, $co_end);
+								$items = getAvailableGearWithTypeAndExclusions($type['gear_type_id'], $co_id, $co_start, $co_end);
 								if (count($items) > 0){
 									printf("<h4>%s</h4>",$type['type']);
 									foreach($items as $item){
-										$qty = availableQty($item['gear_id'], $co_start, $co_end);
+										$qty = availableQtyExcludingCheckout($item['gear_id'], $co_id, $co_start, $co_end);
 										echo "<div class='checkbox'>";
-										echo "<label><input type='checkbox' name='gear[]' value='" . $item['gear_id'] . "'> " . $item['name'];
+										echo "<label><input type='checkbox' name='gear[]' value='" . $item['gear_id'] . "'";
+										//if the gear item is already assigned to checkout, check it by default
+										if(in_array($item['gear_id'], $simpleGearList)) {
+											echo "checked > " . $item['name'];
+										} else {
+											echo "> " . $item['name'];
+										}
+										//list quantity next to gear items.
 										if($qty > 1){
 											echo " (" . $qty . ")";
 										}
-										echo "</label></div>";	
+										echo "</label></div>";
+										//break;	
 									}
 								}//if
 							}//foreach

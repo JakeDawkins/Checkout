@@ -161,6 +161,29 @@ require_once('db.php');
 		return $available_gear;
 	}
 
+	function getAvailableGearWithTypeAndExclusions($type, $co_id, $co_start, $co_end){
+		$database = new DB();
+
+		if (is_null($type)){
+			$sql = 	"SELECT * FROM gear";
+		} else { //type ID passed in
+			$sql = "SELECT * FROM gear WHERE gear_type_id='$type' ORDER BY name";
+		}
+
+		$results = $database->select($sql);
+
+		$available_gear = array();
+
+		foreach($results as $row) {
+			//check if in stock for dates
+    		if(availableQtyExcludingCheckout($row['gear_id'], $co_id,$co_start, $co_end) > 0 && !isDisabled($row['gear_id'])){
+        		//add object to return array if in stock
+        		$available_gear[] = $row;
+    		}
+		}
+		return $available_gear;
+	}
+
 	//lists the available quantity of any item. 
 	function availableQty($gear_id, $co_start, $co_end){
 		$database = new DB();
@@ -192,10 +215,13 @@ require_once('db.php');
 	//	co_id 				-- checkout to exclude 
 	//	co_start / co_end 	-- start/end time
 	function availableQtyExcludingCheckout($gear_id, $co_id, $co_start, $co_end){
+		//echo "availableQtyExcludingCheckout()<br />";
 		$database = new DB();
 
 		//available qty not excluding the checkout
 		$qty = availableQty($gear_id, $co_start, $co_end);
+		//echo "--------------------------------<br />";
+		//echo "available_1: " . $qty . "<br />";
 
 		if($qty == getTotalGearQty($gear_id)) return $qty;
 
@@ -208,10 +234,12 @@ require_once('db.php');
 		//results contain all checkouts in the given time range.
 		//check each checkout to see if it has the desired gear item in it
 		foreach ($results as $row){
-			if ($row['co_id'] == $co_id){
+			//echo "co_id: " . $co_id . " gear: " . $row['gear_id'] . " qty: " . $row['qty'] . "<br />";
+			if ($row['co_id'] == $co_id && $row['gear_id'] == $gear_id){
 				$qty += $row['qty'];
 			}
 		}
+		//echo "--------------------------------<br />";
 
 		//no checkouts have that gear item listed.
 		return $qty;
