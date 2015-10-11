@@ -14,6 +14,7 @@
         $name = getGearName($gear_id);
         $type = getGearType($gear_id);
         $qty = getTotalGearQty($gear_id);
+        $notes = getGearNotes($gear_id);
         $isDisabled = isDisabled($gear_id);
         if(isset($_GET['deleteGearItem'])){
             $delGearItem = test_input($_GET['deleteGearItem']);    
@@ -67,6 +68,7 @@
                             } else {
                                 echo "<strong>Disabled </strong><span class='glyphicon glyphicon-remove'></span><br /><br />";
                             }
+                            if(!empty($notes)) echo "<strong>Notes:</strong> <pre>" . $notes . "</pre><br />";
                             echo "<a class='btn btn-primary' href='edit-gear.php?gear_id=" . $gear_id . "'>Edit</a> &nbsp;&nbsp;";
                             echo "<a class='btn btn-danger' href='gear-item.php?deleteGearItem=" . $gear_id . "'>Delete</a>"; 
                         ?>

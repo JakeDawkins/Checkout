@@ -19,6 +19,7 @@
         $oldType = getGearType($gear_id);
         $oldQty = getTotalGearQty($gear_id);
         $oldIsDisabled = isDisabled($gear_id);
+        $oldNotes = getGearNotes($gear_id);
     }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -30,6 +31,7 @@
         $type = test_input($_POST['type']);
         $newType = test_input($_POST['newType']);
         $newIsDisabled = test_input($_POST['disabled']);
+        $newNotes = test_input($_POST['notes']);
 
         //------------------------ name changes ------------------------
         if(!empty($name)){//user changed name
@@ -69,6 +71,13 @@
             updateGearDisabled($gear_id,$newIsDisabled);
             $successes[] = "Gear disabled for checkouts";
         }
+
+        //------------------------ Notes Changed ------------------------
+        if(getGearNotes($gear_id) != $newNotes){
+            setGearNotes($gear_id,$newNotes);
+            $successes[] = "Gear notes updated";
+        }
+
     }   
 ?>
 
@@ -145,9 +154,11 @@
                             <input type="checkbox" name="disabled" value="true" <?php if(isDisabled($gear_id)) echo "checked";?> />
                             &nbsp;&nbsp;Disable</label>
                     </div>
-                    <?php
-                        
-                    ?>
+                    
+                    <div class="form-group">
+                        <label class="control-label" for="notes">Notes:</label>
+                        <textarea class="form-control" name="notes"><?php echo getGearNotes($gear_id); ?></textarea>
+                    </div>
                     
                     <br />
 

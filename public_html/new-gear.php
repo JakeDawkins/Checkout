@@ -18,6 +18,7 @@
 		$qty = test_input($_POST['qty']);
 		$category = test_input($_POST['category']);
 		$newCategory = test_input($_POST['newCategory']);
+		$notes = test_input($_POST['notes']);
 
 		//user provided a new category
 		if (!empty($newCategory)){
@@ -29,8 +30,9 @@
 		
 		//TODO...
 		//temp validation to prevent problems
+		//notes is allowed null
 		if(!empty($name) && !empty($qty) && !empty($category) && is_numeric($qty)){
-			newGearItem($name,$category,$qty);
+			newGearItem($name,$category,$qty,$notes);
 			$added = true;
 		} else $added = false;
 	}
@@ -103,6 +105,11 @@
 					<div class="form-group">
 						<label class="control-label" for="newCategory">Or create a new category:</label>
 						<input class="form-control" name="newCategory" type="text" />
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="notes">Add Notes:</label>  
+						<textarea class="form-control" name="notes" rows="3"></textarea>
 					</div>
 
 					<input class="btn btn-success" type="submit" name="submit" value="Submit" />

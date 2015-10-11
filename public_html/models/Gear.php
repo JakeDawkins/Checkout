@@ -6,9 +6,9 @@ require_once('db.php');
 	//inserts a new gear item into db
 	//	type: gear_type_id in gear_types table
 	//	qty: max qty in stock
-	function newGearItem($name,$type,$qty) {
+	function newGearItem($name,$type,$qty,$notes) {
 		$database = new DB();
-		$sql = "INSERT INTO gear(name,gear_type_id,qty) VALUES('$name','$type','$qty')";
+		$sql = "INSERT INTO gear(name,gear_type_id,qty,notes) VALUES('$name','$type','$qty','$notes')";
 		$database->query($sql);
 	}
 
@@ -84,6 +84,12 @@ require_once('db.php');
 		$database->query($sql);
 	}
 
+	function setGearNotes($gear_id, $notes){
+		$database = new DB();
+		$sql = "UPDATE gear SET notes='$notes' WHERE gear_id='$gear_id'";
+		$database->query($sql);
+	}
+
 //------------------------ search functions ------------------------
 	function getGearName($gear_id){
 		$database = new DB();
@@ -106,6 +112,14 @@ require_once('db.php');
 		$sql = "SELECT qty FROM gear WHERE gear_id='$gear_id'";
 		$results = $database->select($sql);
 		return $results[0]['qty'];
+	}
+
+	//returns the notes added to a gear item (1024 max)
+	function getGearNotes($gear_id){
+		$database = new DB();
+		$sql = "SELECT notes FROM gear WHERE gear_id='$gear_id'";
+		$results = $database->select($sql);
+		return $results[0]['notes'];
 	}
 
 	//returns array of gear (no availabilities)
