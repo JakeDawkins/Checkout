@@ -5,26 +5,36 @@
 
 	require_once('models/Gear.php');
 	require_once('models/Form.php');
-	//require_once('models/Checkout.php');
 	require_once('models/Package.php');
-	//require_once('models/Person.php');
+
+	if($_SERVER["REQUEST_METHOD"] == "GET"){
+		$pkg_id = test_input($_GET['pkg_id']);
+		$pkg = new Package();
+		$pkg->retrievePackage($pkg_id);
+	}
 
 	//form submitted
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
 		if(!empty($_POST['title']) && !empty($_POST['description']) && !empty($_POST['gear'])){
+			$pkg_id = test_input($_POST['pkg_id']);
 			$title = test_input($_POST['title']);
 			$description = test_input($_POST['description']);
 			$gearList = $_POST['gear'];
 
 			$pkg = new Package();
+			$pkg->retrievePackage($pkg_id);
 
-			$pkg->setTitle($title);
-			$pkg->setDescription($description);
+			if(!empty($title) && $title != $pkg->getTitle()){
+				$pkg->setTitle($title);	
+			}
+			if($description != $pkg->getDescription()){
+				$pkg->setDescription($description);
+			}
 			foreach($gearList as $gear){
 				$pkg->addToGearList($gear);
 			}
 			$pkg->finalizePackage();
-			$successes[] = "New Package, " . $title . " created";
+			$successes[] = "Package updated";
 		}
 	}
 ?>
@@ -36,7 +46,7 @@
 	<!-- INCLUDE BS HEADER INFO -->
 	<?php include('templates/bs-head.php'); ?>
 
-    <title>New Package</title>
+    <title>Edit Package</title>
 </head>
 <body>
 	<!-- IMPORT NAVIGATION -->
@@ -46,7 +56,7 @@
     <div class="container-fluid gray">
         <div class="row">
             <div class="col-lg-12 text-center">
-                <h1>New Gear Package</h1>
+                <h1>Edit Gear Package</h1>
             </div>
         </div><!-- end row -->
     </div><!-- end container -->
@@ -61,15 +71,16 @@
                 echo resultBlock($errors,$successes); ?>
 
                 <form role="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+                	<input type="hidden" name="pkg_id" value="<?php echo $pkg_id; ?>" />
                 	<h2>Package Details</h2>
 					<hr />
 					<div class="form-group"> <!-- TITLE -->
 						<label class="control-label" for="title">Package Title:</label>  
-						<input type="text" class="form-control" name="title">
+						<input type="text" class="form-control" name="title" placeholder="<?php echo $pkg->getTitle(); ?>">
 					</div>
 					<div class="form-group"> <!-- DESC -->
 						<label class="control-label" for="Description">Description:</label>  
-						<textarea class="form-control" name="description" rows="3"></textarea>
+						<textarea class="form-control" name="description" rows="3"><?php echo $pkg->getDescription(); ?></textarea>
 					</div>
 
 					<h2>Select Gear</h2>
@@ -77,13 +88,18 @@
 					<hr />
 
 					<?php
+						$currGearList = $pkg->getGearList();
+
 						$types = getGearTypes();
 						foreach($types as $type){
 							$items = getGearListWithType($type['gear_type_id']);
 							echo "<h4>" . $type['type'] . "</h4>";
 							foreach($items as $item){
 								echo "<div class='checkbox'>";
-								echo "<label><input type='checkbox' name='gear[]' value='" . $item['gear_id'] . "'> " . $item['name'];
+								if(in_array($item['gear_id'], $currGearList))
+									echo "<label><input type='checkbox' name='gear[]' value='" . $item['gear_id'] . "' checked> " . $item['name'];
+								else 
+									echo "<label><input type='checkbox' name='gear[]' value='" . $item['gear_id'] . "'> " . $item['name'];
 								echo "</label></div>";	
 							}
 						}

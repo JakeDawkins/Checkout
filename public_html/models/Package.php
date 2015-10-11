@@ -8,6 +8,19 @@ class Package {
 	private $gearList = array();
 
 	//------------------------ getters ------------------------
+	public static function getAllPackages(){
+		$database = new DB();
+		$sql = "SELECT * FROM packages";
+		$results = $database->select($sql);
+
+		$packages = array();
+		foreach ($results as $result) {
+			$pkg = new Package();
+			$pkg->retrievePackage($result['pkg_id']);
+			$packages[] = $pkg;		
+		}
+		return $packages;
+	}
 
 	public function getID() {
 		return $this->pkg_id;
@@ -44,7 +57,8 @@ class Package {
 	}
 	
 	public function addToGearList($gear_id) {
-		$this->gearList[] = $gear_id;
+		if(!in_array($gear_id, $this->gearList))
+			$this->gearList[] = $gear_id;
 	}
 	
 	public function removeFromGearList($gear_id){
