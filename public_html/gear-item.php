@@ -69,8 +69,6 @@
                             }
                             echo "<a class='btn btn-primary' href='edit-gear.php?gear_id=" . $gear_id . "'>Edit</a> &nbsp;&nbsp;";
                             echo "<a class='btn btn-danger' href='gear-item.php?deleteGearItem=" . $gear_id . "'>Delete</a>"; 
-                            //TODO 
-                            //echo "<strong>Status:</strong> " . $gear_id . "<br />";
                         ?>
                         </p>
                     </div>

@@ -136,13 +136,14 @@ if(!empty($_POST)) {
 </head>
 <body>
 	<!-- IMPORT NAVIGATION -->
-	<?php include('templates/bs-nav.php'); ?>
+	<?php //include('templates/bs-nav.php'); ?>
 
     <!-- HEADER -->
-    <div class="container-fluid gray">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <h1>Forgot Password</h1>
+                <!-- <p class="lead">Enter your email and username and we'll send a password reset email.</p> -->
             </div>
         </div><!-- end row -->
     </div><!-- end container -->
@@ -151,10 +152,9 @@ if(!empty($_POST)) {
 
     <div class="container">
         <div class="row">
-            <div class="col-sm-8 col-sm-offset-2">
+            <div class="col-sm-6 col-sm-offset-3">
     			<?php echo resultBlock($errors,$successes);
 				echo "<form name='newLostPass' action='".$_SERVER['PHP_SELF']."' method='post'>"; ?>
-					<p>Enter your email and username and we'll send a password reset email.</p>
 					<div class='form-group'>
 						<label class='control-label'>Username:</label>
 						<input class='form-control' type='text' name='username' />

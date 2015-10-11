@@ -93,15 +93,20 @@ if(!empty($_POST)) {
 
 				echo "<form role='form' name='login' action='".$_SERVER['PHP_SELF']."' method='post'>"; ?>
 					<div class="form-group">
-						<label class="control-label">Username:</label>
+						<label class="control-label" for="username">Username:</label>
 						<input class="form-control" type='text' name='username' />
 					</div>
 					<div class="form-group">
-						<label class="control-label">Password:</label>
+						<label class="control-label" for="password">Password:</label>
 						<input class="form-control" type='password' name='password' />
 					</div>
 					<input class="btn btn-success btn-block" type='submit' value='Login' class='submit' />
+					<br />
 					<a class="btn btn-primary btn-block" href="register.php">Register</a>
+					<br />
+					<div class="full-width text-center">
+						<a href="forgot-password.php">I forgot my password</a>
+					</div>
 				</form>
            </div>
         </div>

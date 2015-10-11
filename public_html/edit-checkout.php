@@ -245,14 +245,14 @@
 							<input type="text" class="form-control" name="title" placeholder="<?php echo $co->getTitle(); ?>">
 						</div>
 						<div class="form-group"> <!-- DESC -->
-							<label class="control-label" for="Description">Description:</label>  
+							<label class="control-label" for="description">Description:</label>  
 							<textarea class="form-control" name="description" rows="3"><?php echo $co->getDescription(); ?></textarea>
 						</div>
 						<div class="alert alert-warning">
 						Changing the date of a checkout may change what gear is available for checkout.
 						</div>
 						<div class="form-inline form-group"><!-- START -->
-							<label class="control-label" for="start_date">Start date:</label>
+							<label class="control-label" for="start_month">Start date:</label>
 							<select class="form-control" style="display: inline" name="start_month">
 								<option value="01" <?php if ($s_month == 1) echo 'selected="selected"';?>>January</option>
 								<option value="02" <?php if ($s_month == 2) echo 'selected="selected"';?>>February</option>
@@ -304,7 +304,7 @@
 								<option value="2015" <?php if ($s_year == 15) echo 'selected="selected"';?>>2015</option>
 								<option value="2016" <?php if ($s_year == 16) echo 'selected="selected"';?>>2016</option>
 							</select>
-							<label class="control-label" for="start_time">&nbsp;&nbsp;Start Time </label>
+							<label class="control-label" for="start_hour">&nbsp;&nbsp;Start Time </label>
 							<select class="form-control" style="display: inline" name="start_hour">
 								<option value="01" <?php if ($s_hour == 1) echo 'selected="selected"';?>>01</option>
 								<option value="02" <?php if ($s_hour == 2) echo 'selected="selected"';?>>02</option>
@@ -339,7 +339,7 @@
 							</select>
 						</div>
 						<div class="form-inline form-group"> <!-- END -->
-							<label class="control-label" for="end_date">End date:</label>
+							<label class="control-label" for="end_month">End date:</label>
 							<select class="form-control" style="display: inline" name="end_month">
 								<option value="01" <?php if ($e_month == 1) echo 'selected="selected"';?>>January</option>
 								<option value="02" <?php if ($e_month == 2) echo 'selected="selected"';?>>February</option>
@@ -391,7 +391,7 @@
 								<option value="2015" <?php if ($e_year == 15) echo 'selected="selected"';?>>2015</option>
 								<option value="2016" <?php if ($e_year == 16) echo 'selected="selected"';?>>2016</option>
 							</select>
-							<label class="control-label" for="end_time">&nbsp;&nbsp;End Time </label>
+							<label class="control-label" for="end_hour">&nbsp;&nbsp;End Time </label>
 							<select class="form-control" style="display: inline" name="end_hour">
 								<option value="01" <?php if ($e_hour == 1) echo 'selected="selected"';?>>01</option>
 								<option value="02" <?php if ($e_hour == 2) echo 'selected="selected"';?>>02</option>

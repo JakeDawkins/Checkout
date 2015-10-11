@@ -19,10 +19,9 @@
 	                    //Logged in: show all links
 	                    //logged out: show login link only
 	                   	if(isset($loggedInUser->user_id)){
-       	                    echo '<li><a href="inventory.php">Inventory</a></li>';
-                    		echo '<li><a href="checkouts.php">Checkouts</a></li>';
+       	                    echo '<li><a href="checkouts.php">Checkouts</a></li>';
+                            echo '<li><a href="inventory.php">Inventory</a></li>';
 	                   		echo '<li class="dropdown">'; ?>
-                            <!-- <li class="dropdown"><a href="account.php">Account</a></li> -->
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li class="dropdown-header">User Options</li>
@@ -48,10 +47,9 @@
                             echo '<li><a href="login.php">Log In</a></li>'; 
                         }
                     ?>
-                    
                 </ul>
             </div>
-            <!-- /.navbar-collapse -->
+            <!-- end navbar-collapse -->
         </div>
-        <!-- /.container -->
+        <!-- end container -->
     </nav>
