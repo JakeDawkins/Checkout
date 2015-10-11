@@ -157,7 +157,7 @@
                     
                     <div class="form-group">
                         <label class="control-label" for="notes">Notes:</label>
-                        <textarea class="form-control" name="notes"><?php echo getGearNotes($gear_id); ?></textarea>
+                        <textarea class="form-control" name="notes" rows="3"><?php echo getGearNotes($gear_id); ?></textarea>
                     </div>
                     
                     <br />
