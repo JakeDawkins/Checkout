@@ -17,7 +17,7 @@
 	<!-- INCLUDE BS HEADER INFO -->
 	<?php include('templates/bs-head.php'); ?>
 
-    <title>Welcome!</title>
+    <title>Packages</title>
 </head>
 <body>
 	<!-- IMPORT NAVIGATION -->
