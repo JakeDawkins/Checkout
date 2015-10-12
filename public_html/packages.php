@@ -28,6 +28,7 @@
         <div class="row">
             <div class="col-lg-12 text-center">
                 <h1>Packages</h1>
+                <p class="lead">Packages are sets of gear to make similar checkouts easier</p>
             </div>
         </div><!-- end row -->
     </div><!-- end container -->
@@ -39,7 +40,7 @@
             <div class="col-lg-12">
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
                     <a class="btn btn-primary" href="new-package.php">New Package&nbsp;&nbsp;<span class="glyphicon glyphicon-plus"></span></a>
-                    <a class="btn btn-primary" href="edit-packages.php">Edit Packages&nbsp;&nbsp;<span class="glyphicon glyphicon-pencil"></span></a>
+                    <br /><br />
 
                     <table class="table table-hover"> 
                         <!-- <colgroup>
@@ -63,10 +64,16 @@
                                     $gearList = $pkg->getGearList();
 
                                     echo "<tr>";
-                                    echo "<td>" . $pkg->getTitle() . "</td>";
+                                    echo "<td><a href='package.php?pkg_id=" . $pkg->getID() . "'>". $pkg->getTitle() . "</a></td>";
                                     echo "<td>" . $pkg->getDescription() . "</td><td class='text-center'>";
+                                    $i = 0;
                                     foreach($gearList as $gear){
-                                        echo getGearName($gear) . "<br />";
+                                        if($i<6) echo getGearName($gear) . "<br />";
+                                        else {
+                                            echo "...";
+                                            break;
+                                        }
+                                        $i++;
                                     }
                                     echo "</td></tr>";
                                 }

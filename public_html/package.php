@@ -13,7 +13,7 @@
         $del = test_input($_GET['delete']);
         if($del == true){
             Package::removePackage($pkg_id);
-            //header("Location: packages.php");
+            header("Location: packages.php");
         }
 
         $pkg = new Package();
@@ -43,7 +43,7 @@
 	<!-- INCLUDE BS HEADER INFO -->
 	<?php include('templates/bs-head.php'); ?>
 
-    <title>Gear Item</title>
+    <title>Package Details</title>
 </head>
 <body>
 	<!-- IMPORT NAVIGATION -->

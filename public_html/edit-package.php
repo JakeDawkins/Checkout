@@ -14,28 +14,26 @@
 	}
 
 	//form submitted
-	if($_SERVER["REQUEST_METHOD"] == "POST"){
-		if(!empty($_POST['title']) && !empty($_POST['description']) && !empty($_POST['gear'])){
-			$pkg_id = test_input($_POST['pkg_id']);
-			$title = test_input($_POST['title']);
-			$description = test_input($_POST['description']);
-			$gearList = $_POST['gear'];
+	if($_SERVER["REQUEST_METHOD"] == "POST"){	
+		$pkg_id = test_input($_POST['pkg_id']);
+		$title = test_input($_POST['title']);
+		$description = test_input($_POST['description']);
+		$gearList = $_POST['gear'];
 
-			$pkg = new Package();
-			$pkg->retrievePackage($pkg_id);
+		$pkg = new Package();
+		$pkg->retrievePackage($pkg_id);
 
-			if(!empty($title) && $title != $pkg->getTitle()){
-				$pkg->setTitle($title);	
-			}
-			if($description != $pkg->getDescription()){
-				$pkg->setDescription($description);
-			}
-			foreach($gearList as $gear){
-				$pkg->addToGearList($gear);
-			}
-			$pkg->finalizePackage();
-			$successes[] = "Package updated";
+		if(!empty($title) && $title != $pkg->getTitle()){
+			$pkg->setTitle($title);	
 		}
+		if($description != $pkg->getDescription()){
+			$pkg->setDescription($description);
+		}
+		foreach($gearList as $gear){
+			$pkg->addToGearList($gear);
+		}
+		$pkg->finalizePackage();
+		$successes[] = "Package updated";
 	}
 ?>
 
