@@ -40,6 +40,8 @@ body {
 /* -------- SIZES -------- */
 .one-eighth { width: 12.5%; }
 
+.one-sixth { width: 16.666666%; }
+
 .one-fifth { width: 20%; }
 
 .one-quarter { width: 25%; }
@@ -61,6 +63,8 @@ body {
 .three-quarters { width: 75%; }
 
 .four-fifths { width: 80%; }
+
+.five-sixth { width: 83.333333%; }
 
 .seven-eighths { width: 87.5%; }
 

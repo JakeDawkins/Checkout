@@ -94,6 +94,14 @@
         <div class="row">
             <div class="col-lg-12">
                 <table class="table table-hover">
+                    <colgroup>
+                        <col class="one-sixth">
+                        <col class="one-sixth">
+                        <col class="one-sixth">
+                        <col class="one-sixth">
+                        <col class="one-sixth">
+                        <col class="one-sixth">                            
+                    </colgroup>
                     <thead>
                         <tr>
                             <th>Title</th>

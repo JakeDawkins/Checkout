@@ -52,17 +52,15 @@
 							} else {
 					?>
                     <table class="table table-hover"> 
-                        <!-- <colgroup>
-                            <col class="one-fifth">
-                            <col class="one-fifth">
-                            <col class="one-fifth">
-                            <col class="one-fifth">
-                            <col class="one-fifth">
-                            <col class="one-fifth">
-                        </colgroup> -->
+                        <colgroup>
+                            <col class="one-quarter">
+                            <col class="one-quarter">
+                            <col class="one-quarter">
+                            <col class="one-quarter">                            
+                        </colgroup>
                         <thead>
                             <tr>
-                                <th class="hidden-xs hidden-sm">ID</th>
+                                <!-- <th class="hidden-xs hidden-sm">ID</th> -->
                                 <th>Name</th>
                                 <th>Status</th>
                                 <th>Last Checkout</th>
@@ -73,7 +71,7 @@
                             <?php
 								foreach($gearList as $gear){
 									printf("<tr>");
-									printf("<td class='hidden-xs hidden-sm'>%s</td>",$gear['gear_id']);
+									//printf("<td class='hidden-xs hidden-sm'>%s</td>",$gear['gear_id']);
 									printf("<td><a href='gear-item.php?gear_id=%s'>%s</a></td>",$gear['gear_id'],$gear['name']);
 									echo "<td>" . statusString($gear['gear_id']) . "</td>";
 

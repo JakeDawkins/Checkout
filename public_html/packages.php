@@ -43,14 +43,11 @@
                     <br /><br />
 
                     <table class="table table-hover"> 
-                        <!-- <colgroup>
-                            <col class="one-fifth">
-                            <col class="one-fifth">
-                            <col class="one-fifth">
-                            <col class="one-fifth">
-                            <col class="one-fifth">
-                            <col class="one-fifth">
-                        </colgroup> -->
+                        <colgroup>
+                            <col class="one-third">
+                            <col class="one-third">
+                            <col class="one-third">                            
+                        </colgroup>
                         <thead>
                             <tr>
                                 <th>Name</th>
