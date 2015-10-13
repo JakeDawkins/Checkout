@@ -4,9 +4,11 @@
 	if (!securePage($_SERVER['PHP_SELF'])){die();}
 
 	require_once('models/Checkout.php');
+	require_once('models/Package.php');
 	require_once('models/Form.php');
 
 	$types = getGearTypes();
+	$packages = Package::getAllPackages();
 
 	//define variables and set to empty values
 	$co_start = $co_end = $title = $description = "";
@@ -61,16 +63,32 @@
 			$co_start = test_input($_POST['co_start']);	
 			$co_end = test_input($_POST['co_end']);
 
+			//look and see what pkgs are added already
+			$preCheck = array(); //items to precheck if possible based on pkgs
+			if(isset($_POST['addedPkgs'])){
+				$addedPkgs = array();
+				foreach($_POST['addedPkgs'] as $pkg){
+					$addedPkgs[] = test_input($pkg);
+					$newPkg = new Package();
+					$newPkg->retrievePackage($pkg);
+					$preCheck = array_merge($preCheck, $newPkg->getGearList());
+					unset($newPkg);
+				}	
+				if ($_POST['submit'] != "Next") $step = 1; //don't move onto step 3 yet.
+			}
+
 			//construct a clean gear list
 			$gearList = array();
 			$gearToGetQtyFor = array();
-			foreach ($_POST['gear'] as $gearItem) {
-				$gearList[] = test_input($gearItem);
+			if(isset($_POST['gear'])){
+				foreach ($_POST['gear'] as $gearItem) {
+					$gearList[] = test_input($gearItem);
 
-				//if the available qty is > 1, we need to find out
-				//what qty the user wants to check out
-				if(availableQty($gearItem, $co_start, $co_end) > 1){
-					$gearToGetQtyFor[] = $gearItem;
+					//if the available qty is > 1, we need to find out
+					//what qty the user wants to check out
+					if(availableQty($gearItem, $co_start, $co_end) > 1){
+						$gearToGetQtyFor[] = $gearItem;
+					}
 				}
 			}
 		} else if ($step == 3){ //step 3 submitted
@@ -388,6 +406,27 @@
 						<input type="hidden" name="co_end" value="<?php echo $co_end ?>" />
 
 						<?php
+							if(count($packages) > 0 && count($packages) != count($addedPkgs)){
+								// input -- added packages
+								if(isset($addedPkgs)){
+									foreach($addedPkgs as $addedPkg){
+										echo "<input type='hidden' name='addedPkgs[]' value='" . $addedPkg . "' />";
+									}
+								}
+
+								echo "<h4>Packages</h4>";
+
+								// Buttons for adding packages 
+								foreach($packages as $package){
+									// only show the ones not added already
+									if(!isset($addedPkgs) || !in_array($package->getID(), $addedPkgs)){
+										echo "<button class='btn btn-success' type='submit' name='addedPkgs[]' value='" . $package->getID() . "'>" . $package->getTitle() . "</button> &nbsp;";
+									}
+								}
+								echo "<hr />";
+							}
+	
+
 							foreach($types as $type){
 								$items = getAvailableGearWithType($type['gear_type_id'], $co_start, $co_end);
 								if (count($items) > 0){
@@ -395,7 +434,9 @@
 									foreach($items as $item){
 										$qty = availableQty($item['gear_id'], $co_start, $co_end);
 										echo "<div class='checkbox'>";
-										echo "<label><input type='checkbox' name='gear[]' value='" . $item['gear_id'] . "'> " . $item['name'];
+										echo "<label><input type='checkbox' name='gear[]' value='" . $item['gear_id'] . "' ";
+										if(isset($preCheck) && in_array($item['gear_id'], $preCheck)) echo "checked"; //added from packages
+										echo "> " . $item['name'];
 										if($qty > 1){
 											echo " (" . $qty . ")";
 										}
