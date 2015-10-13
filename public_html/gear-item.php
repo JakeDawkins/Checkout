@@ -69,8 +69,13 @@
                                 echo "<strong>Disabled </strong><span class='glyphicon glyphicon-remove'></span><br /><br />";
                             }
                             if(!empty($notes)) echo "<strong>Notes:</strong> <pre>" . $notes . "</pre><br />";
-                            echo "<a class='btn btn-primary' href='edit-gear.php?gear_id=" . $gear_id . "'>Edit</a> &nbsp;&nbsp;";
-                            echo "<a class='btn btn-danger' href='gear-item.php?deleteGearItem=" . $gear_id . "'>Delete</a>"; 
+
+                            //only show to admins
+                            if ($loggedInUser->checkPermission(array(2))){
+                                echo "<a class='btn btn-primary' href='edit-gear.php?gear_id=" . $gear_id . "'>Edit</a> &nbsp;&nbsp;";
+                                echo "<a class='btn btn-danger' href='gear-item.php?deleteGearItem=" . $gear_id . "'>Delete</a>"; 
+                            }
+
                         ?>
                         </p>
                     </div>

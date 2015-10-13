@@ -79,8 +79,10 @@
 							$co_end = new DateTime($checkout->getEnd());
 							printf("<strong>Start Time:</strong> %s<br /><br />",$co_start->format('m-d-y g:iA'));
 							printf("<strong>End Time:</strong> %s<br /><br />",$co_end->format('m-d-y g:iA'));
-	    					echo "<a class='btn btn-primary' href='edit-checkout.php?co_id=" . $co_id . "'>Edit</a> &nbsp;&nbsp;";
-                            echo "<a class='btn btn-danger' href='checkout.php?co_id=" . $co_id . "&delete=true'>Delete</a>"; 
+			            	if ($loggedInUser->checkPermission(array(2)) || $loggedInUser->user_id == $checkout->getPerson()){
+				            	echo "<a class='btn btn-primary' href='edit-checkout.php?co_id=" . $co_id . "'>Edit</a> &nbsp;&nbsp;";
+	                            echo "<a class='btn btn-danger' href='checkout.php?co_id=" . $co_id . "&delete=true'>Delete</a>";	
+			            	} 
     					?>
     					</p>
     				</div>

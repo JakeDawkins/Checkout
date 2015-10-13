@@ -18,6 +18,10 @@
 		$co = new Checkout();
 		$co->retrieveCheckout($co_id);
 
+		if (!$loggedInUser->checkPermission(array(2)) && $loggedInUser->user_id != $co->getPerson()){
+			header("Location: checkout.php?co_id=" . $co_id);
+		}
+
 		$co_start = $co->getStart();
 		$co_end = $co->getEnd();
 		$formattedStart = new DateTime($co_start);
@@ -27,7 +31,6 @@
 		$s_month = $formattedStart->format('m');
 		$s_day = $formattedStart->format('d'); 
 		$s_hour = $formattedStart->format('H') % 12;
-		echo $s_hour . "<br />";
 		$s_min = $formattedStart->format('i');
 		if($formattedStart->format('H') >= 12){
 			$s_ampm = "pm";
@@ -42,7 +45,6 @@
 		$e_month = $formattedEnd->format('m');
 		$e_day = $formattedEnd->format('d'); 
 		$e_hour = $formattedEnd->format('H') % 12;
-		echo $e_hour . "<br />";
 		$e_min = $formattedEnd->format('i');
 		if($formattedEnd->format('H') >= 12){
 			$e_ampm = "pm";
@@ -52,7 +54,6 @@
 			$e_hour = 12;
 			$e_ampm = "am";
 		}
-
 	}
 
 	//form submitted
