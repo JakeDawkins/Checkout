@@ -420,7 +420,7 @@
 								foreach($packages as $package){
 									// only show the ones not added already
 									if(!isset($addedPkgs) || !in_array($package->getID(), $addedPkgs)){
-										echo "<button class='btn btn-success' type='submit' name='addedPkgs[]' value='" . $package->getID() . "'>" . $package->getTitle() . "</button> &nbsp;";
+										echo "<button style='margin-bottom:10px' class='btn btn-success' type='submit' name='addedPkgs[]' value='" . $package->getID() . "'>" . $package->getTitle() . "</button> &nbsp;";
 									}
 								}
 								echo "<hr />";

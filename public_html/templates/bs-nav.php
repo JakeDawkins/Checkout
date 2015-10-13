@@ -28,11 +28,11 @@
                                     <li class="dropdown-header">User Options</li>
                                     <li><a href="account.php">Account Home</a></li>
                                     <li><a href="user_settings.php">User Settings</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li class="dropdown-header">Admin Options</li>
                                     <?php
                                     //Links for permission level 2 (default admin)
                                     if ($loggedInUser->checkPermission(array(2))){ ?>
+                                    <li role="separator" class="divider"></li>
+                                        <li class="dropdown-header">Admin Options</li>
                                         <li><a href='admin_configuration.php'>Site Configuration</a></li>
                                         <li><a href='admin_users.php'>Users</a></li>
                                         <li><a href='admin_permissions.php'>Permissions</a></li>
