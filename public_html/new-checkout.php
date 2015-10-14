@@ -207,7 +207,6 @@
 						</div>
 						<div class="form-inline form-group"><!-- START -->
 							<label class="control-label" for="start_date">Start date:</label>
-							<!-- <input type="text" class="form-control" name="co_start" placeholder="yyyy-mm-dd hh:mm:ss"> -->
 							<select class="form-control" style="display: inline" name="start_month">
 								<option value="01">January</option>
 								<option value="02">February</option>

@@ -9,6 +9,7 @@ class Checkout {
 	private $co_end;
 	private $description;
 	private $gearList = array();
+	private $returned;
 
 	//------------------------ getters ------------------------
 
@@ -41,7 +42,11 @@ class Checkout {
 	}
 
 	public function printObject() {
-		return "<hr>ID:$this->co_id<br>TITLE:$this->title<br>PERSON:$this->person_id<br>START:$this->co_start<br>END:$this->co_end<br>DESC:$this->description<hr>";
+		return "<hr>ID:$this->co_id<br>TITLE:$this->title<br>PERSON:$this->person_id<br>START:$this->co_start<br>END:$this->co_end<br>DESC:$this->description<br>RET:$this->returned<hr>";
+	}
+
+	public function getReturned() {
+		return $this->returned;
 	}
 
 	public function qtyOfItem($gear_id) {
@@ -94,6 +99,10 @@ class Checkout {
 			}
 		$i++;
 		}
+	}
+
+	public function setReturned($returned){
+		$this->returned = $returned;
 	}
 
 	//------------------------ DB ------------------------
@@ -150,6 +159,7 @@ class Checkout {
 		$this->co_start = $results[0]['co_start'];
 		$this->co_end = $results[0]['co_end'];
 		$this->description = $results[0]['description'];
+		$this->returned = $results[0]['returned'];
 
 		//query DB for the checkout-gear combos
 		$sql = "SELECT gear_id,qty FROM co_gear WHERE co_id='$co_id'";
@@ -171,6 +181,12 @@ class Checkout {
 		if(isset($this->co_id)){ //old checkout
 			$sql = "UPDATE checkouts SET title='$this->title', person_id='$this->person_id', co_start='$this->co_start', co_end='$this->co_end', description='$this->description' WHERE co_id='$this->co_id'";
 			$database->query($sql);
+
+			//set return datetime
+			if(isset($this->returned)){
+				$sql = "UPDATE checkouts SET returned='$this->returned' WHERE co_id='$this->co_id'";
+				$database->query($sql);	
+			} 
 
 			//remove all old co_gear relations from table
 			$sql = "DELETE FROM co_gear WHERE co_id='$this->co_id'";

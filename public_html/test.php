@@ -6,6 +6,14 @@
 	require_once('models/Gear.php');
 	require_once('models/Checkout.php');
 	require_once('models/Person.php');
+
+    $co = new Checkout();
+    $co->retrieveCheckout(60);
+    echo $co->printObject();
+    $co->setReturned("2015-10-14 07:50:00");
+    echo $co->printObject();
+    $co->finalizeCheckout();
+    //$co->finalizeCheckout();
 ?>
 
 <!DOCTYPE html>
@@ -18,43 +26,22 @@
     <title>Welcome!</title>
 </head>
 <body>
-	<!-- IMPORT NAVIGATION -->
-	<?php include('templates/bs-nav.php'); ?>
+<p id="demo"></p>
+<input type="hidden" id="curr" name="returned" />
+    <script>
+        var d = new Date();
+        //var monthString = ('0' + (d.getMonth()+1)).slice(-2);
+        //var dayString = ('0' + d.getDate()).slice(-2);
+        //var hourString = ('0' + d.getHours()).slice(-2);
+        //var minString = ('0' + d.getMinutes()).slice(-2);
+        //var secString = ('0' + d.getSeconds()).slice(-2); 
+        var dateTime = "" + d.getFullYear() + "-" + ('0' + (d.getMonth()+1)).slice(-2) + "-" + ('0' + d.getDate()).slice(-2) + " ";
+        dateTime += ('0' + d.getHours()).slice(-2) + ":" + ('0' + d.getMinutes()).slice(-2) + ":" + ('0' + d.getSeconds()).slice(-2);
+        document.getElementById("demo").innerHTML = dateTime;
+        document.getElementById("curr").setAttribute("value",dateTime);
 
-    <!-- HEADER -->
-    <div class="container-fluid gray">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <h1>Checkout</h1>
-                <p class="lead">A system for scheduling gear among a team</p>
-            </div>
-        </div><!-- end row -->
-    </div><!-- end container -->
+    </script>
 
-    <br /><br />
 
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-8 col-sm-offset-2">
-            	<?php 
-            	if ($loggedInUser->checkPermission(array(2))){
-            		
-            	}
-                ?>
-
-            </div>
-        </div>
-    </div>
-
-    <br /><br />
-
-    <!-- INCLUDE BS STICKY FOOTER -->
-    <?php include('templates/bs-footer.php'); ?>
-
-    <!-- jQuery Version 1.11.1 -->
-    <script src="js/jquery.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
 </body>
 </html>
