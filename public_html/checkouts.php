@@ -117,13 +117,15 @@
 							foreach($checkouts as $checkout){
 								$person = $checkout->getPerson();
 								$personDetails = fetchUserDetails(NULL,NULL,$person);
-
-								printf("<tr>");
+								$co_start = new DateTime($checkout->getStart());
+								$co_end = new DateTime($checkout->getEnd());
+								$now = new DateTime();
+								if($co_end < $now) echo "<tr class='text-muted'>";
+								else echo "<tr>";
 								printf("<td><a href='checkout.php?co_id=%s'>%s</a></td>",$checkout->getID(),$checkout->getTitle());
 								printf("<td class=\"hidden-xs\">%s</td>",$checkout->getDescription());
 								printf("<td>%s</td>",$personDetails['display_name']);
-								$co_start = new DateTime($checkout->getStart());
-								$co_end = new DateTime($checkout->getEnd());
+
 								printf("<td>%s</td>",$co_start->format('m-d g:iA'));
 								printf("<td>%s</td>",$co_end->format('m-d g:iA'));
 								printf("<td class=\"hidden-xs hidden-sm\">");
