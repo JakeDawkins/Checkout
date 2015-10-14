@@ -130,11 +130,12 @@
 								$i = 0; //counter. Only want to show a few items
 								foreach($checkout->getGearList() as $gear){
 									if ($i > 4){
-										echo "...<br />"; 
-										break;
-									}
+										echo "<div class='hide" . $checkout->getID() . "' style='display:none'>" . getGearName($gear[0]) . "</div>";
+									} elseif ($i==4){
+										echo "<div class='hide" . $checkout->getID() . "' style='display:none'>" . getGearName($gear[0]) . "</div>";
+										echo "<div class='unhide' id='" . $checkout->getID() . "'>...</div>";
+									} else printf("%s<br />",getGearName($gear[0]));
 									$i++;
-									printf("%s<br />",getGearName($gear[0]));
 								}
 								printf("</td></tr>");
 							}
@@ -152,6 +153,16 @@
 
     <!-- jQuery Version 1.11.1 -->
     <script src="js/jquery.js"></script>
+
+    <script>
+    //for expanding gear lists
+    $("div.unhide").click(function(event){
+    	//alert(event.target.id);
+    	$("div.hide" + event.target.id).css("display","block");
+    	$("#" + event.target.id).css("display","none");
+    });
+
+    </script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
