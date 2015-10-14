@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 11, 2015 at 07:29 AM
+-- Generation Time: Oct 14, 2015 at 03:12 PM
 -- Server version: 5.5.42-37.1
 -- PHP Version: 5.4.23
 
@@ -32,43 +32,46 @@ CREATE TABLE IF NOT EXISTS `checkouts` (
   `person_id` int(11) DEFAULT NULL,
   `co_start` datetime NOT NULL,
   `co_end` datetime NOT NULL,
-  `description` varchar(256) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8;
+  `description` varchar(256) DEFAULT NULL,
+  `returned` datetime DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `checkouts`
 --
 
-INSERT INTO `checkouts` (`co_id`, `title`, `person_id`, `co_start`, `co_end`, `description`) VALUES
-(1, 'test', 2, '2015-06-24 23:32:51', '2015-06-30 23:32:51', 'this is a test'),
-(18, 'my new checkout!', 2, '2012-12-12 01:00:00', '2012-12-13 01:00:00', 'This is a test of the full system'),
-(19, 'test', 2, '2015-07-15 12:00:00', '2015-07-17 12:00:00', 'this is a test'),
-(21, 'Test', 2, '2015-12-12 00:00:01', '2015-12-12 00:00:02', 'Bduskasbs'),
-(22, 'My secure test', 2, '2015-06-01 00:00:01', '2015-06-02 00:00:01', 'this is an awesome description'),
-(27, '4 Type Test', 2, '2015-09-20 00:00:01', '2015-09-21 00:00:01', 'fdsg sjdk fd df ds da'),
-(28, '5 Type Test', 2, '2015-09-22 00:00:01', '2015-09-23 00:00:01', 'ghjfsklgsfhd'),
-(30, 'Long Item name Test', 2, '2015-09-14 00:15:00', '2015-09-18 15:00:00', 'Thfhasdjkgdh'),
-(32, 'test', 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'fdsahjkd'),
-(33, 'jgk', 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'ghj'),
-(34, 'fdghdfghd', 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'fghj'),
-(35, '', 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ''),
-(36, 'dsafhjkl', 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'fhsdalk'),
-(37, 'dsafhjkl', 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'fhsdalk'),
-(38, 'sdfhjk', 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'sd'),
-(39, 'fds', 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'lkjkljklsdjklfjdsklfjdskl'),
-(41, 'hjkl', 2, '2015-01-01 01:00:00', '2015-01-03 01:00:00', 'ruheisfdj'),
-(49, 'gyrgdhfjkl', 2, '2015-01-01 01:00:00', '2015-01-03 01:00:00', 'ffdgjkfgd'),
-(50, 'test of new checkout class', 2, '2015-01-01 01:00:00', '2015-01-02 01:00:00', '1234567890'),
-(56, '123456789', 2, '2015-01-01 01:00:00', '2015-01-02 01:00:00', '987654321'),
-(57, 'abcdefg', 2, '2015-01-01 01:00:00', '2015-01-02 01:00:00', 'gfedcba'),
-(58, '49782345894358', 2, '2015-01-01 01:00:00', '2015-01-02 01:00:00', 'asdfghjklkjhgfdsasdfghjklkjhgfdsa'),
-(59, 'jake is a boss', 2, '2015-01-01 01:00:00', '2015-01-02 01:00:00', 'afjdsakglhdsfjgkhdsfjkghsdfjkl'),
-(60, 'jake is a boss 2', 2, '2015-01-01 01:00:00', '2015-01-02 01:00:00', 'dfahdsjkfghdsjkfghjdkshgjkhdfkjl'),
-(61, 'test stock', 2, '2015-10-05 01:00:00', '2015-10-05 19:00:00', 'fhjsdklghfdsjgklhdfjkl'),
-(62, '12344', 2, '2015-10-09 01:00:00', '2015-10-11 01:00:00', 'test checkout'),
-(63, 'test edit', 2, '2015-03-01 09:00:00', '2015-03-03 09:00:00', 'hello world!\r\nabcde 12345'),
-(64, 'djskfl;sd', 2, '2015-03-01 01:00:00', '2015-03-03 01:00:00', 'dhajsdklh'),
-(65, 'fdsahgjkl', 2, '2015-03-01 01:00:00', '2015-03-03 01:00:00', 'safjdklfhjsdklghdjfklghjksdlhfgjkldh');
+INSERT INTO `checkouts` (`co_id`, `title`, `person_id`, `co_start`, `co_end`, `description`, `returned`) VALUES
+(1, 'test', 2, '2015-06-24 23:32:51', '2015-06-30 23:32:51', 'this is a test', NULL),
+(18, 'my new checkout!', 2, '2012-12-12 01:00:00', '2012-12-13 01:00:00', 'This is a test of the full system', NULL),
+(19, 'test', 2, '2015-07-15 12:00:00', '2015-07-17 12:00:00', 'this is a test', NULL),
+(21, 'Test', 2, '2015-12-12 00:00:01', '2015-12-12 00:00:02', 'Bduskasbs', NULL),
+(22, 'My secure test', 2, '2015-06-01 00:00:01', '2015-06-02 00:00:01', 'this is an awesome description', NULL),
+(27, '4 Type Test', 2, '2015-09-20 00:00:01', '2015-09-21 00:00:01', 'fdsg sjdk fd df ds da', NULL),
+(28, '5 Type Test', 2, '2015-09-22 00:00:01', '2015-09-23 00:00:01', 'ghjfsklgsfhd', NULL),
+(30, 'Long Item name Test', 2, '2015-09-14 00:15:00', '2015-09-18 15:00:00', 'Thfhasdjkgdh', NULL),
+(32, 'test', 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'fdsahjkd', NULL),
+(33, 'jgk', 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'ghj', NULL),
+(34, 'fdghdfghd', 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'fghj', NULL),
+(35, '', 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', NULL),
+(36, 'dsafhjkl', 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'fhsdalk', NULL),
+(37, 'dsafhjkl', 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'fhsdalk', NULL),
+(38, 'sdfhjk', 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'sd', NULL),
+(39, 'fds', 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'lkjkljklsdjklfjdsklfjdskl', NULL),
+(41, 'hjkl', 2, '2015-01-01 01:00:00', '2015-01-03 01:00:00', 'ruheisfdj', NULL),
+(49, 'gyrgdhfjkl', 2, '2015-01-01 01:00:00', '2015-01-03 01:00:00', 'ffdgjkfgd', NULL),
+(50, 'test of new checkout class', 2, '2015-01-01 01:00:00', '2015-01-02 01:00:00', '1234567890', NULL),
+(56, '123456789', 2, '2015-01-01 01:00:00', '2015-01-02 01:00:00', '987654321', NULL),
+(57, 'abcdefg', 2, '2015-01-01 01:00:00', '2015-01-02 01:00:00', 'gfedcba', NULL),
+(58, '49782345894358', 2, '2015-01-01 01:00:00', '2015-01-02 01:00:00', 'asdfghjklkjhgfdsasdfghjklkjhgfdsa', NULL),
+(59, 'jake is a boss', 2, '2015-01-01 01:00:00', '2015-01-02 01:00:00', 'afjdsakglhdsfjgkhdsfjkghsdfjkl', NULL),
+(60, 'jake is a boss 2', 2, '2015-01-01 01:00:00', '2015-01-02 01:00:00', 'dfahdsjkfghdsjkfghjdkshgjkhdfkjl', '2015-10-14 07:50:00'),
+(61, 'test stock', 2, '2015-10-05 01:00:00', '2015-10-05 19:00:00', 'fhjsdklghfdsjgklhdfjkl', '2015-10-14 07:50:00'),
+(62, '12344', 2, '2015-10-09 01:00:00', '2015-10-11 01:00:00', 'test checkout', NULL),
+(63, 'test edit', 2, '2015-03-01 09:00:00', '2015-03-03 09:00:00', 'hello world!\r\nabcde 12345', NULL),
+(64, 'djskfl;sd', 2, '2015-03-01 01:00:00', '2015-03-03 01:00:00', 'dhajsdklh', NULL),
+(65, 'fdsahgjkl', 2, '2015-03-01 01:00:00', '2015-03-03 01:00:00', 'safjdklfhjsdklghdjfklghjksdlhfgjkldh', NULL),
+(66, 'forTesting TEST', 2, '2015-05-03 01:00:00', '2015-05-04 01:00:00', 'i like tomatos', NULL),
+(68, 'now test', 2, '2015-10-13 01:00:00', '2015-10-16 01:00:00', 'fdajgklh', '2015-10-14 14:16:00');
 
 -- --------------------------------------------------------
 
@@ -81,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `co_gear` (
   `gear_id` int(11) unsigned NOT NULL,
   `co_id` int(11) unsigned NOT NULL,
   `qty` int(11) unsigned NOT NULL DEFAULT '1'
-) ENGINE=InnoDB AUTO_INCREMENT=250 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=317 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `co_gear`
@@ -151,21 +154,43 @@ INSERT INTO `co_gear` (`co_gear_id`, `gear_id`, `co_id`, `qty`) VALUES
 (221, 129, 59, 1),
 (222, 133, 59, 1),
 (223, 132, 59, 1),
-(224, 136, 60, 3),
-(225, 130, 60, 1),
-(226, 18, 60, 1),
-(227, 42, 60, 1),
-(228, 105, 60, 1),
 (233, 135, 62, 15),
 (235, 135, 64, 10),
 (236, 135, 65, 3),
 (240, 136, 63, 2),
 (241, 135, 63, 2),
-(242, 136, 61, 4),
-(243, 135, 61, 5),
-(244, 134, 61, 1),
-(245, 132, 61, 1),
-(246, 131, 61, 1);
+(247, 136, 66, 3),
+(248, 135, 66, 1),
+(249, 18, 66, 2),
+(250, 27, 66, 1),
+(251, 36, 66, 1),
+(252, 37, 66, 1),
+(253, 22, 66, 2),
+(254, 23, 66, 1),
+(255, 113, 66, 1),
+(256, 122, 66, 3),
+(257, 51, 66, 1),
+(258, 44, 66, 1),
+(259, 97, 66, 1),
+(260, 89, 66, 1),
+(263, 136, 61, 4),
+(264, 135, 61, 5),
+(265, 134, 61, 1),
+(266, 132, 61, 1),
+(267, 131, 61, 1),
+(268, 136, 60, 3),
+(269, 130, 60, 1),
+(270, 18, 60, 1),
+(271, 42, 60, 1),
+(272, 105, 60, 1),
+(297, 136, 68, 1),
+(298, 135, 68, 1),
+(299, 134, 68, 1),
+(300, 128, 68, 1),
+(301, 129, 68, 1),
+(302, 132, 68, 1),
+(303, 131, 68, 1),
+(304, 130, 68, 1);
 
 -- --------------------------------------------------------
 
@@ -180,7 +205,7 @@ CREATE TABLE IF NOT EXISTS `gear` (
   `qty` int(11) unsigned NOT NULL DEFAULT '1',
   `isDisabled` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `notes` varchar(1024) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=144 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=137 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `gear`
@@ -315,7 +340,7 @@ INSERT INTO `gear` (`gear_id`, `gear_type_id`, `name`, `qty`, `isDisabled`, `not
 CREATE TABLE IF NOT EXISTS `gear_types` (
   `gear_type_id` int(11) unsigned NOT NULL,
   `type` varchar(50) NOT NULL DEFAULT ''
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `gear_types`
@@ -329,6 +354,52 @@ INSERT INTO `gear_types` (`gear_type_id`, `type`) VALUES
 (9, 'Lighting'),
 (16, 'Grip'),
 (17, 'Audio');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `packages`
+--
+
+CREATE TABLE IF NOT EXISTS `packages` (
+  `pkg_id` int(11) unsigned NOT NULL,
+  `title` varchar(64) NOT NULL,
+  `description` varchar(256) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `packages`
+--
+
+INSERT INTO `packages` (`pkg_id`, `title`, `description`) VALUES
+(7, 'All Audio', 'All of the audio things are in here.');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `packages_gear`
+--
+
+CREATE TABLE IF NOT EXISTS `packages_gear` (
+  `pkg_gear_id` int(11) unsigned NOT NULL,
+  `gear_id` int(11) unsigned NOT NULL,
+  `pkg_id` int(11) unsigned NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `packages_gear`
+--
+
+INSERT INTO `packages_gear` (`pkg_gear_id`, `gear_id`, `pkg_id`) VALUES
+(93, 136, 7),
+(94, 135, 7),
+(95, 134, 7),
+(96, 128, 7),
+(97, 129, 7),
+(98, 133, 7),
+(99, 132, 7),
+(100, 131, 7),
+(101, 130, 7);
 
 -- --------------------------------------------------------
 
@@ -365,7 +436,7 @@ CREATE TABLE IF NOT EXISTS `uc_pages` (
   `id` int(11) NOT NULL,
   `page` varchar(150) NOT NULL,
   `private` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `uc_pages`
@@ -397,7 +468,11 @@ INSERT INTO `uc_pages` (`id`, `page`, `private`) VALUES
 (28, 'new-gear.php', 1),
 (29, 'edit-gear.php', 1),
 (30, 'test.php', 0),
-(31, 'gear-item.php', 1);
+(31, 'gear-item.php', 1),
+(32, 'edit-package.php', 1),
+(33, 'new-package.php', 1),
+(34, 'package.php', 1),
+(35, 'packages.php', 1);
 
 -- --------------------------------------------------------
 
@@ -429,7 +504,7 @@ CREATE TABLE IF NOT EXISTS `uc_permission_page_matches` (
   `id` int(11) NOT NULL,
   `permission_id` int(11) NOT NULL,
   `page_id` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `uc_permission_page_matches`
@@ -455,22 +530,26 @@ INSERT INTO `uc_permission_page_matches` (`id`, `permission_id`, `page_id`) VALU
 (31, 3, 19),
 (33, 2, 20),
 (44, 2, 28),
-(45, 3, 28),
 (46, 2, 28),
-(47, 3, 28),
 (48, 2, 27),
 (49, 3, 27),
 (50, 2, 26),
-(51, 3, 26),
 (52, 2, 25),
 (53, 3, 25),
 (54, 3, 20),
 (55, 3, 17),
 (56, 3, 1),
 (57, 2, 29),
-(58, 3, 29),
 (59, 2, 31),
-(60, 3, 31);
+(60, 3, 31),
+(61, 2, 34),
+(62, 3, 34),
+(63, 2, 32),
+(64, 3, 32),
+(65, 2, 33),
+(66, 3, 33),
+(67, 2, 35),
+(68, 3, 35);
 
 -- --------------------------------------------------------
 
@@ -491,15 +570,16 @@ CREATE TABLE IF NOT EXISTS `uc_users` (
   `title` varchar(150) NOT NULL,
   `sign_up_stamp` int(11) NOT NULL,
   `last_sign_in_stamp` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `uc_users`
 --
 
 INSERT INTO `uc_users` (`id`, `user_name`, `display_name`, `password`, `email`, `activation_token`, `last_activation_request`, `lost_password_request`, `active`, `title`, `sign_up_stamp`, `last_sign_in_stamp`) VALUES
-(2, 'jakedawkins', 'Jake Dawkins', 'e144c9a7b36ccc7308b88e4b4f2009481da6e33e9833e91009abe6507719ccb27', 'dawkinsjh@gmail.com', '7245cc23f1d3593dd1691573d2b464e7', 1437159856, 0, 1, 'Site Owner', 1437159856, 1444523786),
-(4, 'jackson', 'jackson', 'fa195fe8ae2fb379a69ae6b323c7e6a1d50483e181042181cd948bad3999db466', 'jacksod@clemson.edu', 'dedb4890cd916bc4197df36fc81e17fa', 1442512203, 0, 1, 'New Member', 1442512203, 1443488173);
+(2, 'jakedawkins', 'Jake Dawkins', 'e144c9a7b36ccc7308b88e4b4f2009481da6e33e9833e91009abe6507719ccb27', 'dawkinsjh@gmail.com', '7245cc23f1d3593dd1691573d2b464e7', 1437159856, 0, 1, 'Site Owner', 1437159856, 1444853289),
+(4, 'jackson', 'jackson', 'fa195fe8ae2fb379a69ae6b323c7e6a1d50483e181042181cd948bad3999db466', 'jacksod@clemson.edu', 'dedb4890cd916bc4197df36fc81e17fa', 1442512203, 0, 1, 'New Member', 1442512203, 1444844447),
+(5, 'pussymonster', 'jake dawkinds', '21ca1337df376e9704433655abc1fcc285f7b9ccdaa817a01f08e1118da53989d', 'jake.dawkins@newspring.cc', '02b5eb3f35b6df3ba4638f082e882cec', 1444596354, 1, 1, 'New Member', 1444596354, 1444596367);
 
 -- --------------------------------------------------------
 
@@ -511,7 +591,7 @@ CREATE TABLE IF NOT EXISTS `uc_user_permission_matches` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `permission_id` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `uc_user_permission_matches`
@@ -523,7 +603,8 @@ INSERT INTO `uc_user_permission_matches` (`id`, `user_id`, `permission_id`) VALU
 (3, 2, 1),
 (4, 2, 2),
 (6, 4, 1),
-(7, 4, 3);
+(7, 4, 3),
+(8, 5, 1);
 
 --
 -- Indexes for dumped tables
@@ -552,6 +633,18 @@ ALTER TABLE `gear`
 --
 ALTER TABLE `gear_types`
   ADD PRIMARY KEY (`gear_type_id`);
+
+--
+-- Indexes for table `packages`
+--
+ALTER TABLE `packages`
+  ADD PRIMARY KEY (`pkg_id`);
+
+--
+-- Indexes for table `packages_gear`
+--
+ALTER TABLE `packages_gear`
+  ADD PRIMARY KEY (`pkg_gear_id`), ADD KEY `rental_gear` (`gear_id`), ADD KEY `rental_gear_rental` (`pkg_id`);
 
 --
 -- Indexes for table `uc_configuration`
@@ -597,22 +690,32 @@ ALTER TABLE `uc_user_permission_matches`
 -- AUTO_INCREMENT for table `checkouts`
 --
 ALTER TABLE `checkouts`
-  MODIFY `co_id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=67;
+  MODIFY `co_id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=70;
 --
 -- AUTO_INCREMENT for table `co_gear`
 --
 ALTER TABLE `co_gear`
-  MODIFY `co_gear_id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=250;
+  MODIFY `co_gear_id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=317;
 --
 -- AUTO_INCREMENT for table `gear`
 --
 ALTER TABLE `gear`
-  MODIFY `gear_id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=144;
+  MODIFY `gear_id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=137;
 --
 -- AUTO_INCREMENT for table `gear_types`
 --
 ALTER TABLE `gear_types`
-  MODIFY `gear_type_id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=19;
+  MODIFY `gear_type_id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=18;
+--
+-- AUTO_INCREMENT for table `packages`
+--
+ALTER TABLE `packages`
+  MODIFY `pkg_id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
+--
+-- AUTO_INCREMENT for table `packages_gear`
+--
+ALTER TABLE `packages_gear`
+  MODIFY `pkg_gear_id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=104;
 --
 -- AUTO_INCREMENT for table `uc_configuration`
 --
@@ -622,7 +725,7 @@ ALTER TABLE `uc_configuration`
 -- AUTO_INCREMENT for table `uc_pages`
 --
 ALTER TABLE `uc_pages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=36;
 --
 -- AUTO_INCREMENT for table `uc_permissions`
 --
@@ -632,17 +735,17 @@ ALTER TABLE `uc_permissions`
 -- AUTO_INCREMENT for table `uc_permission_page_matches`
 --
 ALTER TABLE `uc_permission_page_matches`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=61;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=69;
 --
 -- AUTO_INCREMENT for table `uc_users`
 --
 ALTER TABLE `uc_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `uc_user_permission_matches`
 --
 ALTER TABLE `uc_user_permission_matches`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 --
 -- Constraints for dumped tables
 --
@@ -665,6 +768,13 @@ ADD CONSTRAINT `rental_gear_rental` FOREIGN KEY (`co_id`) REFERENCES `checkouts`
 --
 ALTER TABLE `gear`
 ADD CONSTRAINT `gear_types` FOREIGN KEY (`gear_type_id`) REFERENCES `gear_types` (`gear_type_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `packages_gear`
+--
+ALTER TABLE `packages_gear`
+ADD CONSTRAINT `pkg_pkg` FOREIGN KEY (`pkg_id`) REFERENCES `packages` (`pkg_id`) ON DELETE CASCADE,
+ADD CONSTRAINT `pkg_gear` FOREIGN KEY (`gear_id`) REFERENCES `gear` (`gear_id`) ON DELETE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

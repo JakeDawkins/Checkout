@@ -44,7 +44,7 @@ if (!securePage($_SERVER['PHP_SELF'])){die();}
 
     <div class="container">
     	<div class="row">
-	    	<div class="col-sm-8 col-sm-offset-2">
+	    	<div class="col-sm-12">
 	    	<h3>Upcoming Checkouts</h3>
             <br />
             <!-- User has checkouts -->
