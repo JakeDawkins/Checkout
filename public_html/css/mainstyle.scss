@@ -1,0 +1,146 @@
+$color-main: #2980B9;
+$color-main-dark: #194F73;
+$color-sec: #2C3E50;
+$color-ter: #3498DB;
+$color-light: #ECF0F1;
+$color-red:  #E74C3C;
+$color-red-dark: #943126;
+$color-green: #1DB02F;
+$color-green-dark: #126B1D ;
+
+html {
+	position: relative;
+	min-height: 100%;
+}
+
+body {
+	/* used for .navbar-fixed-top. remove if not used. */
+	padding-top: 50px; /* was 70
+	
+	/* Margin bottom by footer height */
+  	margin-bottom: 60px;
+}
+
+a {
+	color: $color-main;
+	&:hover {
+		color: $color-main-dark;
+	}
+}
+
+/* -------- COLORS -------- */
+.bg-color-main 	{ background-color: $color-main; }
+.bg-color-sec 	{ background-color: $color-sec; }
+.bg-color-ter 	{ background-color: $color-ter; }
+.bg-color-light { background-color: $color-light; }
+.bg-color-red 	{ background-color: $color-red; }
+.color-main 	{ color: $color-main; }
+.color-sec 		{ color: $color-sec; }
+.color-ter 		{ color: $color-ter; }
+.color-light 	{ color: $color-light; }
+.color-red 		{ color: $color-red; }
+.color-white 	{ color: white; }
+
+.gray {
+	//background-color: gray;
+	background-color: $color-sec;
+	color: white;
+}
+
+/* -------- SIZES -------- */
+.one-eighth { width: 12.5%; }
+.one-sixth { width: 16.666666%; }
+.one-fifth { width: 20%; }
+.one-quarter { width: 25%; }
+.one-third { width: 33.333%; }
+.three-eighths { width: 37.5%; }
+.two-fifths { width: 40%; }
+.one-half { width: 50%; }
+.three-fifths { width: 60%; }
+.two-thirds { width: 66.667%; }
+.five-eighths { width: 67.5%; }
+.three-quarters { width: 75%; }
+.four-fifths { width: 80%; }
+.five-sixth { width: 83.333333%; }
+.seven-eighths { width: 87.5%; }
+.whole { width: 100%; }
+
+/* -------- Navbar styling -------- */
+.push-bottom { /* TEMP */
+	margin-bottom: 10px;
+}
+
+.navbar {
+	background-color: $color-main;
+	color: white;
+	border: 0px;
+	a {
+		color: $color-light;
+		&:hover{
+			color: $color-sec;
+		}
+	}
+}
+
+.navbar .navbar-toggle .icon-bar {
+    background-color: white;
+}
+
+/*-------- BUTTONS --------*/
+.btn {
+	border-radius: 2px;
+}
+
+.btn-primary {
+	color: white;
+	background-color: $color-main;
+	border-width: 0;
+	border-bottom: 2px solid $color-main-dark;
+	&:hover {
+		background-color: $color-main-dark;
+	}
+}
+
+.btn-danger {
+	color: white;
+	background-color: $color-red;
+	border-width: 0;
+	border-bottom: 2px solid $color-red-dark;
+	&:hover {
+		background-color: $color-red-dark;
+	}
+}
+
+.btn-success {
+	color: white;
+	background-color: $color-green;
+	border-width: 0;
+	border-bottom: 2px solid $color-green-dark;
+	&:hover {
+		background-color: $color-green-dark;
+	}
+}
+
+/*-------- PANELS --------*/
+.panel {
+	border-radius: 2px;
+	.panel-heading {
+		border-top-left-radius: 2px;
+		border-top-right-radius: 2px;
+	}
+	.panel-body {
+		border-bottom-left-radius: 2px;
+		border-bottom-right-radius: 2px;
+	}
+}
+
+
+/* -------- Sticky Footer Styles -------- */
+.footer {
+	position: absolute;
+	bottom: 0;
+  	width: 100%;
+  	height: 60px; /* fixed footer height */
+  	background-color: $color-sec;
+  	color: white;
+}

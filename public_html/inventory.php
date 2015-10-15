@@ -48,13 +48,15 @@
                     }
 					
 						foreach($types as $type){
-							printf("<h3>%s</h3>",$type['type']);
+							//printf("<h3>%s</h3>",$type['type']);
+                            echo "<hr class='mobileOnly' />";
+                            echo "<h3 class='tableTitle' id='" . $type['gear_type_id'] . "'>" . $type['type'] . "</h3>";
 							$gearList = getGearListWithType($type['type']);
 							if(count($gearList)==0) {
 								//printf("<p>No gear of this type</p>");
 							} else {
 					?>
-                    <table class="table table-hover"> 
+                    <table class="table table-hover" id='table<?php echo $type['gear_type_id']?>'> 
                         <colgroup>
                             <col class="one-quarter">
                             <col class="one-quarter">
@@ -105,6 +107,26 @@
 
     <!-- jQuery Version 1.11.1 -->
     <script src="js/jquery.js"></script>
+
+    <script>
+        //for hiding full tables initially on mobile devices
+        var width = $(document).width(); // returns width of HTML document
+        if (width < 740){
+            $(".table").css("display","none"); //hide tables initially
+            $(".tableTitle").click(function(event){
+                //table currently hidden
+                if($("#table" + event.target.id).css('display') == "none"){
+                    $("#table" + event.target.id).css("display","block");//show table
+                } else { //hide table
+                    $("#table" + event.target.id).css("display","none");//show table
+                }
+                
+            });
+        } else { //desktop/tablet
+            $(".mobileOnly").css("display","none");
+        }
+
+    </script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
