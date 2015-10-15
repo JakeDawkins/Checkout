@@ -1,12 +1,15 @@
 $color-main: #2980B9;
 $color-main-dark: #194F73;
+$color-main-light: #e6ebf5;
 $color-sec: #2C3E50;
 $color-ter: #3498DB;
 $color-light: #ECF0F1;
 $color-red:  #E74C3C;
 $color-red-dark: #943126;
+$color-red-light: #fbdbcc;
 $color-green: #1DB02F;
-$color-green-dark: #126B1D ;
+$color-green-dark: #126B1D;
+$color-green-light: #e0f0de;
 
 html {
 	position: relative;
@@ -28,7 +31,7 @@ a {
 	}
 }
 
-/* -------- COLORS -------- */
+/* -------- COLOR CLASSES -------- */
 .bg-color-main 	{ background-color: $color-main; }
 .bg-color-sec 	{ background-color: $color-sec; }
 .bg-color-ter 	{ background-color: $color-ter; }
@@ -45,6 +48,10 @@ a {
 	//background-color: gray;
 	background-color: $color-sec;
 	color: white;
+}
+
+.text-muted {
+	color: #aaa;
 }
 
 /* -------- SIZES -------- */
@@ -132,6 +139,33 @@ a {
 		border-bottom-left-radius: 2px;
 		border-bottom-right-radius: 2px;
 	}
+}
+
+/*-------- ALERTS --------*/
+.alert-info {
+	background-color: $color-main-light;
+	color: $color-main-dark;
+	border-radius: 2px;
+	border-color: $color-main;
+}
+
+.alert-danger {
+	background-color: $color-red-light;
+	color: $color-red-dark;
+	border-radius: 2px;
+	border-color: $color-red;
+}
+
+.alert-success {
+	background-color: $color-green-light;
+	color: $color-green-dark;
+	border-radius: 2px;
+	border-color: $color-green;
+}
+
+/*-------- FORMS --------*/
+.form-control {
+	border-radius: 2px;
 }
 
 

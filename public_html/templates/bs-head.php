@@ -3,6 +3,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="checkout system">
     <meta name="author" content="Jake Dawkins">
+    <link rel="shortcut icon" href="favicon.ico"/>
 
     
 

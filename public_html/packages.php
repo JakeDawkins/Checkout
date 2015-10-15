@@ -65,10 +65,13 @@
                                     echo "<td>" . $pkg->getDescription() . "</td><td class='text-center'>";
                                     $i = 0;
                                     foreach($gearList as $gear){
-                                        if($i<6) echo getGearName($gear) . "<br />";
-                                        else {
-                                            echo "...";
-                                            break;
+                                        if($i>5){
+                                            echo "<div class='hide" . $pkg->getID() . "' style='display:none'>" . getGearName($gear) . "</div>";  
+                                        } elseif($i==5){
+                                            echo "<div class='hide" . $pkg->getID() . "' style='display:none'>" . getGearName($gear) . "</div>";
+                                            echo "<div class='unhide' id='" . $pkg->getID() . "'>...</div>";
+                                        } else { 
+                                            echo getGearName($gear) . "<br />";  
                                         }
                                         $i++;
                                     }
@@ -89,6 +92,16 @@
 
     <!-- jQuery Version 1.11.1 -->
     <script src="js/jquery.js"></script>
+
+    <script>
+    //for expanding gear lists
+    $("div.unhide").click(function(event){
+        //alert(event.target.id);
+        $("div.hide" + event.target.id).css("display","block");
+        $("#" + event.target.id).css("display","none");
+    });
+
+    </script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>

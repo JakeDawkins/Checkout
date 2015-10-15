@@ -15,7 +15,7 @@ a {
   a:hover {
     color: #194F73; }
 
-/* -------- COLORS -------- */
+/* -------- COLOR CLASSES -------- */
 .bg-color-main {
   background-color: #2980B9; }
 
@@ -52,6 +52,9 @@ a {
 .gray {
   background-color: #2C3E50;
   color: white; }
+
+.text-muted {
+  color: #aaa; }
 
 /* -------- SIZES -------- */
 .one-eighth {
@@ -156,6 +159,29 @@ a {
   .panel .panel-body {
     border-bottom-left-radius: 2px;
     border-bottom-right-radius: 2px; }
+
+/*-------- ALERTS --------*/
+.alert-info {
+  background-color: #e6ebf5;
+  color: #194F73;
+  border-radius: 2px;
+  border-color: #2980B9; }
+
+.alert-danger {
+  background-color: #fbdbcc;
+  color: #943126;
+  border-radius: 2px;
+  border-color: #E74C3C; }
+
+.alert-success {
+  background-color: #e0f0de;
+  color: #126B1D;
+  border-radius: 2px;
+  border-color: #1DB02F; }
+
+/*-------- FORMS --------*/
+.form-control {
+  border-radius: 2px; }
 
 /* -------- Sticky Footer Styles -------- */
 .footer {
