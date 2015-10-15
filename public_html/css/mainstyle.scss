@@ -24,11 +24,17 @@ body {
   	margin-bottom: 60px;
 }
 
+/*-------- TEXT CLASSES --------*/
+
 a {
 	color: $color-main;
 	&:hover {
 		color: $color-main-dark;
 	}
+}
+
+.text-muted {
+	color: #aaa;
 }
 
 /* -------- COLOR CLASSES -------- */
@@ -48,10 +54,6 @@ a {
 	//background-color: gray;
 	background-color: $color-sec;
 	color: white;
-}
-
-.text-muted {
-	color: #aaa;
 }
 
 /* -------- SIZES -------- */
@@ -167,7 +169,6 @@ a {
 .form-control {
 	border-radius: 2px;
 }
-
 
 /* -------- Sticky Footer Styles -------- */
 .footer {
