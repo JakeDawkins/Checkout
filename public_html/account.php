@@ -28,19 +28,9 @@ if (!securePage($_SERVER['PHP_SELF'])){die();}
     <title>Account Home</title>
 </head>
 <body>
-	<!-- IMPORT NAVIGATION -->
-	<?php include('templates/bs-nav.php'); ?>
-
-    <!-- HEADER -->
-    <div class="container-fluid gray">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <h1>Account</h1>
-            </div>
-        </div><!-- /.row -->
-    </div><!-- /.container -->
-
-    <br /><br />
+	<!-- IMPORT NAVIGATION & HEADER-->
+	<?php include('templates/bs-nav.php');
+    echo printHeader("Account",NULL); ?>
 
     <div class="container">
     	<div class="row">

@@ -84,19 +84,9 @@ if(!empty($_POST)) {
     <title>User Settings</title>
 </head>
 <body>
-	<!-- IMPORT NAVIGATION -->
-	<?php include('templates/bs-nav.php'); ?>
-
-    <!-- HEADER -->
-    <div class="container-fluid gray">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <h1>User Settings</h1>
-            </div>
-        </div><!-- end row -->
-    </div><!-- end container -->
-
-    <br /><br />
+	<!-- IMPORT NAVIGATION & HEADER-->
+	<?php include('templates/bs-nav.php');
+    echo printHeader("User Settings",NULL); ?>
 
     <div class="container">
     	<div class="row">

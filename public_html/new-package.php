@@ -39,19 +39,9 @@
     <title>New Package</title>
 </head>
 <body>
-	<!-- IMPORT NAVIGATION -->
-	<?php include('templates/bs-nav.php'); ?>
-
-    <!-- HEADER -->
-    <div class="container-fluid gray">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <h1>New Gear Package</h1>
-            </div>
-        </div><!-- end row -->
-    </div><!-- end container -->
-
-    <br /><br />
+	<!-- IMPORT NAVIGATION & HEADER-->
+	<?php include('templates/bs-nav.php');
+    echo printHeader("New Gear Package",NULL); ?>
 
     <div class="container">
         <div class="row">

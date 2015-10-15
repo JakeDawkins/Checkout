@@ -135,15 +135,11 @@ if(!empty($_POST)) {
     <title>Forgot Password</title>
 </head>
 <body>
-	<!-- IMPORT NAVIGATION -->
-	<?php //include('templates/bs-nav.php'); ?>
-
     <!-- HEADER -->
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <h1>Forgot Password</h1>
-                <!-- <p class="lead">Enter your email and username and we'll send a password reset email.</p> -->
             </div>
         </div><!-- end row -->
     </div><!-- end container -->

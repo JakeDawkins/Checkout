@@ -47,19 +47,9 @@ $permissionData = fetchAllPermissions(); //Retrieve list of all permission level
     <title>Permissions</title>
 </head>
 <body>
-	<!-- IMPORT NAVIGATION -->
-	<?php include('templates/bs-nav.php'); ?>
-
-    <!-- HEADER -->
-    <div class="container-fluid gray">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <h1>Permissions</h1>
-            </div>
-        </div><!-- end row -->
-    </div><!-- end container -->
-
-    <br /><br />
+	<!-- IMPORT NAVIGATION & HEADER-->
+	<?php include('templates/bs-nav.php');
+    echo printHeader("Permissions",NULL); ?>
 
     <div class="container">
     	<div class="row">

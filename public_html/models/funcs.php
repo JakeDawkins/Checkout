@@ -1,8 +1,19 @@
 <?php
-
 //Functions that do not interact with DB
 //------------------------------------------------------------------------------
 
+//------------------------ NON-VENDOR ------------------------
+function printHeader($title, $subtitle){
+    $str = "<div class='container-fluid title'><div class='row'><div class='col-lg-12 text-center'>";
+        $str = $str . "<h1 class='title'>" . $title . "</h1>";
+        if(!empty($subtitle)) $str = $str . "<p class='lead'>" . $subtitle . "</p>";
+    $str = $str . "</div></div></div><br /><br />"; //end col/row/container
+    return $str;
+}
+
+
+
+//------------------------ VENDOR ------------------------
 //Retrieve a list of all .php files in models/languages
 function getLanguageFiles()
 {

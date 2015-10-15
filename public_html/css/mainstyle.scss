@@ -83,6 +83,7 @@ a {
 	background-color: $color-main;
 	color: white;
 	border: 0px;
+	border-bottom: 4px solid $color-sec;
 	a {
 		color: $color-light;
 		&:hover{
@@ -94,6 +95,18 @@ a {
 .navbar .navbar-toggle .icon-bar {
     background-color: white;
 }
+
+
+h1.title {
+	margin-top: 10px;
+}
+
+div.title {
+	background-color: $color-sec;
+	color: white;
+}
+
+
 
 /*-------- BUTTONS --------*/
 .btn {
