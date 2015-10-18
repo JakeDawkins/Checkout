@@ -1,6 +1,6 @@
 <?php
-require_once("models/config.php");
-if (!securePage($_SERVER['PHP_SELF'])){die();}
+require_once("models/config.php"); //for usercake
+if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 
 //User has confirmed they want their password changed 
 if(!empty($_GET["confirm"])) {
@@ -150,7 +150,7 @@ if(!empty($_POST)) {
         <div class="row">
             <div class="col-sm-6 col-sm-offset-3">
     			<?php echo resultBlock($errors,$successes);
-				echo "<form name='newLostPass' action='".$_SERVER['PHP_SELF']."' method='post'>"; ?>
+				echo "<form name='newLostPass' action='" . htmlspecialchars($_SERVER['PHP_SELF']) . "' method='post'>"; ?>
 					<div class='form-group'>
 						<label class='control-label'>Username:</label>
 						<input class='form-control' type='text' name='username' />

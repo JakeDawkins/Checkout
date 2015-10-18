@@ -1,6 +1,7 @@
 <?php
-require_once("models/config.php");
-if (!securePage($_SERVER['PHP_SELF'])){die();}
+require_once("models/config.php"); //for usercake
+if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
+
 $pageId = $_GET['id'];
 
 //Check if selected pages exist
@@ -84,10 +85,10 @@ $permissionData = fetchAllPermissions();
             <div class="col-sm-8 col-sm-offset-2">
 				<?php 
 				echo resultBlock($errors,$successes);
-				echo "<a href=\"admin_pages.php\"><span class=\"glyphicon glyphicon-chevron-left\"></span>&nbsp;&nbsp;Back to Pages</a>"; 
+				echo "<a href='admin_pages.php'><span class='glyphicon glyphicon-chevron-left'></span>&nbsp;&nbsp;Back to Pages</a>"; 
     			echo "<br /><br />";				
 
-				echo"<form role='form' name='adminPage' action='".$_SERVER['PHP_SELF']."?id=".$pageId."' method='post'>"; ?>
+				echo"<form role='form' name='adminPage' action='" . htmlspecialchars($_SERVER['PHP_SELF']) . "?id=".$pageId."' method='post'>"; ?>
 					<input type='hidden' name='process' value='1'>
 							
 						<div class="panel panel-default">

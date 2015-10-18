@@ -1,6 +1,6 @@
 <?php
 require_once("models/config.php"); //for usercake
-if (!securePage($_SERVER['PHP_SELF'])){die();}
+if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 
     require_once('models/Checkout.php');
     require_once('models/Form.php');

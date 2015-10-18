@@ -1,7 +1,6 @@
 <?php 
-
-require_once("models/config.php");
-if (!securePage($_SERVER['PHP_SELF'])){die();}
+require_once("models/config.php"); //for usercake
+if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 
 //Get token param
 if(isset($_GET["token"]))

@@ -1,6 +1,7 @@
 <?php
-require_once("models/config.php");
-if (!securePage($_SERVER['PHP_SELF'])){die();}
+require_once("models/config.php"); //for usercake
+if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
+
 $userId = $_GET['id'];
 
 //Check if selected user exists
@@ -135,10 +136,10 @@ $permissionData = fetchAllPermissions();
 				<?php 
 				echo resultBlock($errors,$successes);
 
-				echo "<a href=\"admin_users.php\"><span class=\"glyphicon glyphicon-chevron-left\"></span>&nbsp;&nbsp;Back to Users</a>"; 
+				echo "<a href='admin_users.php'><span class='glyphicon glyphicon-chevron-left'></span>&nbsp;&nbsp;Back to Users</a>"; 
     			echo "<br /><br />";
 
-				echo "<form class='' role='form' name='adminUser' action='".$_SERVER['PHP_SELF']."?id=".$userId."' method='post'>"; ?>			
+				echo "<form class='' role='form' name='adminUser' action='" . htmlspecialchars($_SERVER['PHP_SELF']) . "?id=".$userId."' method='post'>"; ?>			
 		    		<div class="panel panel-default">
 		    			<div class="panel-heading">
 							User Information

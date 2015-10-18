@@ -1,7 +1,6 @@
 <?php
-	//USER CAKE
-	require_once("models/config.php");
-	if (!securePage($_SERVER['PHP_SELF'])){die();}
+require_once("models/config.php"); //for usercake
+if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 
 	require_once('models/Gear.php');
     require_once('models/Package.php');

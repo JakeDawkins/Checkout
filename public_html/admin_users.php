@@ -1,6 +1,7 @@
 <?php
-require_once("models/config.php");
-if (!securePage($_SERVER['PHP_SELF'])){die();}
+require_once("models/config.php"); //for usercake
+if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
+
 
 //Forms posted
 if(!empty($_POST)) {
@@ -34,7 +35,7 @@ $userData = fetchAllUsers(); //Fetch information for all users
 	    	<div class="col-sm-8 col-sm-offset-2">
 				<?php echo resultBlock($errors,$successes);
 				
-				echo "<form name='adminUsers' action='".$_SERVER['PHP_SELF']."' method='post'>";?>
+				echo "<form name='adminUsers' action='" . htmlspecialchars($_SERVER['PHP_SELF']) . "' method='post'>";?>
 				<table class="table table-hover" class='admin'>
 				<tr>
 					<th>Delete</th>

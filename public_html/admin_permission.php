@@ -1,6 +1,7 @@
 <?php
-require_once("models/config.php");
-if (!securePage($_SERVER['PHP_SELF'])){die();}
+require_once("models/config.php"); //for usercake
+if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
+
 $permissionId = $_GET['id'];
 
 //Check if selected permission level exists
@@ -114,10 +115,10 @@ $pageData = fetchAllPages(); //Fetch all pages
     	<div class="row">
     		<div class="col-sm-8 col-sm-offset-2">
     			<?php
-				echo "<a href=\"admin_permissions.php\"><span class=\"glyphicon glyphicon-chevron-left\"></span>&nbsp;&nbsp;Back to Permissions</a>"; 
+				echo "<a href='admin_permissions.php'><span class='glyphicon glyphicon-chevron-left'></span>&nbsp;&nbsp;Back to Permissions</a>"; 
     			echo "<br /><br />";
 				echo resultBlock($errors,$successes);
-	    		echo "<form role='form' name='adminPermission' action='".$_SERVER['PHP_SELF']."?id=".$permissionId."' method='post'>"; ?>
+	    		echo "<form role='form' name='adminPermission' action='" . htmlspecialchars($_SERVER['PHP_SELF']) . "?id=".$permissionId."' method='post'>"; ?>
 	        		<div class="panel panel-default">
 			    		<div class="panel-heading">Permission Information</div>
 			    		<div class="panel-body">

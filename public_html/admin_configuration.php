@@ -1,6 +1,6 @@
 <?php
-require_once("models/config.php");
-if (!securePage($_SERVER['PHP_SELF'])){die();}
+require_once("models/config.php"); //for usercake
+if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 
 //Forms posted
 if(!empty($_POST))
@@ -147,7 +147,7 @@ $permissionData = fetchAllPermissions(); //Retrieve list of all permission level
     	<div class="row">
     		<div class="col-sm-8 col-sm-offset-2">
 				<?php echo resultBlock($errors,$successes); ?>
-				<?php echo "<form role='form' name='adminConfiguration' action='".$_SERVER['PHP_SELF']."' method='post'>"; ?>
+				<?php echo "<form role='form' name='adminConfiguration' action='" . htmlspecialchars($_SERVER['PHP_SELF']) . "' method='post'>"; ?>
 					<div class="form-group">
 						<label class="control-label">Website Name:</label>
 						<?php echo "<input class='form-control' type='text' name='settings[".$settings['website_name']['id']."]' value='".$websiteName."' />"; ?>

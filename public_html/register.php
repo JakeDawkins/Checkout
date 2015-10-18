@@ -1,6 +1,6 @@
 <?php
-require_once("models/config.php");
-if (!securePage($_SERVER['PHP_SELF'])){die();}
+require_once("models/config.php"); //for usercake
+if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 
 //Prevent the user visiting the logged in page if he/she is already logged in
 if(isUserLoggedIn()) { header("Location: account.php"); die(); }
@@ -77,7 +77,7 @@ if(!empty($_POST)) {
         <div class="row">
             <div class="col-sm-8 col-sm-offset-2">
 				<?php echo resultBlock($errors,$successes); ?>
-				<?php echo "<form role='form' name='newUser' action='".$_SERVER['PHP_SELF']."' method='post'>"; ?>
+				<?php echo "<form role='form' name='newUser' action='" . htmlspecialchars($_SERVER['PHP_SELF']) . "' method='post'>"; ?>
 					<div class="form-group">
 						<label class="control-label">User Name:</label>
 						<input class="form-control" type='text' name='username' />

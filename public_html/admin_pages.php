@@ -1,6 +1,6 @@
 <?php
-require_once("models/config.php");
-if (!securePage($_SERVER['PHP_SELF'])){die();}
+require_once("models/config.php"); //for usercake
+if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 
 $pages = getPageFiles(); //Retrieve list of pages in root usercake folder
 $dbpages = fetchAllPages(); //Retrieve list of pages in pages table

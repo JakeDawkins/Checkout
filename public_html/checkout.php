@@ -1,7 +1,7 @@
 <?php
-	//USER CAKE
-	require_once("models/config.php");
-	if (!securePage($_SERVER['PHP_SELF'])){die();}
+require_once("models/config.php"); //for usercake
+if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
+
 
 	require_once('models/Checkout.php');
 	require_once('models/Form.php');
@@ -64,7 +64,7 @@
     <div class="container">
     	<div class="row">
     		<div class="col-sm-8 col-sm-offset-2">
-    			<?php echo "<a href=\"checkouts.php\"><span class=\"glyphicon glyphicon-chevron-left\"></span>&nbsp;&nbsp;Back to Checkouts</a>"; ?>
+    			<?php echo "<a href='checkouts.php'><span class='glyphicon glyphicon-chevron-left'></span>&nbsp;&nbsp;Back to Checkouts</a>"; ?>
     			<br /><br />
     			<div class="panel panel-default">
     				<div class="panel-heading text-center">Checkout Details</div>
