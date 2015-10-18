@@ -7,31 +7,41 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 
 	$types = getGearTypes();
 
-	//define variables and set to empty values
-	$name = $category = "";
-
 	//process each variable
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		$submitted = true;
-		$name = test_input($_POST['name']);
-		$qty = test_input($_POST['qty']);
-		$category = test_input($_POST['category']);
-		$newCategory = test_input($_POST['newCategory']);
-		$notes = test_input($_POST['notes']);
 
-		//user provided a new category
-		if (!empty($newCategory)){
-			$category = newGearType($newCategory);
+		//NAME
+		if (empty($_POST['name'])){
+		  $errors[] = "No name provided"; 
+		} else $name = test_input($_POST['name']);
+
+		//QTY
+		//allowed empty.
+		if (empty($_POST['qty'])){
+			$qty = 1; //default qty
+		} else {
+			$qty = test_input($_POST['qty']);
+			if(!is_numeric($qty) || $qty < 1) $errors[] = "Quantity must be a number larger than 0";
+		}
+		
+		// check if Category only contains letters and whitespace
+		if(!empty($_POST['newCategory'])){ //user provided a new category
+			$newCategory = test_input($_POST['newCategory']);
+			if (!preg_match("/^[a-zA-Z ]*$/",$newCategory)) {
+				$errors[] = "Category name can only contain letters, numbers, and spaces"; 
+			} else $category = newGearType($newCategory); //create category in DB
+		} else { //new category empty. Use previous category
+			$category = test_input($_POST['category']);
+		}
+		
+		if(!empty($_POST['notes'])){
+			$notes = test_input($_POST['notes']);	
 		}
 
-		if(empty($qty)) $qty = 1; //default
-
-		
-		//TODO...
-		//temp validation to prevent problems
-		//notes is allowed null
-		if(!empty($name) && !empty($qty) && !empty($category) && is_numeric($qty)){
+		if(empty($errors)){
 			newGearItem($name,$category,$qty,$notes);
+			$successes[] = "New gear item, " . $name . " , added!" ;
 			$added = true;
 		} else $added = false;
 	}
@@ -54,20 +64,11 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
     <div class="container">
 	    <div class="row">
 	        <div class="col-sm-6 col-sm-offset-3">
-    			<?php echo "<a href=\"inventory.php\"><span class=\"glyphicon glyphicon-chevron-left\"></span>&nbsp;&nbsp;Back to Inventory</a>"; ?>
+    			<?php echo "<a href='inventory.php'><span class='glyphicon glyphicon-chevron-left'></span>&nbsp;&nbsp;Back to Inventory</a>"; ?>
     			<br /><br />
 
-	        	<?php 
-	        		if($submitted && $added){ //USER ADDED AN ITEM
-						echo "<div class=\"alert alert-success\" role=\"alert\">";
-						printf("New Item, %s, Added!",$name);
-						echo "</div>";	
-					} elseif($submitted && !$added) {
-						echo "<div class=\"alert alert-danger\" role=\"alert\">";
-						printf("Add failed. Check your input values");
-						echo "</div>";	
-					}
-				?>
+	        	<?php echo resultBlock($errors,$successes); ?>
+				
 				<form role="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
 					
 					<div class="form-group">
