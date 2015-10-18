@@ -11,7 +11,13 @@ function printHeader($title, $subtitle){
     return $str;
 }
 
-
+//for cleaning and validating form inputs.
+function test_input($data) {
+	$data = trim($data);
+	$data = stripslashes($data);
+	$data = htmlspecialchars($data);
+	return $data;
+}
 
 //------------------------ VENDOR ------------------------
 //Retrieve a list of all .php files in models/languages
