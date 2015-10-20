@@ -12,37 +12,34 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 
 	//process each variable
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {
-		$type = test_input($_POST['type']);
-
-		//user provided a new type
-		if (!empty($type)){
-			if(!in_array($type, $types)) newGearType($type);
-			$added = true;
-		}
-
-		$typesRemoved = array();
-		if(!empty($_POST['deleteTypes'])){
+		//NEW GEAR TYPE
+		if (!empty($_POST['type'])){
+			$type = test_input($_POST['type']);	
+			if(!in_array($type, $types)){
+				newGearType($type);	
+				$successes[] = "New gear type, " . $type . ", added";
+			} else {
+				$errors[] = "Gear type cannot be added. It already exists";
+			}
+		} elseif(!empty($_POST['deleteTypes'])){
 			foreach ($_POST['deleteTypes'] as $deleteType) {
-				$typesRemoved[] = gearTypeWithId($deleteType);
 				deleteGearType($deleteType);
 			}
-			$removed = true;
-		}
-
-		if(!empty($_POST['rename'])){
+			$successes[] = "Gear types removed";
+		} elseif(!empty($_POST['rename'])){
 			$type = test_input($_POST['rename']);
-			$newName = test_input($_POST['newName']);
-			renameGearType($type, $newName);
-			$modified = true;
+			if(empty($_POST['newName'])){
+				$errors[] = "Cannot rename. No new name provided";
+			} else {
+				$newName = test_input($_POST['newName']);
+				renameGearType($type, $newName);
+				$successes[] = "Gear type renamed to " . $newName;	
+			}
+		} else {
+			$errors[] = "Nothing done";
 		}
 	}
 
-	//------------------------ Validation ------------------------
-
-	//only check when submitted
-	if ($_SERVER["REQUEST_METHOD"] == "POST") { //submitted
-
-	} //if submitted
 ?>
 
 <!DOCTYPE html>
@@ -60,17 +57,16 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
     echo printHeader("Edit Gear Types",NULL); ?>
 
     <div class="container">
+    	<div class="row">
+    		<div class="col-sm-12">
+			    <?php echo resultBlock($errors,$successes); ?>
+		    </div>
+	    </div>
+
         <div class="row">
             <div class="col-sm-6">
-    			<?php echo "<a href=\"inventory.php\"><span class=\"glyphicon glyphicon-chevron-left\"></span>&nbsp;&nbsp;Back to Inventory</a>"; ?>
+    			<?php echo "<a href='inventory.php'><span class='glyphicon glyphicon-chevron-left'></span>&nbsp;&nbsp;Back to Inventory</a>"; ?>
     			<br /><br />
-
-				<?php if($added){ //USER ADDED A GROUP
-					echo "<div class=\"alert alert-success\" role=\"alert\">";
-					printf("New Gear Type, %s, Created!",$type);
-					echo "</div>";	
-				}?>
-
             	<div class="panel panel-default">
             		<div class="panel-heading">Add a New Gear Type</div>
             		<div class="panel-body">
@@ -83,15 +79,8 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 						</form>
             		</div>
             	</div><!-- end panel -->     
-				<?php if($modified){ //USER ADDED A GROUP
-					echo "<div class=\"alert alert-success\" role=\"alert\">";
-					echo "Gear type renamed successfully";
-					echo "</div>";	
-				}?>
             	<div class="panel panel-default">
-		            <div class="panel-heading">
-		            	Rename Gear Types
-		            </div>
+		            <div class="panel-heading">Rename Gear Types</div>
 		            <div class="panel-body">
 			            <form role="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
 							<div class="form-group">
@@ -100,7 +89,7 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 									<?php
 										$types = getGearTypes();
 										foreach($types as $type){
-											printf("<option value=\"%s\">%s</option>",$type['gear_type_id'],$type['type']);
+											printf("<option value='%s'>%s</option>",$type['gear_type_id'],$type['type']);
 										}
 									?>
 								</select>
@@ -115,14 +104,6 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 	            </div><!-- end panel -->
             </div><!-- end col -->
             <div class="col-sm-6">
-				<?php if($removed){ //USER REMOVED A GROUP
-					echo "<div class=\"alert alert-success\" role=\"alert\">";
-					printf("The following were removed:<br />",$type);
-					foreach($typesRemoved as $typeRemoved){
-						printf("- %s<br />",$typeRemoved);
-					}
-					echo "</div>";	
-				}?>
             	<div class="panel panel-default">
             		<div class="panel-heading">Remove Gear Types</div>
             		<div class="panel-body">
@@ -130,8 +111,8 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 							<?php
 								$types = getGearTypes();
 								foreach($types as $type){
-									echo "<div class=\"checkbox\">";
-										printf("<label><input type=\"checkbox\" name=\"deleteTypes[]\" value=\"%s\">%s</label>",$type['gear_type_id'],$type['type']);
+									echo "<div class='checkbox'>";
+										printf("<label><input type='checkbox' name='deleteTypes[]' value='%s'>%s</label>",$type['gear_type_id'],$type['type']);
 									echo "</div>";
 								}
 							?>

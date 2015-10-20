@@ -8,11 +8,19 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 
 	//form submitted
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
-		if(!empty($_POST['title']) && !empty($_POST['description']) && !empty($_POST['gear'])){
-			$title = test_input($_POST['title']);
-			$description = test_input($_POST['description']);
-			$gearList = $_POST['gear'];
+		if (empty($_POST['title'])){
+		  $errors[] = "No title provided"; 
+		} else $title = test_input($_POST['title']);
 
+		if (empty($_POST['description'])){
+			  $errors[] = "No description provided"; 
+		} else $description = test_input($_POST['description']);
+
+		if (empty($_POST['gear'])){
+			$errors[] = "No gear added to package"; 
+		} else $gearList = $_POST['gear'];
+
+		if(empty($errors)){
 			$pkg = new Package();
 
 			$pkg->setTitle($title);

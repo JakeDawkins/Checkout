@@ -60,6 +60,11 @@ class Package {
 		if(!in_array($gear_id, $this->gearList))
 			$this->gearList[] = $gear_id;
 	}
+
+	public function clearGearList() {
+		unset($this->gearList);
+		$this->gearList = array();
+	}
 	
 	public function removeFromGearList($gear_id){
 		foreach($gearList as $key => $gear){

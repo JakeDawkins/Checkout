@@ -15,24 +15,36 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 	//form submitted
 	if($_SERVER["REQUEST_METHOD"] == "POST"){	
 		$pkg_id = test_input($_POST['pkg_id']);
-		$title = test_input($_POST['title']);
-		$description = test_input($_POST['description']);
-		$gearList = $_POST['gear'];
-
 		$pkg = new Package();
 		$pkg->retrievePackage($pkg_id);
 
-		if(!empty($title) && $title != $pkg->getTitle()){
-			$pkg->setTitle($title);	
+		//placeholder text in field
+		if (empty($_POST['title'])){
+			//$errors[] = "No title provided"; 
+		} else $title = test_input($_POST['title']);
+		
+		if (empty($_POST['description'])){
+			$errors[] = "No description provided"; 
+		} else $description = test_input($_POST['description']);
+
+		if (empty($_POST['gear'])){
+			$errors[] = "No gear in package"; 
+		} else $gearList = $_POST['gear'];
+
+		if(empty($errors)){
+			if(!empty($title) && $title != $pkg->getTitle()){
+				$pkg->setTitle($title);	
+			}
+			if($description != $pkg->getDescription()){
+				$pkg->setDescription($description);
+			}
+			$pkg->clearGearList();
+			foreach($gearList as $gear){
+				$pkg->addToGearList($gear);
+			}
+			$pkg->finalizePackage();
+			$successes[] = "Package updated";
 		}
-		if($description != $pkg->getDescription()){
-			$pkg->setDescription($description);
-		}
-		foreach($gearList as $gear){
-			$pkg->addToGearList($gear);
-		}
-		$pkg->finalizePackage();
-		$successes[] = "Package updated";
 	}
 ?>
 

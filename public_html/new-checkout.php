@@ -23,8 +23,19 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 		//step 1 submitted.
 		//time and date should be submitted, but datestring not formed.
 		if($step == 1){
-			$title = test_input($_POST['title']);
-			$description = test_input($_POST['description']);
+			//TITLE
+			//$title = test_input($_POST['title']);
+			if (empty($_POST['title'])){
+			  $errors[] = "No title provided"; 
+			  $step = 0; //don't go on
+			} else $title = test_input($_POST['title']);
+
+			//DESCRIPTION
+			//$description = test_input($_POST['description']);
+			if (empty($_POST['description'])){
+			  $errors[] = "No description provided"; 
+			  $step = 0; //don't go on
+			} else $description = test_input($_POST['description']);
 
 			//start timedate
 			$start_day = test_input($_POST['start_day']);
@@ -52,6 +63,18 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 
 			$co_start = $start_year . "-" . $start_month . "-" . $start_day . " " . $start_hour . ":" . $start_min . ":00"; 	
 			$co_end = $end_year . "-" . $end_month . "-" . $end_day . " " . $end_hour . ":" . $end_min . ":00"; 
+
+			//check to make sure dates in order 
+			$formattedStart = new DateTime($co_start);
+			$formattedEnd = new DateTime($co_end);
+			if($formattedStart > $formattedEnd){
+				$errors[] = "The start date/time is after the end date/time";
+				$step = 0;
+			} elseif($formattedStart == $formattedEnd){
+				$errors[] = "The start and end date/times are the same";
+				$step = 0;
+			}
+
 		} else if ($step == 2){ //step 2 submitted
 			//time and date string should be constructed.
 			//need to process gear list
@@ -89,6 +112,12 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 						$gearToGetQtyFor[] = $gearItem;
 					}
 				}
+			}
+
+			//no packages/gear added
+			if(!isset($_POST['addedPkgs']) && !isset($_POST['gear'])){
+				$errors[] = "No gear added";
+				$step = 1; //don't go on
 			}
 		} else if ($step == 3){ //step 3 submitted
 			//collect vars from step 1
@@ -139,25 +168,6 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 
 	//increment step
 	$step++;
-
-	//------------------------ Validation ------------------------
-	//only check when submitted
-	if ($_SERVER["REQUEST_METHOD"] == "POST") { //submitted
-		if(empty($title)){
-			$errors[] = "Please enter a title";
-		}
-		if (empty($description)){
-			$errors[] = "Please enter a description";
-		}
-		if($co_start != $co_end){ //user modified start/end fields
-			if ($co_start > $co_end) {
-				//dates not in right order
-				$errors[] = "Date Error: The start date is after the end date";
-			}
-		} else {
-			$errors[] = "Date Error: The start and end dates & times are the same";
-		}
-	} //if submitted
 ?>
 
 <!DOCTYPE html>
