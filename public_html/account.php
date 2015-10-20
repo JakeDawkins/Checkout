@@ -65,7 +65,7 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 
                                 printf("<tr>");
                                 printf("<td><a href='checkout.php?co_id=%s'>%s</a></td>",$checkout->getID(),$checkout->getTitle());
-                                printf("<td class=\"hidden-xs\">%s</td>",$checkout->getDescription());
+                                printf("<td class=\"hidden-xs\">%s</td>",shortString($checkout->getDescription(), 100, true));
                                 printf("<td>%s</td>",$personDetails['display_name']);
                                 $co_start = new DateTime($checkout->getStart());
                                 $co_end = new DateTime($checkout->getEnd());

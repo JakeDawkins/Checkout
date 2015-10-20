@@ -19,6 +19,13 @@ function test_input($data) {
 	return $data;
 }
 
+function shortString($string, $len, $ellipses){
+	if(strlen($string) > $len){
+		if(!$ellipses) return substr($string, 0, $len);
+		else return substr($string, 0, $len) . "...";
+	} else return $string;
+}
+
 //------------------------ VENDOR ------------------------
 //Retrieve a list of all .php files in models/languages
 function getLanguageFiles()

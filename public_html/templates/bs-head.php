@@ -3,9 +3,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="checkout system">
     <meta name="author" content="Jake Dawkins">
-    <link rel="shortcut icon" href="favicon.ico"/>
-
-    
+    <link rel="shortcut icon" href="/img/favicon-64-t.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="76x76" href="img/icon-apple-76.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="img/icon-apple-152.png" />
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">

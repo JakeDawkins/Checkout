@@ -2,7 +2,6 @@
 require_once("models/config.php"); //for usercake
 if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 
-
 	require_once('models/Checkout.php');
 	require_once('models/Gear.php');
 	require_once('models/funcs.php'); //to fetch details about person
@@ -81,6 +80,7 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 
         <div class="row">
             <div class="col-lg-12">
+            	<?php if(count($checkouts) > 0){ ?>
                 <table class="table table-hover">
                     <colgroup>
                         <col class="one-sixth">
@@ -111,7 +111,7 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 								if($co_end < $now) echo "<tr class='text-muted'>";
 								else echo "<tr>";
 								printf("<td><a href='checkout.php?co_id=%s'>%s</a></td>",$checkout->getID(),$checkout->getTitle());
-								printf("<td class=\"hidden-xs\">%s</td>",$checkout->getDescription());
+								printf("<td class=\"hidden-xs\">%s</td>",shortString($checkout->getDescription(), 100, true));
 								printf("<td>%s</td>",$personDetails['display_name']);
 
 								printf("<td>%s</td>",$co_start->format('m-d g:iA'));
@@ -132,6 +132,11 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 						?>
                     </tbody>
                 </table>
+                <?php } else { ?>
+                <div class="alert alert-info">
+	                <p>There are no checkouts in this range to view</p>
+                </div>
+                <?php } ?> 
             </div>
         </div>
     </div> <!-- /container -->
