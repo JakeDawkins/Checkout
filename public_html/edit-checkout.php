@@ -17,6 +17,7 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 		$co = new Checkout();
 		$co->retrieveCheckout($co_id);
 
+		//user does not have permission to edit this checkout
 		if (!$loggedInUser->checkPermission(array(2)) && $loggedInUser->user_id != $co->getPerson()){
 			header("Location: checkout.php?co_id=" . $co_id);
 		}
@@ -53,6 +54,16 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 			$e_hour = 12;
 			$e_ampm = "am";
 		}
+
+		//error message handling from step 1 submission
+		if(!empty($_GET['errors'])){
+			$errorCode = test_input($_GET['errors']);
+			if($errorCode == "dates_order"){
+				$errors[] = "The start date/time is after the end date/time";
+			} elseif($errorCode == "dates_same"){
+				$errors[] = "The start and end date/times are the same";
+			}
+		}
 	}
 
 	//form submitted
@@ -65,9 +76,16 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 		//------------------------ STEP 1 SUBMITTED ------------------------
 		//time and date should be submitted, but datestring not formed.
 		if($step == 1){
+			//placeholder text. allowed empty
 			$title = test_input($_POST['title']);
+
+			//allowed null
 			$description = test_input($_POST['description']);
-			$co_id = test_input($_POST['co_id']);
+
+			//cannot be null
+			if (empty($_POST['co_id'])){
+				$errors[] = "Checkout ID invalid"; 
+			} else $co_id = test_input($_POST['co_id']);
 
 			//start timedate
 			$start_day = test_input($_POST['start_day']);
@@ -95,6 +113,15 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 
 			$co_start = $start_year . "-" . $start_month . "-" . $start_day . " " . $start_hour . ":" . $start_min . ":00"; 	
 			$co_end = $end_year . "-" . $end_month . "-" . $end_day . " " . $end_hour . ":" . $end_min . ":00"; 
+			
+			//check to make sure dates in order 
+			$formattedStart = new DateTime($co_start);
+			$formattedEnd = new DateTime($co_end);
+			if($formattedStart > $formattedEnd){
+				header("Location: edit-checkout.php?co_id=" . $co_id . "&errors=dates_order");
+			} elseif($formattedStart == $formattedEnd){
+				header("Location: edit-checkout.php?co_id=" . $co_id . "&errors=dates_same");
+			} else $validDates = true;
 
 			//see if we need to change anything
 			$co = new Checkout();
@@ -107,19 +134,27 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 			}
 
 			if(!empty($title) && $co->getTitle() != $title){ //title change
+				$co->setTitle($title);
 				$successes[] = "Title updated successfully";
 			} else $title = $co->getTitle();
 
 			if($co->getDescription() != $description){ //description change
+				$co->setDescription($description);
 				$successes[] = "Description updated successfully";
 			} else $description = $co->getDescription();
 
 			if(!empty($co_start) && $co->getStart() != $co_start){ //start change
-				//$successes[] = "Start time/date updated successfully";
+				if($validDates){
+					$co->setStart($co_start);
+					$successes[] = "Start time/date updated successfully";
+				} else $co_start = $co->getStart();
 			} else $co_start = $co->getStart();
 
 			if(!empty($co_end) && $co->getEnd() != $co_end){// end change
-				//$successes[] = "End time/date updated successfully";
+				if($validDates){
+					$co->setEnd($co_end);
+					$successes[] = "End time/date updated successfully";
+				} else $co_end = $co->getEnd();
 			} else $co_end = $co->getEnd();
 
 		} //------------------------ STEP 2 SUBMITTED ------------------------
@@ -136,17 +171,23 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 			$co_end = test_input($_POST['co_end']);
 
 			//construct a clean gear list
-			$gearList = array();
-			$gearToGetQtyFor = array();
-			foreach ($_POST['gear'] as $gearItem) {
-				$gearList[] = test_input($gearItem);
+			if(empty($_POST['gear'])){
+				$errors[] = "The checkout has no gear";
+				$step = 1;
+			} else {
+				$gearList = array();
+				$gearToGetQtyFor = array();
+				foreach ($_POST['gear'] as $gearItem) {
+					$gearList[] = test_input($gearItem);
 
-				//if the available qty is > 1, we need to find out
-				//what qty the user wants to check out
-				if(availableQtyExcludingCheckout($gearItem, $co_id , $co_start, $co_end) > 1){
-					$gearToGetQtyFor[] = $gearItem;
-				}
+					//if the available qty is > 1, we need to find out
+					//what qty the user wants to check out
+					if(availableQtyExcludingCheckout($gearItem, $co_id , $co_start, $co_end) > 1){
+						$gearToGetQtyFor[] = $gearItem;
+					}
+				}				
 			}
+
 		} //------------------------ STEP 3 SUBMITTED ------------------------ 
 		else if ($step == 3){
 			//collect vars from step 1
@@ -449,7 +490,7 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 										echo "<div class='checkbox'>";
 										echo "<label><input type='checkbox' name='gear[]' value='" . $item['gear_id'] . "'";
 										//if the gear item is already assigned to checkout, check it by default
-										if(in_array($item['gear_id'], $simpleGearList)) {
+										if(isset($simpleGearList) && in_array($item['gear_id'], $simpleGearList)) {
 											echo "checked > " . $item['name'];
 										} else {
 											echo "> " . $item['name'];
