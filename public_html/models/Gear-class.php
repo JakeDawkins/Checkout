@@ -197,7 +197,7 @@ class Gear {
 	//returns an array of all gear available in the range
 	//$co_start --> $co_end
 	public static function getAvailableGear($co_start, $co_end) {
-		return self::getAvailableGearWithType(NULL, $co_start, $co_end);
+		return self::getAvailableGearWithTypeAndExclusions(NULL, NULL, $co_start, $co_end);
 	}
 
 	//returns an array of all gear available with a type 
@@ -233,6 +233,54 @@ class Gear {
 		}
 		return $available_gear;
 	}
+}//end class
 
-}
+//----------------------------------------------------------------------
+//------------------------ Gear Types Functions ------------------------
+//----------------------------------------------------------------------
+
+	//inserts a new gear category onto the DB. 
+	//	RETURNS: new ID
+	function newGearType($type) {
+		$database = new DB();
+		$sql = "INSERT INTO gear_types(type) VALUES('$type')";
+		$database->query($sql);
+
+		//returns the newly inserted type's ID.
+		$sql = "SELECT gear_type_id FROM gear_types WHERE type='$type'";
+		$results = $database->select($sql);
+
+		return $results[0]['gear_type_id'];
+	}
+
+	//remove a gear type from the DB.
+	//this will also remove any gear associated
+	function deleteGearType($gear_type_id) {
+		$database = new DB();
+		$sql = "DELETE FROM gear_types WHERE gear_type_id='$gear_type_id'";
+		$database->query($sql);
+	}
+
+	//renames gear type with gear_type_id to newName
+	function renameGearType($gear_type_id, $newName){
+		$database = new DB();
+		$sql = "UPDATE gear_types SET type='$newName' WHERE gear_type_id='$gear_type_id'";
+		$database->query($sql);
+	}
+
+	//returns an array of gear types in the DB.
+	function getGearTypes() {
+		$database = new DB();
+		$sql = "SELECT * FROM gear_types ORDER BY type";
+		return $database->select($sql);
+	}
+
+	//returns name string of gear type
+	function gearTypeWithID($type_id) {
+		$database = new DB();
+		$sql = "SELECT * FROM gear_types WHERE gear_type_id='$type_id'";
+		$results = $database->select($sql);
+		return $results[0]['type'];
+	}
+
 ?>
