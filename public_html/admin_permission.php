@@ -144,8 +144,8 @@ $pageData = fetchAllPages(); //Fetch all pages
 								//List users with permission level
 								foreach ($userData as $v1) {
 									if(isset($permissionUsers[$v1['id']])){
-										echo "<div class=\"checkbox\">";
-	  										echo "<label><input type=\"checkbox\" name='removePermission[".$v1['id']."]' id='removePermission[".$v1['id']."]' value='".$v1['id']."'> ".$v1['display_name']."</label>";
+										echo "<div class='checkbox'>";
+	  										echo "<label><input type='checkbox' name='removePermission[".$v1['id']."]' id='removePermission[".$v1['id']."]' value='".$v1['id']."'> ".$v1['display_name']."</label>";
 										echo "</div>";
 									}
 								}
@@ -158,7 +158,7 @@ $pageData = fetchAllPages(); //Fetch all pages
 								//List users without permission level
 								foreach ($userData as $v1) {
 									if(!isset($permissionUsers[$v1['id']])){
-										echo "<div class=\"checkbox\">";
+										echo "<div class='checkbox'>";
 	  										echo "<label><input type='checkbox' name='addPermission[".$v1['id']."]' id='addPermission[".$v1['id']."]' value='".$v1['id']."'> ".$v1['display_name']."</label>";
 										echo "</div>";
 										//echo "<br><input type='checkbox' name='addPermission[".$v1['id']."]' id='addPermission[".$v1['id']."]' value='".$v1['id']."'> ".$v1['display_name'];
@@ -187,7 +187,7 @@ $pageData = fetchAllPages(); //Fetch all pages
 							//List pages accessible to permission level
 							foreach ($pageData as $v1) {
 								if(isset($pagePermissions[$v1['id']]) AND $v1['private'] == 1){
-									echo "<div class=\"checkbox\">";
+									echo "<div class='checkbox'>";
   										echo "<label><input type='checkbox' name='removePage[".$v1['id']."]' id='removePage[".$v1['id']."]' value='".$v1['id']."'> ".$v1['page']."</label>";
 									echo "</div>";
 									//echo "<br><input type='checkbox' name='removePage[".$v1['id']."]' id='removePage[".$v1['id']."]' value='".$v1['id']."'> ".$v1['page'];
@@ -202,7 +202,7 @@ $pageData = fetchAllPages(); //Fetch all pages
 							//List pages inaccessible to permission level
 							foreach ($pageData as $v1) {
 								if(!isset($pagePermissions[$v1['id']]) AND $v1['private'] == 1){
-									echo "<div class=\"checkbox\">";
+									echo "<div class='checkbox'>";
   										echo "<label><input type='checkbox' name='addPage[".$v1['id']."]' id='addPage[".$v1['id']."]' value='".$v1['id']."'> ".$v1['page']."</label>";
 									echo "</div>";									
 									//echo "<br><input type='checkbox' name='addPage[".$v1['id']."]' id='addPage[".$v1['id']."]' value='".$v1['id']."'> ".$v1['page'];

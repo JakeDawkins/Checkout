@@ -71,7 +71,7 @@ $userData = fetchAllUsers(); //Fetch information for all users
 
 				echo "
 				</table>
-				<input class=\"btn btn-danger\" type='submit' name='Submit' value='Delete' />
+				<input class='btn btn-danger' type='submit' name='Submit' value='Delete' />
 				</form>"; 
 
 				?>

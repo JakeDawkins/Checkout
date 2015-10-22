@@ -111,12 +111,12 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 								if($co_end < $now) echo "<tr class='text-muted'>";
 								else echo "<tr>";
 								printf("<td><a href='checkout.php?co_id=%s'>%s</a></td>",$checkout->getID(),$checkout->getTitle());
-								printf("<td class=\"hidden-xs\">%s</td>",shortString($checkout->getDescription(), 100, true));
+								printf("<td class='hidden-xs'>%s</td>",shortString($checkout->getDescription(), 100, true));
 								printf("<td>%s</td>",$personDetails['display_name']);
 
 								printf("<td>%s</td>",$co_start->format('m-d g:iA'));
 								printf("<td>%s</td>",$co_end->format('m-d g:iA'));
-								printf("<td class=\"hidden-xs hidden-sm\">");
+								printf("<td class='hidden-xs hidden-sm'>");
 								$i = 0; //counter. Only want to show a few items
 								foreach($checkout->getGearList() as $gear){
 									if ($i > 4){

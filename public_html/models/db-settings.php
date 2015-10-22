@@ -2,12 +2,12 @@
 
 //Database Information
 $db_host = "localhost"; //Host address (most likely localhost)
-$db_name = "jakedawk_checkout"; //Name of Database
-$db_user = "jakedawk_primary"; //Name of database user
-$db_pass = "4NCnERfrKCe9KQfmdLECVfhRbFsBNamx"; //Password for database user
-// $db_name = "checkout"; //Name of Database
-// $db_user = "root"; //Name of database user
-// $db_pass = ""; //Password for database user
+//$db_name = "jakedawk_checkout"; //Name of Database
+//$db_user = "jakedawk_primary"; //Name of database user
+//$db_pass = "4NCnERfrKCe9KQfmdLECVfhRbFsBNamx"; //Password for database user
+$db_name = "checkout"; //Name of Database
+$db_user = "root"; //Name of database user
+$db_pass = "root"; //Password for database user
 $db_table_prefix = "uc_";
 
 GLOBAL $errors;

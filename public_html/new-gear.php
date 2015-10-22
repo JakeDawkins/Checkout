@@ -86,7 +86,7 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 						<select class="form-control" name="category">
 						<?php
 							foreach($types as $type){
-								printf("<option value=\"%s\">%s</option>",$type['gear_type_id'],$type['type']);
+								printf("<option value='%s'>%s</option>",$type['gear_type_id'],$type['type']);
 							}
 						?>
 						</select>
