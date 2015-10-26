@@ -40,10 +40,16 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 		}
 
 		if(empty($errors)){
-			newGearItem($name,$category,$qty,$notes);
-			$successes[] = "New gear item, " . $name . " , added!" ;
-			$added = true;
-		} else $added = false;
+			$gearObject = new Gear();
+			$gearObject->setName($name);
+			$gearObject->setType($category);
+			$gearObject->setQty($qty);
+			$gearObject->setIsDisabled(false);
+			$gearObject->setNotes($notes);
+			$gearObject->finalize();
+
+			$successes[] = "New gear item, <a href='gear-item.php?gear_id=" . $gearObject->getID() . "'>" . $name . "</a>, added!" ;
+		}
 	}
 ?>
 

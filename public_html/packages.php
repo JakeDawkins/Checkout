@@ -53,13 +53,16 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
                                     echo "<td>" . $pkg->getDescription() . "</td><td class='text-center'>";
                                     $i = 0;
                                     foreach($gearList as $gear){
+                                        $gearObject = new Gear();
+                                        $gearObject->fetch($gear);
+
                                         if($i>5){
-                                            echo "<div class='hide" . $pkg->getID() . "' style='display:none'>" . getGearName($gear) . "</div>";  
+                                            echo "<div class='hide" . $pkg->getID() . "' style='display:none'>" . $gearObject->getName() . "</div>";  
                                         } elseif($i==5){
-                                            echo "<div class='hide" . $pkg->getID() . "' style='display:none'>" . getGearName($gear) . "</div>";
+                                            echo "<div class='hide" . $pkg->getID() . "' style='display:none'>" . $gearObject->getName() . "</div>";
                                             echo "<div class='unhide' id='" . $pkg->getID() . "'>...</div>";
                                         } else { 
-                                            echo getGearName($gear) . "<br />";  
+                                            echo $gearObject->getName() . "<br />";  
                                         }
                                         $i++;
                                     }

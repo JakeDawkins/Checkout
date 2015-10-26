@@ -74,12 +74,14 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
                                 printf("<td class='hidden-xs hidden-sm' style='white-space: nowrap'>");
                                 $i = 0; //counter. Only want to show a few items
                                 foreach($checkout->getGearList() as $gear){
+                                    $gearObject = new Gear();
+                                    $gearObject->fetch($gear[0]);
                                     if ($i > 4){
-                                        echo "<div class='hide" . $checkout->getID() . "' style='display:none'>" . getGearName($gear[0]) . "</div>";
+                                        echo "<div class='hide" . $checkout->getID() . "' style='display:none'>" . $gearObject->getName() . "</div>";
                                     } elseif ($i==4){
-                                        echo "<div class='hide" . $checkout->getID() . "' style='display:none'>" . getGearName($gear[0]) . "</div>";
+                                        echo "<div class='hide" . $checkout->getID() . "' style='display:none'>" . $gearObject->getName() . "</div>";
                                         echo "<div class='unhide' id='" . $checkout->getID() . "'>...</div>";
-                                    } else printf("%s<br />",getGearName($gear[0]));
+                                    } else printf("%s<br />", $gearObject->getName());
                                     $i++;
                                 }
                                 printf("</td></tr>");

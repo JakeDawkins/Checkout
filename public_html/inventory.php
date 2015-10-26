@@ -2,13 +2,12 @@
 require_once("models/config.php"); //for usercake
 if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 
-	require_once('models/Checkout.php');
-	require_once('models/funcs.php');
-	require_once('models/Gear.php');
-	require_once('models/Person.php');
+require_once('models/Checkout.php');
+require_once('models/funcs.php');
+require_once('models/Gear.php');
+require_once('models/Person.php');
 
-	$types = getGearTypes();
-
+$types = getGearTypes();
 ?>
 
 <!DOCTYPE html>
@@ -35,15 +34,14 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
                         echo "<a class='btn btn-primary' href='edit-gear-types.php'>Edit Gear Types&nbsp;&nbsp;<span class='glyphicon glyphicon-pencil'></span></a>";
                     }
 					
-						foreach($types as $type){
-							//printf("<h3>%s</h3>",$type['type']);
-                            echo "<hr class='mobileOnly' />";
-                            echo "<h3 class='tableTitle' id='" . $type['gear_type_id'] . "'>" . $type['type'] . "</h3>";
-							$gearList = getGearListWithType($type['type']);
-							if(count($gearList)==0) {
-								//printf("<p>No gear of this type</p>");
-							} else {
-					?>
+					foreach($types as $type){
+                        echo "<hr class='mobileOnly' />";
+                        echo "<h3 class='tableTitle' id='" . $type['gear_type_id'] . "'>" . $type['type'] . "</h3>";
+						$gearList = Gear::getGearListWithType($type['gear_type_id']);
+						if(count($gearList)==0) {
+							printf("<p>No gear of this type</p>");
+						} else {
+				?>
                     <table class="table table-hover" id='table<?php echo $type['gear_type_id']?>'> 
                         <colgroup>
                             <col class="one-quarter">
@@ -63,20 +61,22 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
                         <tbody>
                             <?php
 								foreach($gearList as $gear){
-									printf("<tr>");
-									//printf("<td class='hidden-xs hidden-sm'>%s</td>",$gear['gear_id']);
-									printf("<td><a href='gear-item.php?gear_id=%s'>%s</a></td>",$gear['gear_id'],$gear['name']);
-									echo "<td>" . statusString($gear['gear_id']) . "</td>";
+                                    $gearObject = new Gear();
+                                    $gearObject->fetch($gear['gear_id']);
 
-									$co_id = fetchLastCheckout($gear['gear_id']);
+									printf("<tr>");
+									printf("<td><a href='gear-item.php?gear_id=%s'>%s</a></td>",$gear['gear_id'],$gear['name']);
+									echo "<td>" . $gearObject->status() . "</td>";
+
+									$co_id = $gearObject->lastCheckoutID(); //fetchLastCheckout($gear['gear_id']);
 									if(!empty($co_id)){
 										$co = new Checkout();
 					    				$co->retrieveCheckout($co_id);	
-					    				printf("<td><a href='checkout.php?co_id=%s'>%s</a></td>",$co_id,getPersonName($co->getPerson()));
+					    				printf("<td><a href='checkout.php?co_id=%s'>%s</a></td>", $co_id, getPersonName($co->getPerson()));
 									} else { //no last checkout
 										printf("<td>n/a</td>");
 									}
-									printf("<td class='text-center'>%s</td>",$gear['qty']);
+									printf("<td class='text-center'>%s</td>", $gearObject->getQty()); //$gear['qty']
 									printf("</tr>");
 								}
 							?>

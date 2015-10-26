@@ -10,18 +10,14 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
         //get initial gear item for prefilling text fields
         $gear_id = test_input($_GET['gear_id']);
-        $name = getGearName($gear_id);
-        $type = getGearType($gear_id);
-        $qty = getTotalGearQty($gear_id);
-        $notes = getGearNotes($gear_id);
-        $isDisabled = isDisabled($gear_id);
+        $gearObject = new Gear();
+        $gearObject->fetch($gear_id);
+
         if(isset($_GET['deleteGearItem'])){
-            $delGearItem = test_input($_GET['deleteGearItem']);    
-            deleteGearItem($delGearItem);
+            $gearObject->delete();
             header("Location: inventory.php");
         }
     }
-
 ?>
 
 <!DOCTYPE html>
@@ -36,7 +32,7 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 <body>
     <!-- IMPORT NAVIGATION & HEADER-->
     <?php include('templates/bs-nav.php');
-    echo printHeader($name,NULL); ?>
+    echo printHeader($gearObject->getName(), NULL); ?>
 
     <div class="container">
         <div class="row">
@@ -49,20 +45,20 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
                         <p>
                         <?php
                             echo "<strong>Gear ID:</strong> " . $gear_id . "<br /><br />";
-                            echo "<strong>Name:</strong> " . $name . "<br /><br />";
-                            echo "<strong>Type:</strong> " . gearTypeWithID($type) . "<br /><br />";
-                            echo "<strong>Quantity:</strong> " . $qty . "<br /><br />";
-                            if(!$isDisabled) {
+                            echo "<strong>Name:</strong> " . $gearObject->getName() . "<br /><br />";
+                            echo "<strong>Type:</strong> " . gearTypeWithID($gearObject->getType()) . "<br /><br />";
+                            echo "<strong>Quantity:</strong> " . $gearObject->getQty() . "<br /><br />";
+                            if(!$gearObject->isDisabled()) {
                                 echo "<strong>Enabled </strong><span class='glyphicon glyphicon-ok'></span><br /><br />";
                             } else {
                                 echo "<strong>Disabled </strong><span class='glyphicon glyphicon-remove'></span><br /><br />";
                             }
-                            if(!empty($notes)) echo "<strong>Notes:</strong> <pre>" . $notes . "</pre><br />";
+                            if(!empty($gearObject->getNotes())) echo "<strong>Notes:</strong> <pre>" . $gearObject->getNotes() . "</pre><br />";
 
                             //only show to admins
                             if ($loggedInUser->checkPermission(array(2))){
                                 echo "<a class='btn btn-primary' href='edit-gear.php?gear_id=" . $gear_id . "'>Edit</a> &nbsp;&nbsp;";
-                                echo "<a class='btn btn-danger' href='gear-item.php?deleteGearItem=" . $gear_id . "'>Delete</a>"; 
+                                echo "<a class='btn btn-danger' href='gear-item.php?gear_id=" . $gear_id . "&deleteGearItem=" . $gear_id . "'>Delete</a>"; 
                             }
 
                         ?>
@@ -73,7 +69,7 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
                     <div class="panel-heading text-center">Item History</div>
                     <div class="panel-body text-center">
                     <?php
-                        $checkouts = fetchCheckoutsWithGear($gear_id);
+                        $checkouts = $gearObject->fetchCheckoutsWithGear();
                         if(count($checkouts) != 0){
                             foreach($checkouts as $checkout){
                                 echo "<a href='checkout.php?co_id=" . $checkout['co_id'] . "'>";

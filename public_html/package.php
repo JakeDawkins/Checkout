@@ -18,15 +18,15 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
         $pkg = new Package();
         $pkg->retrievePackage($pkg_id);
 
-
-
         //pull pkg and gearlist
         $gearList = $pkg->getGearList();
 
         //create array of gear types within this checkout
         $gearTypes = array();
         foreach($gearList as $gear){
-            $type = gearTypeWithID(getGearType($gear));
+            $gearObject = new Gear();
+            $gearObject->fetch($gear);
+            $type = gearTypeWithID($gearObject->getType());
             if (!in_array($type, $gearTypes)){
                 $gearTypes[] = $type;
             }
@@ -82,10 +82,11 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
                             echo "<div class='panel-body text-center'>";
                                 echo "<p>";
                                 foreach($gearList as $gear){
-                                    $name = getGearName($gear);
-                                    $type = gearTypeWithID(getGearType($gear));
-                                    if($type == $gearType){
-                                        echo "$name<br />";
+                                    $gearObject = new Gear();
+                                    $gearObject->fetch($gear);
+                                    
+                                    if(gearTypeWithID($gearObject->getType()) == $gearType){
+                                        echo $gearObject->getName() . "<br />";
                                     }
                                 }
                                 echo "</p>";
@@ -105,10 +106,11 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
                             echo "<div class='panel-body text-center'>";
                                 echo "<p>";
                                 foreach($gearList as $gear){
-                                    $name = getGearName($gear);
-                                    $type = gearTypeWithID(getGearType($gear));
-                                    if($type == $gearType){
-                                        echo "$name<br />";
+                                    $gearObject = new Gear();
+                                    $gearObject->fetch($gear);
+                                    
+                                    if(gearTypeWithID($gearObject->getType()) == $gearType){
+                                        echo $gearObject->getName() . "<br />";
                                     }
                                 }
                                 echo "</p>";

@@ -39,7 +39,9 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 	//create array of gear types within this checkout
 	$gearTypes = array();
 	foreach($gearList as $gear){
-		$type = gearTypeWithID(getGearType($gear[0]));
+		$gearObject = new Gear();
+		$gearObject->fetch($gear[0]);
+		$type = gearTypeWithID($gearObject->getType()); //gearTypeWithID(getGearType($gear[0]));
 		if (!in_array($type, $gearTypes)){
 			$gearTypes[] = $type;
 		}
@@ -110,19 +112,20 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 								echo "<div class='panel-body text-center'>";
 									echo "<p>";
 									foreach($gearList as $gear){
-										$name = getGearName($gear[0]);
+										$gearObject = new Gear();
+										$gearObject->fetch($gear[0]);
 										$qty = $gear[1];
-										$type = gearTypeWithID(getGearType($gear[0]));
+										$type = gearTypeWithID($gearObject->getType()); //gearTypeWithID(getGearType($gear[0]));
 										if($type == $gearType){
-											if ($qty > 1) echo "$name ($qty)<br />";
-											else echo "$name<br />";
+											if ($qty > 1) echo $gearObject->getName() . " ($qty)<br />";
+											else echo $gearObject->getName() . "<br />";
 										}
 									}
 									echo "</p>";
 						echo "</div></div></div>"; //panel-body //panel //col
 					}
 					echo "</div>"; //end row
-				} else {//elseif (count($gearTypes) == 2){ //2 across
+				} else { // 2 across
 					$i = 0;
 					foreach($gearTypes as $gearType){
 						if($i % 2 == 0){ //start row
@@ -135,12 +138,13 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 								echo "<div class='panel-body text-center'>";
 									echo "<p>";
 									foreach($gearList as $gear){
-										$name = getGearName($gear[0]);
+										$gearObject = new Gear();
+										$gearObject->fetch($gear[0]);
 										$qty = $gear[1];
-										$type = gearTypeWithID(getGearType($gear[0]));
+										$type = gearTypeWithID($gearObject->getType()); //gearTypeWithID(getGearType($gear[0]));
 										if($type == $gearType){
-											if ($qty > 1) echo "$name ($qty)<br />";
-											else echo "$name<br />";
+											if ($qty > 1) echo $gearObject->getName() . " ($qty)<br />";
+											else echo $gearObject->getName() . "<br />";
 										}
 									}
 									echo "</p>";

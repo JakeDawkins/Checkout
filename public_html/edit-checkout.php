@@ -180,10 +180,13 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 				foreach ($_POST['gear'] as $gearItem) {
 					$gearList[] = test_input($gearItem);
 
+					$gearObject = new Gear();
+					$gearObject->fetch(test_input($gearItem));
+
 					//if the available qty is > 1, we need to find out
 					//what qty the user wants to check out
-					if(availableQtyExcludingCheckout($gearItem, $co_id , $co_start, $co_end) > 1){
-						$gearToGetQtyFor[] = $gearItem;
+					if($gearObject->availableQtyExcludingCheckout($co_id , $co_start, $co_end) > 1){
+						$gearToGetQtyFor[] = test_input($gearItem);
 					}
 				}				
 			}
@@ -197,12 +200,13 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 			$co_start = test_input($_POST['co_start']);	
 			$co_end = test_input($_POST['co_end']);
 
+			//echo ">-3";
 			//construct a clean gear list
 			$gearList = array();
 			foreach ($_POST['gear'] as $gearItem) {
 				$gearList[] = test_input($gearItem);
 			}
-
+			//echo ">-1";
 			//clean up gear qty array from post
 			$gearQty = array();
 			foreach ($_POST['gearQty'] as $qty) {
@@ -210,7 +214,7 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 			}
 
 			$i = 0; // to iterate thru gear qty array
-
+			//echo ">0";
 			//need to process quantities & finalize
 			//create checkout object
 			$co = new Checkout();
@@ -223,15 +227,19 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 			$co->setDescription($description);
 
 			foreach ($gearList as $gearItem) {
-				if(availableQty($gearItem, $co_start, $co_end) > 1){
+				$gearObject = new Gear();
+				$gearObject->fetch($gearItem);
+				//echo ">1";
+				if($gearObject->availableQty($co_start, $co_end) > 1){
 					$co->addToGearList($gearItem,$gearQty[$i]);
 					$i++;
 				} else {
 					$co->addToGearList($gearItem,1);	
 				}	
 			}
-
+			//echo ">2";
 			$co->finalizeCheckout();
+			//echo json_encode($co);
 			$co_id = $co->getID();
 			header("Location: checkout.php?co_id=$co_id");
 		}
@@ -482,18 +490,21 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 						<input type="hidden" name="co_end" value="<?php echo $co_end ?>" />
 						<?php
 							foreach($types as $type){
-								$items = getAvailableGearWithTypeAndExclusions($type['gear_type_id'], $co_id, $co_start, $co_end);
+								$items = Gear::getAvailableGearWithTypeAndExclusions($type['gear_type_id'], $co_id, $co_start, $co_end);
 								if (count($items) > 0){
 									printf("<h4>%s</h4>",$type['type']);
 									foreach($items as $item){
-										$qty = availableQtyExcludingCheckout($item['gear_id'], $co_id, $co_start, $co_end);
+										$gearObject = new Gear();
+										$gearObject->fetch($item['gear_id']);
+
+										$qty = $gearObject->availableQtyExcludingCheckout($co_id, $co_start, $co_end);
 										echo "<div class='checkbox'>";
-										echo "<label><input type='checkbox' name='gear[]' value='" . $item['gear_id'] . "'";
+										echo "<label><input type='checkbox' name='gear[]' value='" . $gearObject->getID() . "'";
 										//if the gear item is already assigned to checkout, check it by default
-										if(isset($simpleGearList) && in_array($item['gear_id'], $simpleGearList)) {
-											echo "checked > " . $item['name'];
+										if(isset($simpleGearList) && in_array($gearObject->getID(), $simpleGearList)) {
+											echo "checked > " . $gearObject->getName();
 										} else {
-											echo "> " . $item['name'];
+											echo "> " . $gearObject->getName();
 										}
 										//list quantity next to gear items.
 										if($qty > 1){
@@ -522,8 +533,9 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 					<div class="alert alert-info" role="alert">
 						<?php
 							foreach($gearList as $gear){
-								$gearName = getGearName($gear);
-								echo $gearName . "<br />";
+								$gearObject = new Gear();
+								$gearObject->fetch($gear);
+								echo $gearObject->getName() . "<br />";
 							}
 						?>
 					</div>
@@ -548,11 +560,13 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 								echo "<p><strong>There are no items to get quantity for. Click below to finish</strong></p>";
 							} else {
 								foreach($gearToGetQtyFor as $gear) {
-									$gearName = getGearName($gear);
-									echo $gearName . "&nbsp;&nbsp;&nbsp;";
+									$gearObject = new Gear();
+									$gearObject->fetch($gear);
+
+									echo $gearObject->getName() . "&nbsp;&nbsp;&nbsp;";
 									echo "<select name='gearQty[]'>";
-									$qty = availableQty($gear, $co_start, $co_end);
-									$currQty = $co->qtyOfItem($gear);
+									$qty = $gearObject->availableQty($co_start, $co_end);
+									$currQty = $co->qtyOfItem($gearObject->getID());
 									for($i = 1; $i <= $qty; $i++){
 										if($i == $currQty) echo "<option value='$i' selected='selected'>$i</option>";
 										else echo "<option value='$i'>$i</option>";

@@ -108,7 +108,9 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 
 					//if the available qty is > 1, we need to find out
 					//what qty the user wants to check out
-					if(availableQty($gearItem, $co_start, $co_end) > 1){
+					$gearObject = new Gear();
+					$gearObject->fetch(test_input($gearItem));
+					if($gearObject->availableQty($co_start, $co_end) > 1){
 						$gearToGetQtyFor[] = $gearItem;
 					}
 				}
@@ -151,11 +153,13 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 			$co->setDescription($description);
 
 			foreach ($gearList as $gearItem) {
-				if(availableQty($gearItem, $co_start, $co_end) > 1){
-					$co->addToGearList($gearItem,$gearQty[$i]);
+				$gearObject = new Gear();
+				$gearObject->fetch($gearItem);
+				if($gearObject->availableQty($co_start, $co_end) > 1){
+					$co->addToGearList($gearObject->getID(), $gearQty[$i]);
 					$i++;
 				} else {
-					$co->addToGearList($gearItem,1);	
+					$co->addToGearList($gearObject->getID(), 1);	
 				}	
 			}
 
@@ -423,14 +427,15 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 								}
 								echo "<hr />";
 							}
-	
 
 							foreach($types as $type){
-								$items = getAvailableGearWithType($type['gear_type_id'], $co_start, $co_end);
+								$items = Gear::getAvailableGearWithType($type['gear_type_id'], $co_start, $co_end);
 								if (count($items) > 0){
 									printf("<h4>%s</h4>",$type['type']);
 									foreach($items as $item){
-										$qty = availableQty($item['gear_id'], $co_start, $co_end);
+										$gearObject = new Gear();
+										$gearObject->fetch($item['gear_id']);
+										$qty = $gearObject->availableQty($co_start, $co_end);
 										echo "<div class='checkbox'>";
 										echo "<label><input type='checkbox' name='gear[]' value='" . $item['gear_id'] . "' ";
 										if(isset($preCheck) && in_array($item['gear_id'], $preCheck)) echo "checked"; //added from packages
@@ -441,6 +446,7 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 										echo "</label></div>";	
 									}
 								}//if
+								echo "<br />";
 							}//foreach
 						?>
 						<br />
@@ -460,8 +466,9 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 					<div class="alert alert-info" role="alert">
 						<?php
 							foreach($gearList as $gear){
-								$gearName = getGearName($gear);
-								echo $gearName . "<br />";
+								$gearObject = new Gear();
+								$gearObject->fetch($gear);
+								echo $gearObject->getName() . "<br />";
 							}
 						?>
 					</div>
@@ -485,10 +492,11 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 								echo "<p><strong>There are no items to get quantity for. Click below to finish</strong></p>";
 							} else {
 								foreach($gearToGetQtyFor as $gear) {
-									$gearName = getGearName($gear);
-									echo $gearName . "&nbsp;&nbsp;&nbsp;";
+									$gearObject = new Gear();
+									$gearObject->fetch($gear);
+									echo $gearObject->getName() . "&nbsp;&nbsp;&nbsp;";
 									echo "<select name='gearQty[]'>";
-									$qty = availableQty($gear, $co_start, $co_end);
+									$qty = $gearObject->availableQty($co_start, $co_end);
 									for($i = 1; $i <= $qty; $i++){
 										echo "<option value='$i'>$i</option>";
 									}
@@ -500,9 +508,9 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 						<input class="btn btn-success" type="submit" name="submit" value="Submit">
 					</form>
 				<?php endif; ?>
-            </div> <!-- /col -->
-        </div><!-- /row --> 
-    </div> <!-- /container -->
+            </div> <!-- end col -->
+        </div><!-- end row --> 
+    </div> <!-- end container -->
 
     <br /><br />
 

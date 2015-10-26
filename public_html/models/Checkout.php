@@ -1,7 +1,8 @@
 <?php
 require_once('Gear.php');
 
-class Checkout {
+
+class Checkout implements JsonSerializable{
 	private $co_id;
 	private $title;
 	private $person_id;
@@ -49,6 +50,7 @@ class Checkout {
 		return $this->returned;
 	}
 
+	//gets how much of a specific item is associated with the checkout
 	public function qtyOfItem($gear_id) {
 		foreach($this->gearList as $gear){
 			if($gear[0] == $gear_id) return $gear[1];
@@ -56,6 +58,24 @@ class Checkout {
 		return -1;
 	}
 
+	//for web services
+	// -- jsonSerializable Interface
+    public function jsonSerialize()
+    {
+        return [
+            'checkout' => [
+                'co_id' => $this->co_id,
+                'title' => $this->title,
+                'person_id' => $this->person_id,
+                'co_start' => $this->co_start,
+                'co_end' => $this->co_end,
+                'description' => $this->description,
+                'returned' => $this->returned,
+                'gearList' => $this->gearList
+            ]
+        ];
+    }
+    
 	//------------------------ Setters ------------------------
 
 	public function setID($co_id) {
@@ -205,7 +225,10 @@ class Checkout {
 		//add the checkout gear relations
 		foreach($this->gearList as $gearItem){
 			//check to see if the item is available
-			if (availableQty($gearItem[0],$this->co_start,$this->co_end) > 0){
+			$gearObject = new Gear();
+			$gearObject->fetch($gearItem[0]);
+
+			if ($gearObject->availableQty($this->co_start, $this->co_end) > 0){
 				$gear_id = $gearItem[0];
 				$gearQty = $gearItem[1];
 				$sql = "INSERT INTO co_gear(gear_id,co_id,qty) VALUES('$gear_id','$this->co_id','$gearQty')";	

@@ -13,10 +13,14 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
     //process each variable
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $gear_id = test_input($_GET['gear_id']);
+        $gearObject = new Gear();
+        $gearObject->fetch($gear_id);
     }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $gear_id = test_input($_POST['gear_id']);
+        $gearObject = new Gear();
+        $gearObject->fetch($gear_id);
 
         //can be empty. placeholder text in form
         $name = test_input($_POST['name']);
@@ -33,14 +37,14 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 
         //------------------------ name changes ------------------------
         if(!empty($name)){//user changed name
-            renameGear($gear_id, $name);
+            $gearObject->setName($name);
             $successes[] = "Renamed gear item to $name";
         }
 
         //------------------------ qty changes ------------------------
         if(!empty($qty)){//user changed qty
             if(is_numeric($qty)){
-                updateGearQty($gear_id, $qty);
+                $gearObject->setQty($qty);
                 $successes[] = "Updated gear qty to $qty";    
             } else {
                 $errors[] = "Could not set quantity to non-numeric value";
@@ -55,26 +59,27 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
         }
 
         //different type chosen. Just change types
-        $oldType = getGearType($gear_id);
-        if($type != $oldType){
-            updateGearType($gear_id, $type);
+        if($type != $gearObject->getType()){
+            $gearObject->setType($type);
             $successes[] = "Updated gear type";
         }
 
         //------------------------ disable state (always submits) ------------------------
-        if(isDisabled($gear_id) && !$newIsDisabled){
-            updateGearDisabled($gear_id,$newIsDisabled);
+        if($gearObject->isDisabled() && !$newIsDisabled){
+            $gearObject->setIsDisabled($newIsDisabled);
             $successes[] = "Gear enabled for checkouts";
-        } else if(!isDisabled($gear_id) && $newIsDisabled){
-            updateGearDisabled($gear_id,$newIsDisabled);
+        } else if(!$gearObject->isDisabled() && $newIsDisabled){
+            $gearObject->setIsDisabled($newIsDisabled);
             $successes[] = "Gear disabled for checkouts";
         }
 
         //------------------------ Notes Changed ------------------------
-        if(getGearNotes($gear_id) != $newNotes){
-            setGearNotes($gear_id,$newNotes);
+        if($gearObject->getNotes() != $newNotes){
+            $gearObject->setNotes($newNotes);  
             $successes[] = "Gear notes updated";
         }
+
+        $gearObject->finalize();
     }   
 ?>
 
@@ -103,19 +108,19 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
                     <input type="hidden" name="gear_id" value="<?php echo $gear_id; ?>" />
                     <div class="form-group">
                         <label class="control-label" for="name">Name:</label>
-                        <input class="form-control" name="name" type="text" placeholder="<?php echo getGearName($gear_id);?>"/>
+                        <input class="form-control" name="name" type="text" placeholder="<?php echo $gearObject->getName(); ?>"/>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label" for="qty">Quantity:</label>
-                        <input class="form-control" name="qty" type="text" placeholder="<?php echo getTotalGearQty($gear_id); ?>"/>
+                        <input class="form-control" name="qty" type="text" placeholder="<?php echo $gearObject->getQty(); ?>"/>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label" for="type">Choose a category:</label>
                         <select class="form-control" name="type">
                         <?php
-                            $oldType = getGearType($gear_id);
+                            $oldType = $gearObject->getType();
                             foreach($types as $type){
                                 echo "<option value='" . $type['gear_type_id'] . "' ";
                                 if ($type['gear_type_id'] == $oldType) { echo "selected='selected'>"; }
@@ -133,13 +138,13 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 
                     <div class="checkbox">
                         <label class="control-label">
-                            <input type="checkbox" name="disabled" value="true" <?php if(isDisabled($gear_id)) echo "checked";?> />
+                            <input type="checkbox" name="disabled" value="true" <?php if($gearObject->isDisabled()) echo "checked";?> />
                             &nbsp;&nbsp;Disable</label>
                     </div>
                     
                     <div class="form-group">
                         <label class="control-label" for="notes">Notes:</label>
-                        <textarea class="form-control" name="notes" rows="3"><?php echo getGearNotes($gear_id); ?></textarea>
+                        <textarea class="form-control" name="notes" rows="3"><?php echo $gearObject->getNotes(); ?></textarea>
                     </div>
                     
                     <br />

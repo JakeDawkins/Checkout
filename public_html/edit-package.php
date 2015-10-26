@@ -91,16 +91,19 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 
 						$types = getGearTypes();
 						foreach($types as $type){
-							$items = getGearListWithType($type['gear_type_id']);
+							$items = Gear::getGearListWithType($type['gear_type_id']);
 							echo "<h4>" . $type['type'] . "</h4>";
 							foreach($items as $item){
+								$gearObject = new Gear();
+								$gearObject->fetch($item['gear_id']);
 								echo "<div class='checkbox'>";
-								if(in_array($item['gear_id'], $currGearList))
-									echo "<label><input type='checkbox' name='gear[]' value='" . $item['gear_id'] . "' checked> " . $item['name'];
+								if(in_array($gearObject->getID(), $currGearList))
+									echo "<label><input type='checkbox' name='gear[]' value='" . $gearObject->getID() . "' checked> " . $gearObject->getName();
 								else 
-									echo "<label><input type='checkbox' name='gear[]' value='" . $item['gear_id'] . "'> " . $item['name'];
+									echo "<label><input type='checkbox' name='gear[]' value='" . $gearObject->getID() . "'> " . $gearObject->getName();
 								echo "</label></div>";	
 							}
+							echo "<br />";
 						}
 					?>
 					<br />

@@ -74,13 +74,14 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 					<?php
 						$types = getGearTypes();
 						foreach($types as $type){
-							$items = getGearListWithType($type['gear_type_id']);
+							$items = Gear::getGearListWithType($type['gear_type_id']);
 							echo "<h4>" . $type['type'] . "</h4>";
 							foreach($items as $item){
 								echo "<div class='checkbox'>";
 								echo "<label><input type='checkbox' name='gear[]' value='" . $item['gear_id'] . "'> " . $item['name'];
 								echo "</label></div>";	
 							}
+							echo "<br />";
 						}
 					?>
 					<br />
