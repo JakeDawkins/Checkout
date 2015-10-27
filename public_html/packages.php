@@ -4,7 +4,7 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 
 	require_once('models/Gear.php');
     require_once('models/Package.php');
-	require_once('models/Person.php');
+	require_once('models/funcs.php');
 
     $packages = Package::getAllPackages();
 ?>

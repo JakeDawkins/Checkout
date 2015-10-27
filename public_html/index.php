@@ -3,10 +3,9 @@
 require_once("models/config.php"); //for usercake
 if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 
-	//require_once('model/db.php');
 	require_once('models/Gear.php');
 	require_once('models/Checkout.php');
-	require_once('models/Person.php');
+    require_once('models/funcs.php')
 ?>
 
 <!DOCTYPE html>

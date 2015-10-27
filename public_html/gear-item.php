@@ -5,7 +5,6 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 	require_once('models/funcs.php');
 	require_once('models/Gear.php');
 	require_once('models/Checkout.php');
-	require_once('models/Person.php');
 
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
         //get initial gear item for prefilling text fields

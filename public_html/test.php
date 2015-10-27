@@ -5,7 +5,7 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 //	require_once('models/Gear.php');
 //  require_once('models/Gear-class.php');
 //	require_once('models/Checkout.php');
-//	require_once('models/Person.php');
+//	require_once('models/funcs.php');
 
 //	$co = new Checkout();
 //	$co->retrieveCheckout(60);

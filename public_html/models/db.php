@@ -1,6 +1,4 @@
 <?php
-//old path to config files.
-//require(dirname(__FILE__) . "/../../config.php");
 
 class DB {
 	//database connection
