@@ -1,6 +1,10 @@
 <?php
 require_once('db.php');
 
+/*
+Class: Gear
+	Handles interaction with individual gear items.
+*/
 class Gear implements JsonSerializable {
 	private $gear_id;
 	private $name;
@@ -72,6 +76,7 @@ class Gear implements JsonSerializable {
 	}
 
 	//------------------------ DB ------------------------
+
 	//fetch object vars from DB, given an ID
 	public function fetch($gear_id) {
 		//DB lookup
@@ -79,7 +84,7 @@ class Gear implements JsonSerializable {
 		$sql = "SELECT * FROM gear WHERE gear_id='$gear_id'";
 		$results = $database->select($sql);
 
-		//set instance vars
+		//parse results and set instance vars
 		$this->gear_id = $gear_id;
 		$this->name = $results[0]['name'];
 		$this->type = $results[0]['gear_type_id'];
@@ -97,6 +102,7 @@ class Gear implements JsonSerializable {
 			$sql = "INSERT INTO gear(name, gear_type_id, qty, isDisabled, notes) VALUES('$this->name','$this->type','$this->qty','$this->isDisabled','$this->notes')";
 			$database->query($sql);
 
+			//retrieve gear_id of new item from DB, and set instance var
 			$sql = "SELECT gear_id FROM gear WHERE name='$this->name' AND gear_type_id='$this->type' AND qty='$this->qty' AND notes='$this->notes'";
 			$results = $database->select($sql);
 			$this->gear_id = $results[0]['gear_id'];
@@ -118,8 +124,10 @@ class Gear implements JsonSerializable {
 		$database->query($sql);
 	}
 
-	//returns how much of a gear is available in the range
-	//$co_start --> $co_end
+	/*
+		Goal: returns how much of a gear is available in the range $co_start --> $co_end
+		Return : int
+	*/
 	public function availableQty($co_start, $co_end) {
 		$database = new DB();
 		$qty = $this->qty;
@@ -143,7 +151,12 @@ class Gear implements JsonSerializable {
 		return $qty;
 	}
 
-	//returns the available quantity of a gear item EXCLIDING checkout with $co_id
+	/*
+		Goal: Return the available quantity of a gear item in the time range 
+			co_start --> co_end, excluding a checkout with co_id. i.e. pretend
+			the checkout with co_id doesn't exist
+		Returns: int
+	*/
 	public function availableQtyExcludingCheckout($co_id, $co_start, $co_end){
 		$database = new DB();
 
@@ -168,7 +181,12 @@ class Gear implements JsonSerializable {
 		return $qty;
 	}
 
-	//returns the ID of the last person BEFORE TODAY to check out the item
+	/*
+		Goal: return the user_ID of the last person BEFORE NOW to check out 
+			this item. 
+		Notes: Not exactly accurate. Uses server timezone with local checkout times
+		Returns: int (user_id)
+	*/
 	public function lastCheckoutID(){
 		$database = new DB();
 		$sql = "SELECT * FROM co_gear INNER JOIN checkouts ON co_gear.co_id = checkouts.co_id WHERE gear_id = '$this->gear_id' AND co_start < NOW() ORDER BY co_end DESC LIMIT 1";
@@ -176,7 +194,11 @@ class Gear implements JsonSerializable {
 		return $results[0]['co_id'];
 	}
 
-	//returns a string describing the status of the item (i.e. in stock, disabled, etc.)
+	/*
+		Goal: returns a string describing the current status of the item (ex: "In Stock", 
+			"Disabled", "4/5 Available", etc.)
+		Returns: string
+	*/
 	public function status(){
 		if($this->isDisabled){
 			return "Disabled";
@@ -190,8 +212,12 @@ class Gear implements JsonSerializable {
 		}	
 	}
 
-	//fetch a list of all checkouts containing this item
-	//reverse chronological order
+	/*
+		Goal: Fetch a list of all PAST checkouts containing this gear item in 
+			reverse chronological order.
+		Notes: Not exactly accurate. Uses server timezone with local checkout times
+		Returns: Array of Associative Arrays 
+	*/
 	public function fetchCheckoutsWithGear() {
 		$database = new DB();
 		$sql = "SELECT * FROM co_gear INNER JOIN checkouts ON co_gear.co_id = checkouts.co_id WHERE gear_id = '$this->gear_id' AND co_start < NOW() ORDER BY co_end DESC";
@@ -200,12 +226,20 @@ class Gear implements JsonSerializable {
 	}
 
 	//------------------------ CLASS METHODS ------------------------
-	//returns an array of all Gear objects
+	
+	/*
+		Goal: fetch an array of all gear items in the DB
+		Notes: just calls the getGearListWithType method
+		Returns: Array of Associative Arrays
+	*/
 	public static function getGearList() {
 		return self::getGearListWithType(NULL);
 	}
 
-	//returns an array of all gear with type (non object)
+	/*
+		Goal: fetch an array of all gear items with $type in the DB
+		Returns: Array of Associative Arrays
+	*/
 	public static function getGearListWithType($type) {
 		$database = new DB();
 
@@ -218,25 +252,35 @@ class Gear implements JsonSerializable {
 		return $database->select($sql);
 	}
 
-	//returns an array of all gear available in the range
-	//$co_start --> $co_end
+	/*
+		Goal: fetch all available gear in the time range co_start to co_end
+		Returns: Array of Associative Arrays
+	*/
 	public static function getAvailableGear($co_start, $co_end) {
 		return self::getAvailableGearWithTypeAndExclusions(NULL, NULL, $co_start, $co_end);
 	}
 
-	//returns an array of all gear available with a type 
-	//in the range $co_start --> $co_end
+	/*
+		Goal: fetch all available gear in the time range co_start to co_end
+			that is of type $type
+		Returns: Array of Associative Arrays
+	*/
 	public static function getAvailableGearWithType($type, $co_start, $co_end) {
 		return self::getAvailableGearWithTypeAndExclusions($type, NULL, $co_start, $co_end);
 	}
 
-	//get available gear with type EXCLUDING checkouts from a specific checkout
-	//used for EDITING checkouts.
+	/*
+		Goal: fetch all available gear in the time range co_start to co_end
+			that is of type $type and excludes checkouts with co_id
+		Returns: Array of Associative Arrays
+		Usage: Mainly in editing checkouts
+			$type may be null -- all types
+			$co_id may be null -- no excluded checkouts
+	*/
 	public static function getAvailableGearWithTypeAndExclusions($type, $co_id, $co_start, $co_end) {
 		$results = self::getGearListWithType($type);
 
-		//handle differently if there are exclusions.
-		if(is_null($co_id)){ //no exclusions
+		if(is_null($co_id)){ //do not exclude any checkouts
 			foreach($results as $row) {
 				//check if in stock for dates
 				$gearObject = new Gear();
@@ -244,7 +288,7 @@ class Gear implements JsonSerializable {
 
 	    		if($gearObject->availableQty($co_start, $co_end) > 0 && !$gearObject->isDisabled()){
 	        		//add object to return array if in stock
-	        		$available_gear[] = $row;
+	        		$availableGear[] = $row;
 	    		}
 			}
 		} else { //with exclusions
@@ -255,11 +299,11 @@ class Gear implements JsonSerializable {
 
 	    		if($gearObject->availableQtyExcludingCheckout($co_id, $co_start, $co_end) > 0 && !$gearObject->isDisabled()){
 	        		//add object to return array if in stock
-	        		$available_gear[] = $row;
+	        		$availableGear[] = $row;
 	    		}
 			}
 		}
-		return $available_gear;
+		return $availableGear;
 	}
 }//end class
 
@@ -267,22 +311,26 @@ class Gear implements JsonSerializable {
 //------------------------ Gear Types Functions ------------------------
 //----------------------------------------------------------------------
 
-	//inserts a new gear category onto the DB. 
-	//	RETURNS: new ID
+	/*
+		Goal: add new gear category, $type, to the DB 
+		Returns: the ID of the new gear category
+	*/
 	function newGearType($type) {
 		$database = new DB();
 		$sql = "INSERT INTO gear_types(type) VALUES('$type')";
 		$database->query($sql);
 
-		//returns the newly inserted type's ID.
+		//fetch the newly inserted type's ID.
 		$sql = "SELECT gear_type_id FROM gear_types WHERE type='$type'";
 		$results = $database->select($sql);
 
 		return $results[0]['gear_type_id'];
 	}
 
-	//remove a gear type from the DB.
-	//this will also remove any gear associated
+	/*
+		Goal: remove a gear type from the DB
+		Side Effects: Will remove any gear associated with this type
+	*/
 	function deleteGearType($gear_type_id) {
 		$database = new DB();
 		$sql = "DELETE FROM gear_types WHERE gear_type_id='$gear_type_id'";
