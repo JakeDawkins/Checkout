@@ -18,20 +18,9 @@
     <title>Welcome!</title>
 </head>
 <body>
-	<!-- IMPORT NAVIGATION -->
-	<?php include('templates/bs-nav.php'); ?>
-
-    <!-- HEADER -->
-    <div class="container-fluid gray">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <h1>Checkout</h1>
-                <p class="lead">A system for scheduling gear among a team</p>
-            </div>
-        </div><!-- end row -->
-    </div><!-- end container -->
-
-    <br /><br />
+    <!-- IMPORT NAVIGATION & HEADER-->
+    <?php include('templates/bs-nav.php');
+    echo printHeader("Checkouts", NULL); ?>
 
     <!-- 
     <div class="container">
