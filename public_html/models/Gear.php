@@ -198,12 +198,13 @@ class Gear implements JsonSerializable {
 		Goal: returns a string describing the current status of the item (ex: "In Stock", 
 			"Disabled", "4/5 Available", etc.)
 		Returns: string
+		Notes: Not exactly accurate. Uses server timezone with local checkout times
 	*/
-	public function status(){
+	public function status($now){
 		if($this->isDisabled){
 			return "Disabled";
 		}
-		$now = date('Y-m-d h:m:s');
+		//$now = date('Y-m-d h:m:s');
 		if($this->qty > 1){
 			return $this->availableQty($now, $now) . "/" . $this->qty . " Available";	
 		} else { //max 1 qty. Just display in stock or not.
@@ -215,7 +216,6 @@ class Gear implements JsonSerializable {
 	/*
 		Goal: Fetch a list of all PAST checkouts containing this gear item in 
 			reverse chronological order.
-		Notes: Not exactly accurate. Uses server timezone with local checkout times
 		Returns: Array of Associative Arrays 
 	*/
 	public function fetchCheckoutsWithGear() {

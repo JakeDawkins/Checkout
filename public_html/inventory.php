@@ -65,7 +65,7 @@ $types = getGearTypes();
 
 									printf("<tr>");
 									printf("<td><a href='gear-item.php?gear_id=%s'>%s</a></td>",$gear['gear_id'],$gear['name']);
-									echo "<td>" . $gearObject->status() . "</td>";
+									echo "<td>" . $gearObject->status(date('Y-m-d h:m:s')) . "</td>";
 
 									$co_id = $gearObject->lastCheckoutID(); //fetchLastCheckout($gear['gear_id']);
 									if(!empty($co_id)){

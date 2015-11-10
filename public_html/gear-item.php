@@ -48,9 +48,10 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
                             echo "<strong>Type:</strong> " . gearTypeWithID($gearObject->getType()) . "<br /><br />";
                             echo "<strong>Quantity:</strong> " . $gearObject->getQty() . "<br /><br />";
                             if(!$gearObject->isDisabled()) {
-                                echo "<strong>Enabled </strong><span class='glyphicon glyphicon-ok'></span><br /><br />";
+                                echo "<strong>Enabled </strong><span class='glyphicon glyphicon-ok color-green'></span><br /><br />";
+                                echo "<strong>Status:</strong> " . $gearObject->status(date('Y-m-d h:m:s')) . "<br /><br />";
                             } else {
-                                echo "<strong>Disabled </strong><span class='glyphicon glyphicon-remove'></span><br /><br />";
+                                echo "<strong>Disabled </strong><span class='glyphicon glyphicon-remove color-red'></span><br /><br />";
                             }
                             if(!empty($gearObject->getNotes())) echo "<strong>Notes:</strong> <pre>" . $gearObject->getNotes() . "</pre><br />";
 
