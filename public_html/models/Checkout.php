@@ -76,6 +76,20 @@ class Checkout implements JsonSerializable{
         ];
     }
     
+    /*
+		For JSON calendars
+		Only need ID, Title, Start, End, URL
+    */
+	public function toJSONEvent(){
+		return "{
+			\"title\":\"$this->title\",
+			\"id\":\"$this->co_id\",
+			\"start\":\"$this->co_start\",
+			\"end\":\"$this->co_end\",
+			\"url\":\"checkout.php?co_id=$this->co_id\"
+		}";
+	}
+
 	//------------------------ Setters ------------------------
 
 	public function setID($co_id) {
@@ -140,7 +154,6 @@ class Checkout implements JsonSerializable{
 				$newCO = new Checkout();
 				$newCO->retrieveCheckout($result['co_id']);
 				$checkouts[] = $newCO;
-				//printf("%s",$newCO->printObject()); //check construction
 			}
 		}//foreach
 		
@@ -159,7 +172,6 @@ class Checkout implements JsonSerializable{
 				$newCO = new Checkout();
 				$newCO->retrieveCheckout($result['co_id']);
 				$checkouts[] = $newCO;
-				//printf("%s",$newCO->printObject()); //check construction
 			}
 		}//foreach
 		
@@ -244,6 +256,22 @@ class Checkout implements JsonSerializable{
 		$database = new DB();
 		$sql = "DELETE FROM checkouts WHERE co_id='$co_id'"; 
 		$database->query($sql);
+	}
+
+	/*
+		For getting data to put in a jquery calendar
+		Returns: JSON event array
+	*/
+	public static function fetchCalendarEvents($start, $end){
+		$checkouts = self::getCheckoutsInRange($start,$end);
+		$i = 0;
+		echo "[";
+		foreach($checkouts as $checkout){
+			echo $checkout->toJSONEvent();
+			$i++;
+			if($i != count($checkouts)) echo ",";
+		}
+		echo "]";
 	}
 }
 

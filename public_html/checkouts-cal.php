@@ -22,89 +22,21 @@
     <!-- CALENDAR SETUP -->
     <script>
         $(document).ready(function() {
+            var today = new Date();
+            today.toISOString().substring(0, 10);
 
             $('#calendar').fullCalendar({
-                defaultDate: '2015-02-12',
+                defaultDate: today,
                 editable: false, //don't want dragging events
                 eventLimit: true, // allow "more" link when too many events
                 events: {
-                    url: 'php/get-events.php',
-                    error: function() {
-                        $('#script-warning').show();
-                    }
+                    url: 'models/calendar-events.php'
                 },
-                loading: function(bool) {
-                    $('#loading').toggle(bool);
-                }
-
-                events: [
-                    {
-                        title: 'All Day Event',
-                        start: '2015-02-01'
-                    },
-                    {
-                        title: 'Long Event',
-                        start: '2015-02-07',
-                        end: '2015-02-10'
-                    },
-                    {
-                        id: 999,
-                        title: 'Repeating Event',
-                        start: '2015-02-09T16:00:00'
-                    },
-                    {
-                        id: 999,
-                        title: 'Repeating Event',
-                        start: '2015-02-16T16:00:00'
-                    },
-                    {
-                        title: 'Conference',
-                        start: '2015-02-11',
-                        end: '2015-02-13'
-                    },
-                    {
-                        title: 'Meeting',
-                        start: '2015-02-12T10:30:00',
-                        end: '2015-02-12T12:30:00'
-                    },
-                    {
-                        title: 'Lunch',
-                        start: '2015-02-12T12:00:00'
-                    },
-                    {
-                        title: 'Meeting',
-                        start: '2015-02-12T14:30:00'
-                    },
-                    {
-                        title: 'Happy Hour',
-                        start: '2015-02-12T17:30:00'
-                    },
-                    {
-                        title: 'Dinner',
-                        start: '2015-02-12T20:00:00'
-                    },
-                    {
-                        title: 'Birthday Party',
-                        start: '2015-02-13T07:00:00'
-                    },
-                    {
-                        title: 'Click for Google',
-                        url: 'http://google.com/',
-                        start: '2015-02-28'
-                    }
-                ]
             });
             
         });
     </script>
 
-    <style>
-        #calendar {
-            max-width: 100%;
-            min-width: 100%;
-            margin: 0 auto;
-        }
-    </style>
 
 	<!-- INCLUDE BS HEADER INFO -->
 	<?php include('templates/bs-head.php'); ?>
@@ -117,6 +49,12 @@
     echo printHeader("Checkouts", NULL); ?>
 
     <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <a class="btn btn-primary" href="new-checkout.php">New Checkout&nbsp;&nbsp;<span class="glyphicon glyphicon-plus"></span></a>
+                <br /><br />
+            </div>
+        </div>
         <div class="row">
             <div class="col-lg-12">
                 <div id='calendar'></div>          
