@@ -4,6 +4,8 @@
 
 //------------------------ NON-VENDOR ------------------------
 
+require_once('db.php');
+
 function getPersonName($person_id){
 	$database = new DB();
 	$sql = "SELECT display_name FROM uc_users WHERE id='$person_id'";
