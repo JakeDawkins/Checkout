@@ -20,7 +20,7 @@ if(!empty($_POST)) {
 		$errors[] = lang("CAPTCHA_FAIL");
 	} if(minMaxRange(5,25,$username)) {
 		$errors[] = lang("ACCOUNT_USER_CHAR_LIMIT",array(5,25));
-	} if(!ctype_alnum($username)){
+	} if(!preg_match('/^[a-zA-Z0-9 .]+$/', $username)){
 		$errors[] = lang("ACCOUNT_USER_INVALID_CHARACTERS");
 	} if(minMaxRange(5,25,$displayname)) {
 		$errors[] = lang("ACCOUNT_DISPLAY_CHAR_LIMIT",array(5,25));
