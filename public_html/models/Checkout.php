@@ -1,7 +1,6 @@
 <?php
 require_once('Gear.php');
 
-
 class Checkout implements JsonSerializable{
 	private $co_id;
 	private $title;
@@ -9,6 +8,8 @@ class Checkout implements JsonSerializable{
 	private $co_start;
 	private $co_end;
 	private $description;
+	private $dr_number;
+	private $location;
 	private $gearList = array();
 	private $returned;
 
@@ -37,13 +38,17 @@ class Checkout implements JsonSerializable{
 	public function getDescription() {
 		return $this->description;
 	}
+
+	public function getDRNumber() {
+		return $this->dr_number;
+	}
+
+	public function getLocation() {
+		return $this->location;
+	}
 	
 	public function getGearList() {
 		return $this->gearList;
-	}
-
-	public function printObject() {
-		return "<hr>ID:$this->co_id<br>TITLE:$this->title<br>PERSON:$this->person_id<br>START:$this->co_start<br>END:$this->co_end<br>DESC:$this->description<br>RET:$this->returned<hr>";
 	}
 
 	public function getReturned() {
@@ -70,6 +75,8 @@ class Checkout implements JsonSerializable{
                 'co_start' => $this->co_start,
                 'co_end' => $this->co_end,
                 'description' => $this->description,
+                'dr_number' => $this->dr_number,
+                'location' => $this->location,
                 'returned' => $this->returned,
                 'gearList' => $this->gearList
             ]
@@ -114,6 +121,14 @@ class Checkout implements JsonSerializable{
 	
 	public function setDescription($description) {
 		$this->description = $description;
+	}
+
+	public function setDRNumber($dr_number) {
+		$this->dr_number = $dr_number;
+	}
+
+	public function setLocation($location) {
+		$this->location = $location;
 	}
 	
 	public function addToGearList($gear_id, $qty) {
@@ -191,6 +206,8 @@ class Checkout implements JsonSerializable{
 		$this->co_start = $results[0]['co_start'];
 		$this->co_end = $results[0]['co_end'];
 		$this->description = $results[0]['description'];
+		$this->dr_number = $results[0]['dr_number'];
+		$this->location = $results[0]['location'];
 		$this->returned = $results[0]['returned'];
 
 		//query DB for the checkout-gear combos
@@ -211,7 +228,7 @@ class Checkout implements JsonSerializable{
 		
 		//if the co_id is unset, this is a new checkout
 		if(isset($this->co_id)){ //old checkout
-			$sql = "UPDATE checkouts SET title='$this->title', person_id='$this->person_id', co_start='$this->co_start', co_end='$this->co_end', description='$this->description' WHERE co_id='$this->co_id'";
+			$sql = "UPDATE checkouts SET title='$this->title', person_id='$this->person_id', co_start='$this->co_start', co_end='$this->co_end', description='$this->description', dr_number='$this->dr_number', location='$this->location' WHERE co_id='$this->co_id'";
 			$database->query($sql);
 
 			//set return datetime
@@ -225,7 +242,7 @@ class Checkout implements JsonSerializable{
 			$database->query($sql);
 		} else { //new checkout
 			//create the new checkout
-			$sql = "INSERT INTO checkouts(title,person_id,co_start,co_end,description) VALUES('$this->title','$this->person_id','$this->co_start','$this->co_end','$this->description')";
+			$sql = "INSERT INTO checkouts(title,person_id,co_start,co_end,description,dr_number,location) VALUES('$this->title','$this->person_id','$this->co_start','$this->co_end','$this->description','$this->dr_number','$this->location')";
 			$database->query($sql);
 
 			//retrieve co_id from newly inserted checkout
