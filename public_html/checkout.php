@@ -72,6 +72,8 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
     					<?php
     						printf("<strong>Checkout ID:</strong> %s<br /><br />",$checkout->getID());
 							printf("<strong>Description:</strong> %s<br /><br />",$checkout->getDescription());
+							if(!empty($checkout->getDRNumber())) echo "<strong>DR:</strong> " . $checkout->getDRNumber() . "<br /><br />";
+							if(!empty($checkout->getLocation())) echo "<strong>Location:</strong> " . $checkout->getLocation() . "<br /><br />";
 
 							$personName = getPersonName($checkout->getPerson());
 							printf("<strong>Person:</strong> %s<br /><br />",$personName);
