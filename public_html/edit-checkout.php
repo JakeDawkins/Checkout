@@ -8,7 +8,7 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 	$types = getGearTypes();
 
 	//define variables and set to empty values
-	$co_start = $co_end = $title = $description = "";
+	$co_start = $co_end = $title = $description = $location = $dr_number = "";
 
 	//get initial checkout info
 	if ($_SERVER["REQUEST_METHOD"] == "GET") {
@@ -82,37 +82,55 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 			//allowed null
 			$description = test_input($_POST['description']);
 
+			//location
+			//LEN 128
+			$location = test_input($_POST['location']);
+			if(strlen($location) > 128){ 
+				$errors[] = "Location can only be 128 characters long";
+				$validLocation = false;
+				$step = 0; //don't go on
+			} $validLocation = true;
+
+			//DR_Number
+			//LEN 32
+			$dr_number = test_input($_POST['dr_number']);
+			if(strlen($dr_number) > 32) {
+				$errors[] = "DR Number can only be 32 characters long";
+				$validDR = false;
+				$step = 0; //don't go on
+			} else $validDR = true;
+
 			//cannot be null
 			if (empty($_POST['co_id'])){
 				$errors[] = "Checkout ID invalid"; 
 			} else $co_id = test_input($_POST['co_id']);
 
 			//start timedate
-			$start_day = test_input($_POST['start_day']);
-			$start_month = test_input($_POST['start_month']);
-			$start_year = test_input($_POST['start_year']);
-			$start_hour = test_input($_POST['start_hour']);
-			$start_min = test_input($_POST['start_min']);
-			$start_ampm = test_input($_POST['start_ampm']);
-			if ($start_ampm == "pm") $start_hour += 12;
+			$s_day = test_input($_POST['start_day']);
+			$s_month = test_input($_POST['start_month']);
+			$s_year = test_input($_POST['start_year']);
+			$s_hour = test_input($_POST['start_hour']);
+			$s_min = test_input($_POST['start_min']);
+			$s_ampm = test_input($_POST['start_ampm']);
+			if ($s_ampm == "pm") $s_hour += 12;
 			else {
-				if ($start_hour == 12) $start_hour = 0;
+				if ($s_hour == 12) $s_hour = 0;
 			}
 
 			//end timedate
-			$end_day = test_input($_POST['end_day']);
-			$end_month = test_input($_POST['end_month']);
-			$end_year = test_input($_POST['end_year']);
-			$end_hour = test_input($_POST['end_hour']);
-			$end_min = test_input($_POST['end_min']);
-			$end_ampm = test_input($_POST['end_ampm']);
-			if ($end_ampm == "pm") $end_hour += 12;
+			$e_day = test_input($_POST['end_day']);
+			$e_month = test_input($_POST['end_month']);
+			$e_year = test_input($_POST['end_year']);
+			$e_hour = test_input($_POST['end_hour']);
+			$e_min = test_input($_POST['end_min']);
+			$e_ampm = test_input($_POST['end_ampm']);
+			if ($e_ampm == "pm") $e_hour += 12;
 			else {
-				if ($end_hour == 12) $end_hour = 0;
+				if ($e_hour == 12) $e_hour = 0;
 			}
 
-			$co_start = $start_year . "-" . $start_month . "-" . $start_day . " " . $start_hour . ":" . $start_min . ":00"; 	
-			$co_end = $end_year . "-" . $end_month . "-" . $end_day . " " . $end_hour . ":" . $end_min . ":00"; 
+			$co_start = $s_year . "-" . $s_month . "-" . $s_day . " " . $s_hour . ":" . $s_min . ":00"; 	
+			$co_end = $e_year . "-" . $e_month . "-" . $e_day . " " . $e_hour . ":" . $e_min . ":00"; 
 			
 			//check to make sure dates in order 
 			$formattedStart = new DateTime($co_start);
@@ -143,6 +161,20 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 				$successes[] = "Description updated successfully";
 			} else $description = $co->getDescription();
 
+			if($co->getLocation() != $location){//location change
+				if($validLocation){
+					$co->setLocation($location);
+					$successes[] = "Location updated successfully";	
+				} else $location = $co->getLocation();
+			} else $location = $co->getLocation();
+
+			if($co->getDRNumber() != $dr_number){//DR change
+				if($validDR){
+					$co->setDRNumber($dr_number);
+					$successes[] = "DR Number updated successfully";	
+				} else $dr_number = $co->getDRNumber();
+			} else $dr_number = $co->getDRNumber();
+
 			if(!empty($co_start) && $co->getStart() != $co_start){ //start change
 				if($validDates){
 					$co->setStart($co_start);
@@ -167,6 +199,8 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 			$co->retrieveCheckout($co_id); //used for listing curr qty
 			$title = test_input($_POST['title']);
 			$description = test_input($_POST['description']);
+			$location  = test_input($_POST['location']);
+			$dr_number  = test_input($_POST['dr_number']);
 			$co_start = test_input($_POST['co_start']);	
 			$co_end = test_input($_POST['co_end']);
 
@@ -197,6 +231,8 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 			$co_id = test_input($_POST['co_id']);
 			$title = test_input($_POST['title']);
 			$description = test_input($_POST['description']);
+			$location  = test_input($_POST['location']);
+			$dr_number  = test_input($_POST['dr_number']);
 			$co_start = test_input($_POST['co_start']);	
 			$co_end = test_input($_POST['co_end']);
 
@@ -226,6 +262,8 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 			$co->setStart($co_start);
 			$co->setEnd($co_end);
 			$co->setDescription($description);
+			$co->setLocation($location);
+			$co->setDRNumber($dr_number);
 
 			foreach ($gearList as $gearItem) {
 				$gearObject = new Gear();
@@ -281,11 +319,19 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 
 						<div class="form-group"> <!-- TITLE -->
 							<label class="control-label" for="title">Event Title:</label>  
-							<input type="text" class="form-control" name="title" placeholder="<?php echo $co->getTitle(); ?>">
+							<input type="text" class="form-control" name="title" value="<?php echo $co->getTitle(); ?>">
 						</div>
 						<div class="form-group"> <!-- DESC -->
 							<label class="control-label" for="description">Description:</label>  
 							<textarea class="form-control" name="description" rows="3"><?php echo $co->getDescription(); ?></textarea>
+						</div>
+						<div class="form-group"> <!-- LOCATION -->
+							<label class="control-label" for="location">Location:</label>  
+							<input type="text" class="form-control" name="location" value="<?php echo $co->getLocation(); ?>">
+						</div>
+						<div class="form-group"> <!-- DR NUMBER -->
+							<label class="control-label" for="dr_number">DR Number:</label>  
+							<input type="text" class="form-control" name="dr_number" value="<?php echo $co->getDRNumber(); ?>">
 						</div>
 						<div class="alert alert-warning">
 						Changing the date of a checkout may change what gear is available for checkout.
@@ -471,6 +517,7 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 					<div class="alert alert-info" role="alert">
 						<?php
 							echo "Title: " . $co->getTitle() . "<br /> Description: " . $co->getDescription() . "<br />"; 
+							echo "Location: " . $location . "<br />DR Number: " . $dr_number . "<br />";
 							$formattedStart = new DateTime($co_start);
 							$formattedEnd = new DateTime($co_end);
 							echo $formattedStart->format('m-d-y g:iA') . " <span class='glyphicon glyphicon-arrow-right'></span> " . $formattedEnd->format('m-d-y g:iA');
@@ -486,6 +533,8 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 						<input type="hidden" name="step" value="2" />
 						<input type="hidden" name="title" value="<?php echo $title ?>" />
 						<input type="hidden" name="description" value="<?php echo $description ?>" />
+						<input type="hidden" name="location" value="<?php echo $location ?>" />
+						<input type="hidden" name="dr_number" value="<?php echo $dr_number ?>" />
 						<input type="hidden" name="co_start" value="<?php echo $co_start ?>" />
 						<input type="hidden" name="co_end" value="<?php echo $co_end ?>" />
 						<?php
@@ -524,6 +573,7 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 					<div class="alert alert-info" role="alert">
 						<?php
 							echo "Title: " . $title . "<br /> Description: " . $description . "<br />"; 
+							echo "Location: " . $location . "<br />DR Number: " . $dr_number . "<br />";
 							$formattedStart = new DateTime($co_start);
 							$formattedEnd = new DateTime($co_end);
 							echo $formattedStart->format('m-d-y g:iA') . " <span class='glyphicon glyphicon-arrow-right'></span> " . $formattedEnd->format('m-d-y g:iA');
@@ -547,6 +597,8 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 						<input type="hidden" name="step" value="3" />
 						<input type="hidden" name="title" value="<?php echo $title ?>" />
 						<input type="hidden" name="description" value="<?php echo $description ?>" />
+						<input type="hidden" name="location" value="<?php echo $location ?>" />
+						<input type="hidden" name="dr_number" value="<?php echo $dr_number ?>" />
 						<input type="hidden" name="co_start" value="<?php echo $co_start ?>" />
 						<input type="hidden" name="co_end" value="<?php echo $co_end ?>" />
 						<?php
@@ -590,6 +642,10 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 
     <!-- jQuery Version 1.11.1 -->
     <script src="js/jquery.js"></script>
+
+    <script>
+    $()
+    </script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
