@@ -37,6 +37,22 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 			  $step = 0; //don't go on
 			} else $description = test_input($_POST['description']);
 
+			//location
+			//LEN 128
+			$location = test_input($_POST['location']);
+			if(strlen($location) > 128){ 
+				$errors[] = "Location can only be 128 characters long";
+				$step = 0; //don't go on
+			}
+
+			//DR_Number
+			//LEN 32
+			$dr_number = test_input($_POST['dr_number']);
+			if(strlen($dr_number) > 32) {
+				$errors[] = "DR Number can only be 32 characters long";
+				$step = 0; //don't go on
+			}
+
 			//start timedate
 			$start_day = test_input($_POST['start_day']);
 			$start_month = test_input($_POST['start_month']);
@@ -84,6 +100,8 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 			$description = test_input($_POST['description']);
 			$co_start = test_input($_POST['co_start']);	
 			$co_end = test_input($_POST['co_end']);
+			$location = test_input($_POST['location']);
+			$dr_number = test_input($_POST['dr_number']); 
 
 			//look and see what pkgs are added already
 			$preCheck = array(); //items to precheck if possible based on pkgs
@@ -127,6 +145,8 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 			$description = test_input($_POST['description']);
 			$co_start = test_input($_POST['co_start']);	
 			$co_end = test_input($_POST['co_end']);
+			$location = test_input($_POST['location']);
+			$dr_number = test_input($_POST['dr_number']); 
 
 			//construct a clean gear list
 			$gearList = array();
@@ -154,6 +174,8 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 			$co->setStart($co_start);
 			$co->setEnd($co_end);
 			$co->setDescription($description);
+			$co->setLocation($location);
+			$co->setDRNumber($dr_number);
 
 			foreach ($gearList as $gearItem) {
 				$gearObject = new Gear();
@@ -211,6 +233,14 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 							<label class="control-label" for="Description">Description:</label>  
 							<textarea class="form-control" name="description" rows="3"></textarea>
 						</div>
+						<div class="form-group"> <!-- LOCATION -->
+							<label class="control-label" for="location">Location:</label>  
+							<input type="text" class="form-control" name="location" placeholder="optional">
+						</div>
+						<div class="form-group"> <!-- DR NUMBER -->
+							<label class="control-label" for="dr_number">DR Number:</label>  
+							<input type="text" class="form-control" name="dr_number" placeholder="optional">
+						</div>						
 						<div class="form-inline form-group"><!-- START -->
 							<label class="control-label" for="start_date">Start date:</label>
 							<select class="form-control" style="display: inline" name="start_month">
@@ -392,7 +422,8 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 					<h2>Step 1: Event Details</h2>
 					<div class="alert alert-info" role="alert">
 						<?php
-							echo "Title: " . $title . "<br /> Description: " . $description . "<br />"; 
+							echo "Title: " . $title . "<br />Description: " . $description . "<br />"; 
+							echo "Location: " . $location . "<br />DR Number: " . $dr_number . "<br />";
 							$formattedStart = new DateTime($co_start);
 							$formattedEnd = new DateTime($co_end);
 							echo $formattedStart->format('m-d-y g:iA') . " <span class='glyphicon glyphicon-arrow-right'></span> " . $formattedEnd->format('m-d-y g:iA');
@@ -409,6 +440,8 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 						<input type="hidden" name="description" value="<?php echo $description ?>" />
 						<input type="hidden" name="co_start" value="<?php echo $co_start ?>" />
 						<input type="hidden" name="co_end" value="<?php echo $co_end ?>" />
+						<input type="hidden" name="location" value="<?php echo $location ?>" />
+						<input type="hidden" name="dr_number" value="<?php echo $dr_number ?>" />
 
 						<?php
 							if(count($packages) > 0 && count($packages) != count($addedPkgs)){
@@ -459,7 +492,8 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 					<h2>Step 1: Event Details</h2>
 					<div class="alert alert-info" role="alert">
 						<?php
-							echo "Title: " . $title . "<br /> Description: " . $description . "<br />"; 
+							echo "Title: " . $title . "<br />Description: " . $description . "<br />"; 
+							echo "Location: " . $location . "<br />DR Number: " . $dr_number . "<br />";
 							$formattedStart = new DateTime($co_start);
 							$formattedEnd = new DateTime($co_end);
 							echo $formattedStart->format('m-d-y g:iA') . " <span class='glyphicon glyphicon-arrow-right'></span> " . $formattedEnd->format('m-d-y g:iA');
@@ -484,6 +518,8 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 						<input type="hidden" name="description" value="<?php echo $description ?>" />
 						<input type="hidden" name="co_start" value="<?php echo $co_start ?>" />
 						<input type="hidden" name="co_end" value="<?php echo $co_end ?>" />
+						<input type="hidden" name="location" value="<?php echo $location ?>" />
+						<input type="hidden" name="dr_number" value="<?php echo $dr_number ?>" />
 						<?php
 							//make sure gear list is resubmitted
 							foreach ($gearList as $gear) {
