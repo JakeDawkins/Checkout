@@ -200,21 +200,22 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 			$co_start = test_input($_POST['co_start']);	
 			$co_end = test_input($_POST['co_end']);
 
-			//echo ">-3";
 			//construct a clean gear list
 			$gearList = array();
 			foreach ($_POST['gear'] as $gearItem) {
 				$gearList[] = test_input($gearItem);
 			}
-			//echo ">-1";
+			
 			//clean up gear qty array from post
 			$gearQty = array();
-			foreach ($_POST['gearQty'] as $qty) {
-				$gearQty[] = test_input($qty);
+			if(!empty($_POST['gearQty'])){
+				foreach ($_POST['gearQty'] as $qty) {
+					$gearQty[] = test_input($qty);
+				}				
 			}
 
 			$i = 0; // to iterate thru gear qty array
-			//echo ">0";
+
 			//need to process quantities & finalize
 			//create checkout object
 			$co = new Checkout();
@@ -237,9 +238,8 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 					$co->addToGearList($gearItem,1);	
 				}	
 			}
-			//echo ">2";
+
 			$co->finalizeCheckout();
-			//echo json_encode($co);
 			$co_id = $co->getID();
 			header("Location: checkout.php?co_id=$co_id");
 		}

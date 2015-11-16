@@ -135,11 +135,14 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 			}
 
 			//clean up gear qty array from post
-			$gearQty = array();
-			foreach ($_POST['gearQty'] as $qty) {
-				$gearQty[] = test_input($qty);
-			}
 
+			$gearQty = array();
+			if(!empty($_POST['gearQty'])){
+				foreach ($_POST['gearQty'] as $qty) {
+					$gearQty[] = test_input($qty);
+				}	
+			}
+			
 			$i = 0; // to iterate thru gear qty array
 
 			//need to process quantities & finalize
