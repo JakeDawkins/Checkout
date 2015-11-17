@@ -69,8 +69,8 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 						<option value="11" <?php if ($month == 11) echo 'selected="selected"';?>>November</option>
 						<option value="12" <?php if ($month == 12) echo 'selected="selected"';?>>December</option>
                     </select>
-                    <button type="submit" name="submit" class="push-bottom full btn btn-primary">Filter</button> 
-                    <a class="btn btn-primary pull-right" href="new-checkout.php">New Checkout&nbsp;&nbsp;<span class="glyphicon glyphicon-plus"></span></a>
+                    <button type="submit" name="submit" class="push-bottom full btn btn-success">Filter</button> 
+                    <a class="btn btn-success pull-right" href="new-checkout.php">New Checkout&nbsp;&nbsp;<span class="glyphicon glyphicon-plus"></span></a>
                 </form>
 
             </div>

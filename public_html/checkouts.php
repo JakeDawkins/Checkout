@@ -51,8 +51,8 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <a class="btn btn-primary" href="new-checkout.php">New Checkout&nbsp;&nbsp;<span class="glyphicon glyphicon-plus"></span></a>
-                <a class="btn btn-primary" href="checkouts-table.php">View as Table</a>
+                <a class="btn btn-success" href="new-checkout.php">New Checkout&nbsp;&nbsp;<span class="glyphicon glyphicon-plus"></span></a>
+                <a class="btn btn-success" href="checkouts-table.php">View as Table</a>
                 <br /><br />
             </div>
         </div>
