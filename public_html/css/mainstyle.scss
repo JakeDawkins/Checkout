@@ -10,6 +10,9 @@ $color-red-light: #fbdbcc;
 $color-green: #6BAC43;
 $color-green-dark: #1c683e;
 $color-green-light: #d0dfbd;
+$color-blue: #2980B9;
+$color-blue-dark: #194F73;
+$color-blue-light: #e6ebf5;
 
 /* OLD
 $color-main: #2980B9;
@@ -135,11 +138,12 @@ div.title {
 
 .btn-primary {
 	color: white;
-	background-color: $color-main;
+	background-color: $color-sec;
 	border-width: 0;
-	border-bottom: 2px solid $color-main-dark;
+	border-bottom: 2px solid black;
 	&:hover {
-		background-color: $color-main-dark;
+		background-color: black;
+		border-bottom: 2px solid black;
 	}
 }
 
@@ -160,6 +164,7 @@ div.title {
 	border-bottom: 2px solid $color-green-dark;
 	&:hover {
 		background-color: $color-green-dark;
+		border-bottom: 2px solid black;
 	}
 }
 
