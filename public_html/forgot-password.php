@@ -165,11 +165,6 @@ if(!empty($_POST)) {
         </div>
     </div>
 
-    <br /><br />
-
-    <!-- INCLUDE BS STICKY FOOTER -->
-    <?php include('templates/bs-footer.php'); ?>
-
     <!-- jQuery Version 1.11.1 -->
     <script src="js/jquery.js"></script>
 
