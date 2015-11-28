@@ -88,7 +88,7 @@ if(!empty($_POST)) {
 
     <div class="container">
         <div class="row">
-            <div class="col-sm-6 col-sm-offset-3">
+            <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
 				<?php echo resultBlock($errors,$successes);
 
 				echo "<form role='form' name='login' action='".htmlspecialchars($_SERVER['PHP_SELF'])."' method='post'>"; ?>
