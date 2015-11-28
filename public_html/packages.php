@@ -27,7 +27,7 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
         <div class="row">
             <div class="col-lg-12">
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-                    <a class="btn btn-primary" href="new-package.php">New Package&nbsp;&nbsp;<span class="glyphicon glyphicon-plus"></span></a>
+                    <a class="btn btn-success" href="new-package.php">New Package&nbsp;&nbsp;<span class="glyphicon glyphicon-plus"></span></a>
                     <br /><br />
 
                     <table class="table table-hover"> 

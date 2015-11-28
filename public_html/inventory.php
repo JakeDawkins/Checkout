@@ -29,8 +29,8 @@ $types = getGearTypes();
                 <?php
                     //only show to admins
                     if ($loggedInUser->checkPermission(array(2))){
-                        echo "<a class='btn btn-primary' href='new-gear.php'>New Item&nbsp;&nbsp;<span class='glyphicon glyphicon-plus'></span></a> &nbsp;";
-                        echo "<a class='btn btn-primary' href='edit-gear-types.php'>Edit Gear Types&nbsp;&nbsp;<span class='glyphicon glyphicon-pencil'></span></a>";
+                        echo "<a class='btn btn-success' href='new-gear.php'>New Item&nbsp;&nbsp;<span class='glyphicon glyphicon-plus'></span></a> &nbsp;";
+                        echo "<a class='btn btn-success' href='edit-gear-types.php'>Edit Gear Types&nbsp;&nbsp;<span class='glyphicon glyphicon-pencil'></span></a>";
                     }
 					
 					foreach($types as $type){
