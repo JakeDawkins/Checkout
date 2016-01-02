@@ -90,7 +90,7 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 			            			echo "<input type='hidden' name='co_id' value='" . $co_id . "' />";
 			            			echo "<input id='now' type='hidden' name='dateTime' />"; //fill with JS on button click
 			            		echo "</form>";
-				            	echo "<a class='btn btn-primary' href='edit-checkout.php?co_id=" . $co_id . "'>Edit</a> &nbsp;&nbsp;";
+				            	echo "<a class='btn btn-success' href='edit-checkout.php?co_id=" . $co_id . "'>Edit</a> &nbsp;&nbsp;";
 	                            echo "<a class='btn btn-danger' href='checkout.php?co_id=" . $co_id . "&delete=true'>Delete</a>";	
 			            	} 
     					?>
