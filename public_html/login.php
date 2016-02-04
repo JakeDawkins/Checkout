@@ -72,9 +72,6 @@ if(!empty($_POST)) {
     <title>Login</title>
 </head>
 <body>
-	<!-- IMPORT NAVIGATION -->
-	<?php//include('templates/bs-nav.php'); ?>
-
     <!-- HEADER -->
     <div class="container-fluid">
         <div class="row">

@@ -53,38 +53,13 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 				$step = 0; //don't go on
 			}
 
-			/*
-			//start timedate
-			$start_day = test_input($_POST['start_day']);
-			$start_month = test_input($_POST['start_month']);
-			$start_year = test_input($_POST['start_year']);
-			$start_hour = test_input($_POST['start_hour']);
-			$start_min = test_input($_POST['start_min']);
-			$start_ampm = test_input($_POST['start_ampm']);
-			if ($start_ampm == "pm") $start_hour += 12;
-			else {
-				if ($start_hour == 12) $start_hour = 0;
-			}
-
-			//end timedate
-			$end_day = test_input($_POST['end_day']);
-			$end_month = test_input($_POST['end_month']);
-			$end_year = test_input($_POST['end_year']);
-			$end_hour = test_input($_POST['end_hour']);
-			$end_min = test_input($_POST['end_min']);
-			$end_ampm = test_input($_POST['end_ampm']);
-			if ($end_ampm == "pm") $end_hour += 12;
-			else {
-				if ($start_hour == 12) $start_hour = 0;
-			}
-
-			$co_start = $start_year . "-" . $start_month . "-" . $start_day . " " . $start_hour . ":" . $start_min . ":00"; 	
-			$co_end = $end_year . "-" . $end_month . "-" . $end_day . " " . $end_hour . ":" . $end_min . ":00"; 
-			*/
-
 			//NEW datetime input 
 			$co_start = test_input($_POST['startDateTime']);
+			$co_start = new DateTime($co_start);
+			$co_start = $co_start->format('Y-m-d H:i:s');
 			$co_end = test_input($_POST['endDateTime']);
+			$co_end = new DateTime($co_end);
+			$co_end = $co_end->format('Y-m-d H:i:s');
 
 			//check to make sure dates in order 
 			$formattedStart = new DateTime($co_start);
@@ -198,11 +173,14 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 			$co_id = $co->getID();
 			header("Location: checkout.php?co_id=$co_id");
 		}
-
+		//increment step
+		$step++;
 	}//end if POST
+	else {
+		$step = 1;
+	}
 
-	//increment step
-	$step++;
+
 ?>
 
 <!DOCTYPE html>
@@ -249,200 +227,18 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 						</div>	
 						
 						<!-- new datetime input. can be disabled by button (TODO) -->
-						<div class="newInput">
-							<div class="form-group">
-								<label class="control-label" for="startDateTime">Check Out:</label>  
-								<input class="form-control" name="startDateTime" type="text" data-field="datetime" readonly>	
-							</div>
-							
-							<div class="form-group">
-								<label class="control-label" for="endDateTime">Return:</label>  
-								<input class="form-control" name="endDateTime" type="text" data-field="datetime" readonly>	
-							</div>
-
-
-							<div id="dtBox"></div>
+						<div class="form-group">
+							<label class="control-label" for="startDateTime">Check Out:</label>  
+							<input class="form-control" name="startDateTime" type="text" data-field="datetime" readonly>	
+						</div>
+						
+						<div class="form-group">
+							<label class="control-label" for="endDateTime">Return:</label>  
+							<input class="form-control" name="endDateTime" type="text" data-field="datetime" readonly>	
 						</div>
 
-						<!-- to be enabled if user chooses (TODO). --> 
-						<div class="oldInput" style="display:none;">
-											
-							<div class="form-inline form-group">--><!-- START -->
-								<label class="control-label" for="start_date">Start date:</label>
-								<select class="form-control" style="display: inline" name="start_month">
-									<option value="01">January</option>
-									<option value="02">February</option>
-									<option value="03">March</option>
-									<option value="04">April</option>
-									<option value="05">May</option>
-									<option value="06">June</option>
-									<option value="07">July</option>
-									<option value="08">August</option>
-									<option value="09">September</option>
-									<option value="10">October</option>
-									<option value="11">November</option>
-									<option value="12">December</option>
-								</select>
-								<select class="form-control" style="display: inline" name="start_day">
-						            <option value"01">01</option>
-						            <option value"02">02</option>
-						            <option value"03">03</option>
-						            <option value"04">04</option>
-						            <option value"05">05</option>
-						            <option value"06">06</option>
-						            <option value"07">07</option>
-						            <option value"08">08</option>
-						            <option value"09">09</option>
-						            <option value"10">10</option>
-						            <option value"11">11</option>
-						            <option value"12">12</option>
-						            <option value"13">13</option>
-						            <option value"14">14</option>
-						            <option value"15">15</option>
-						            <option value"16">16</option>
-						            <option value"17">17</option>
-						            <option value"18">18</option>
-						            <option value"19">19</option>
-						            <option value"20">20</option>
-						            <option value"21">21</option>
-						            <option value"22">22</option>
-						            <option value"23">23</option>
-						            <option value"24">24</option>
-						            <option value"25">25</option>
-						            <option value"26">26</option>
-						            <option value"27">27</option>
-						            <option value"28">28</option>
-						            <option value"29" id="29">29</option>
-						            <option value"30" id="30">30</option>
-						            <option value"31" id="31">31</option>
-								</select>
-								<select class="form-control" style="display: inline" name="start_year">
-									<option value="2015" <?php if ($year == 15) echo 'selected="selected"';?>>2015</option>
-									<option value="2016" <?php if ($year == 16) echo 'selected="selected"';?>>2016</option>
-								</select>
-								<label class="control-label" for="start_time">&nbsp;&nbsp;Start Time </label>
-								<select class="form-control" style="display: inline" name="start_hour">
-						            <option value"01">1</option>
-						            <option value"02">2</option>
-						            <option value"03">3</option>
-						            <option value"04">4</option>
-						            <option value"05">5</option>
-						            <option value"06">6</option>
-									<option value"07">7</option>
-						            <option value"08">8</option>
-						            <option value"09">9</option>
-						            <option value"10">10</option>
-						            <option value"11">11</option>
-						            <option value"12">12</option>
-								</select>
-								<select class="form-control" style="display: inline" name="start_min">
-						        	<option value"00">00</option>
-						            <option value"05">05</option>
-						            <option value"10">10</option>
-						            <option value"15">15</option>
-						            <option value"20">20</option>
-						            <option value"25">25</option>
-						            <option value"30">30</option>
-									<option value"35">35</option>
-						            <option value"40">40</option>
-						            <option value"45">45</option>
-						            <option value"50">50</option>
-						            <option value"55">55</option>
-								</select>
-								<select class="form-control" style="display: inline" name="start_ampm">
-						        	<option value="am">AM</option>
-						        	<option value="pm">PM</option>
-								</select>
-							</div>
-							<div class="form-inline form-group"><!-- END -->
-							
-								<label class="control-label" for="co_end">End Date:</label>
-								<select class="form-control" style="display: inline" name="end_month">
-									<option value="01">January</option>
-									<option value="02">February</option>
-									<option value="03">March</option>
-									<option value="04">April</option>
-									<option value="05">May</option>
-									<option value="06">June</option>
-									<option value="07">July</option>
-									<option value="08">August</option>
-									<option value="09">September</option>
-									<option value="10">October</option>
-									<option value="11">November</option>
-									<option value="12">December</option>
-								</select>
-								<select class="form-control" style="display: inline" name="end_day">
-						            <option value"01">01</option>
-						            <option value"02">02</option>
-						            <option value"03">03</option>
-						            <option value"04">04</option>
-						            <option value"05">05</option>
-						            <option value"06">06</option>
-						            <option value"07">07</option>
-						            <option value"08">08</option>
-						            <option value"09">09</option>
-						            <option value"10">10</option>
-						            <option value"11">11</option>
-						            <option value"12">12</option>
-						            <option value"13">13</option>
-						            <option value"14">14</option>
-						            <option value"15">15</option>
-						            <option value"16">16</option>
-						            <option value"17">17</option>
-						            <option value"18">18</option>
-						            <option value"19">19</option>
-						            <option value"20">20</option>
-						            <option value"21">21</option>
-						            <option value"22">22</option>
-						            <option value"23">23</option>
-						            <option value"24">24</option>
-						            <option value"25">25</option>
-						            <option value"26">26</option>
-						            <option value"27">27</option>
-						            <option value"28">28</option>
-						            <option value"29" id="29">29</option>
-						            <option value"30" id="30">30</option>
-						            <option value"31" id="31">31</option>
-								</select>
-								<select class="form-control" style="display: inline" name="end_year">
-									<option value="2015" <?php if ($year == 15) echo 'selected="selected"';?>>2015</option>
-									<option value="2016" <?php if ($year == 16) echo 'selected="selected"';?>>2016</option>
-								</select>
-								<label class="control-label" for="co_start">&nbsp;&nbsp;End Time </label>
-								<select class="form-control" style="display: inline" name="end_hour">
-						            <option value"01">1</option>
-						            <option value"02">2</option>
-						            <option value"03">3</option>
-						            <option value"04">4</option>
-						            <option value"05">5</option>
-						            <option value"06">6</option>
-									<option value"07">7</option>
-						            <option value"08">8</option>
-						            <option value"09">9</option>
-						            <option value"10">10</option>
-						            <option value"11">11</option>
-						            <option value"12">12</option>
-								</select>
-								<select class="form-control" style="display: inline" name="end_min">
-						        	<option value"00">00</option>
-						            <option value"05">05</option>
-						            <option value"10">10</option>
-						            <option value"15">15</option>
-						            <option value"20">20</option>
-						            <option value"25">25</option>
-						            <option value"30">30</option>
-									<option value"35">35</option>
-						            <option value"40">40</option>
-						            <option value"45">45</option>
-						            <option value"50">50</option>
-						            <option value"55">55</option>
-								</select>
-								<select class="form-control" style="display: inline" name="end_ampm">
-						        	<option value="am">AM</option>
-						        	<option value="pm">PM</option>
-								</select>
-							</div>
-						</div><!-- end old input -->
+						<div id="dtBox"></div>
+
 						<input class="btn btn-success" type="submit" name="submit" value="Next">
 					</form>
 				<?php elseif($step == 2): ?>
@@ -587,45 +383,19 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
     <script src="js/jquery.js"></script>
 
     <!-- imports for datetime -->
-<link rel="stylesheet" type="text/css" href="vendor/DateTimePicker/dist/DateTimePicker.css" />
-<script type="text/javascript" src="vendor/DateTimePicker/dist/DateTimePicker.js"></script>
-	
- <!--[if lt IE 9]>
-	<link rel="stylesheet" type="text/css" href="DateTimePicker-ltie9.css" />
-	<script type="text/javascript" src="DateTimePicker-ltie9.js"></script>
- <![endif]-->
- 
- <!-- For i18n Support -->
- <script type="text/javascript" src="vendor/DateTimePicker/dist/i18n/DateTimePicker-i18n.js"></script>
+	<link rel="stylesheet" type="text/css" href="vendor/DateTimePicker/dist/DateTimePicker.css" />
+	<script type="text/javascript" src="vendor/DateTimePicker/dist/DateTimePicker.js"></script>
+		
+	<!--[if lt IE 9]>
+		<link rel="stylesheet" type="text/css" href="DateTimePicker-ltie9.css" />
+		<script type="text/javascript" src="DateTimePicker-ltie9.js"></script>
+	<![endif]-->
 
-<script>
-	$(document).ready(function(){
+	<!-- For i18n Support -->
+	<script type="text/javascript" src="vendor/DateTimePicker/dist/i18n/DateTimePicker-i18n.js"></script>
 
-		//set up dateTime box
-		$("#dtBox").DateTimePicker({
-			isPopup: true,
-			animationDuration: 200
-		});
-
-		//block form submit while dateTime entry box is open
-		$(document).on("keypress",'form',function (e) {
-			var code = e.keyCode || e.which;
-			if(code == 13 && $("#dtBox").css('display') == 'block'){
-				e.preventDefault();
-				//instead of submiting, click "set"
-				//clickSet(); //TODO -- does not submit if not clicked a field in dtBox
-				return false;
-			}
-		});
-
-
-
-		function clickSet(){
-			$(".dtpicker-buttonSet").click();
-		}
-
-	});
-</script>
+	<!-- custom js for working with the picker -->
+	<script type="text/javascript" src="vendor/DateTimePickerLoader.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>

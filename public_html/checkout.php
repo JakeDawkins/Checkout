@@ -16,7 +16,7 @@ if (!securePage(htmlspecialchars($_SERVER['PHP_SELF']))){die();}
 	//check to see what checkout and if it needs to be deleted
 	if ($_SERVER["REQUEST_METHOD"] == "GET") {
 		$co_id = test_input($_GET['co_id']);
-		if($_GET['delete']){
+		if(isset($_GET['delete']) && $_GET['delete'] == true){
 			Checkout::removeCheckout($co_id);
 			$deleted = true;
 			header("Location: checkouts.php?co_del=true");
