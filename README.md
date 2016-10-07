@@ -1,7 +1,7 @@
 # Checkout
 
 For scheduling gear within a team.
-For more detailed information on this project, visit [my project page](http://jakedawkins.com/projects/checkout.php)
+For more detailed information on this project, visit [my website](http://jakedawkins.com)
 
 ##To Install:
 1. copy the contents of public\_html into your webroot
